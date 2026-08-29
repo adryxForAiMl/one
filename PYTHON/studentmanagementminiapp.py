@@ -6,7 +6,7 @@ def add_student():
         students.append({"name":name,"marks":marks})
         print("Student added successfully")
     except ValueError:
-        print("Marks musdt be a number")
+        print("Marks must be a number")
 
 def view_student():
     if not students:
@@ -16,12 +16,12 @@ def view_student():
             print(s["name"],"->",s["marks"])
 
 def search_student():
-    name=input("Enter name to search")
+    name=input("Enter name to search: " )
     for s in students:
         if s["name"].lower()==name.lower():
             print("Found: ",s["name"],s["marks"])
             return
-        print("Student not found")
+    print("Student not found")
 
 def avg_marks():
     if not students:
@@ -50,7 +50,7 @@ while True:
         case "4":
             avg_marks()
         case "5":
-            print("existing the program,Bye")
+            print("exiting the program,Bye")
             break
         case _:
             print("Invalid choice")
