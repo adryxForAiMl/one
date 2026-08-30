@@ -1,2 +1,8 @@
 .DS_Store
 soulmate-ai/.env
+.env
+*.env
+venv/
+.venv/
+__pycache__/
+*.pyc
