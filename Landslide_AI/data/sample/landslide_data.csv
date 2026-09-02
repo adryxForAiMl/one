@@ -1,0 +1,21 @@
+location,rainfall_mm,soil_moisture_percent,slope_degree,elevation_m,previous_landslide
+Sikkim,180,82,42,1450,1
+Sikkim,75,48,18,1200,0
+Arunachal Pradesh,220,90,48,1800,1
+Arunachal Pradesh,95,52,22,1600,0
+Meghalaya,130,68,35,900,1
+Meghalaya,60,40,15,750,0
+Nagaland,155,75,38,1100,1
+Nagaland,55,35,12,850,0
+Mizoram,190,85,45,1250,1
+Mizoram,80,45,20,1000,0
+Tripura,65,42,10,300,0
+Assam,70,45,12,150,0
+Sikkim,210,88,46,1700,1
+Arunachal Pradesh,160,76,40,1400,1
+Meghalaya,105,60,28,850,0
+Nagaland,200,86,44,1300,1
+Mizoram,120,65,32,1150,1
+Tripura,50,30,8,250,0
+Assam,45,28,7,120,0
+Sikkim,140,70,34,1300,1
