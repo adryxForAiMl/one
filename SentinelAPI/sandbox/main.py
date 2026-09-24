@@ -42,6 +42,16 @@ def get_current_user(authorization: str):
     return users[authorization]
 
 
+@app.get("/")
+def root():
+    return {
+        "service": "SentinelAPI Authorized Test Sandbox",
+        "description": "Authorized demonstration API with intentional BOLA vulnerabilities.",
+        "status": "online",
+        "endpoints": ["/orders", "/orders/{order_id}"],
+    }
+
+
 @app.get("/orders")
 def get_my_orders(
     authorization: str = Header(...)
