@@ -1,8 +1,8 @@
 def f(x):
     return x * x
 
-a = 0
-b = 4
+a = 1
+b = 3
 n = 8
 
 h = (b - a) / n
