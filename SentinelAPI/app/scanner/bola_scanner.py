@@ -1,15 +1,68 @@
 import httpx
 
 
-def scan_bola(
-    base_url: str,
-    credentials: dict[str, str]
-):
+def find_object_endpoints(spec):
+    endpoints = []
+
+    for path, methods in spec.get("paths", {}).items():
+
+        if "get" not in methods:
+            continue
+
+        path_parameters = [
+            part[1:-1]
+            for part in path.split("/")
+            if part.startswith("{") and part.endswith("}")
+        ]
+
+        if len(path_parameters) != 1:
+            continue
+
+        parameter = path_parameters[0]
+        collection_path = path.split("/{")[0]
+
+        if collection_path == path:
+            continue
+
+        if collection_path not in spec.get("paths", {}):
+            continue
+
+        if "get" not in spec["paths"][collection_path]:
+            continue
+
+        endpoints.append({
+            "object_path": path,
+            "collection_path": collection_path,
+            "parameter": parameter
+        })
+
+    return endpoints
+
+
+def get_object_id(item, parameter):
+    if not isinstance(item, dict):
+        return None
+
+    candidates = [
+        parameter,
+        "id"
+    ]
+
+    if parameter.endswith("_id"):
+        candidates.append(parameter[:-3] + "_id")
+
+    for key in candidates:
+        if key in item:
+            return item[key]
+
+    return None
+
+
+def scan_bola(base_url: str, credentials: dict[str, str]):
     findings = []
 
     with httpx.Client(timeout=10.0) as client:
 
-        # Step 1: Get the API specification
         spec_response = client.get(
             f"{base_url}/openapi.json"
         )
@@ -17,50 +70,23 @@ def scan_bola(
         spec_response.raise_for_status()
         spec = spec_response.json()
 
-        paths = spec.get("paths", {})
+        endpoints = find_object_endpoints(spec)
 
-        # Step 2: Find collection endpoints
-        collection_endpoints = []
+        for endpoint in endpoints:
 
-        for path, methods in paths.items():
+            object_path = endpoint["object_path"]
+            collection_path = endpoint["collection_path"]
+            parameter = endpoint["parameter"]
 
-            if "get" not in methods:
-                continue
-
-            if "{" not in path:
-                collection_endpoints.append(path)
-
-        # Step 3: Look for related object endpoints
-        for collection_path in collection_endpoints:
-
-            object_path = collection_path.rstrip("/") + "/{id}"
-
-            matching_object_path = None
-
-            for path in paths:
-
-                if path.startswith(
-                    collection_path.rstrip("/") + "/{"
-                ):
-                    if "get" in paths[path]:
-                        matching_object_path = path
-                        break
-
-            if not matching_object_path:
-                continue
-
-            # Step 4: Get objects belonging to each user
-            discovered_objects = {}
+            user_objects = {}
 
             for user_name, token in credentials.items():
 
-                headers = {
-                    "Authorization": token
-                }
-
                 response = client.get(
                     f"{base_url}{collection_path}",
-                    headers=headers
+                    headers={
+                        "Authorization": token
+                    }
                 )
 
                 if response.status_code != 200:
@@ -71,53 +97,60 @@ def scan_bola(
                 if not isinstance(data, list):
                     continue
 
-                discovered_objects[user_name] = data
+                objects = []
 
-            # Step 5: Compare objects between users
-            users = list(discovered_objects.keys())
+                for item in data:
 
-            for current_user in users:
+                    object_id = get_object_id(
+                        item,
+                        parameter
+                    )
 
-                current_objects = discovered_objects[
-                    current_user
-                ]
+                    if object_id is not None:
+                        objects.append(item)
 
-                current_ids = {
-                    item.get("order_id")
-                    for item in current_objects
-                    if item.get("order_id") is not None
+                user_objects[user_name] = objects
+
+            users = list(user_objects.keys())
+
+            for attacker in users:
+
+                attacker_objects = user_objects[attacker]
+
+                attacker_ids = {
+                    get_object_id(item, parameter)
+                    for item in attacker_objects
                 }
 
-                for other_user in users:
+                for victim in users:
 
-                    if current_user == other_user:
+                    if attacker == victim:
                         continue
 
-                    other_objects = discovered_objects[
-                        other_user
-                    ]
+                    victim_objects = user_objects[victim]
 
-                    for other_object in other_objects:
+                    for victim_object in victim_objects:
 
-                        object_id = other_object.get("order_id")
-
-                        if object_id is None:
-                            continue
-
-                        if object_id in current_ids:
-                            continue
-
-                        test_path = matching_object_path.replace(
-                            "{order_id}",
-                            str(object_id)
+                        victim_id = get_object_id(
+                            victim_object,
+                            parameter
                         )
 
-                        # Try the discovered path
+                        if victim_id is None:
+                            continue
+
+                        if victim_id in attacker_ids:
+                            continue
+
+                        target_path = object_path.replace(
+                            "{" + parameter + "}",
+                            str(victim_id)
+                        )
+
                         response = client.get(
-                            f"{base_url}{test_path}",
+                            f"{base_url}{target_path}",
                             headers={
-                                "Authorization":
-                                credentials[current_user]
+                                "Authorization": credentials[attacker]
                             }
                         )
 
@@ -126,31 +159,64 @@ def scan_bola(
 
                         leaked_data = response.json()
 
-                        owner_id = leaked_data.get(
-                            "owner_id"
+                        leaked_id = get_object_id(
+                            leaked_data,
+                            parameter
                         )
 
-                        other_owner_id = other_object.get(
-                            "owner_id"
-                        )
-
-                        if (
-                            owner_id is not None
-                            and other_owner_id is not None
-                            and owner_id == other_owner_id
-                        ):
+                        if leaked_id == victim_id:
 
                             findings.append({
+                                "id": f"BOLA-{len(findings) + 1:03d}",
+
                                 "type": "BOLA",
                                 "severity": "CRITICAL",
-                                "endpoint": test_path,
-                                "attacker": current_user,
-                                "resource_owner": other_user,
-                                "object_id": object_id,
-                                "evidence": leaked_data,
-                                "description":
-                                    "Authenticated user accessed "
+
+                                "endpoint": target_path,
+                                "method": "GET",
+
+                                "attacker": attacker,
+                                "resource_owner": victim,
+
+                                "object_id": victim_id,
+
+                                "expected": (
+                                    "Authenticated user should only access "
+                                    "objects they own."
+                                ),
+
+                                "actual": (
+                                    "Authenticated user successfully accessed "
                                     "another user's object."
+                                ),
+
+                                "status_code": response.status_code,
+
+                                "evidence": {
+                                    "request": {
+                                        "method": "GET",
+                                        "url": target_path,
+                                        "user": attacker
+                                    },
+                                    "response": leaked_data
+                                },
+
+                                "impact": (
+                                    "An authenticated user can access "
+                                    "another user's protected resource."
+                                ),
+
+                                "remediation": (
+                                    "Verify that the authenticated user's identity "
+                                    "matches the resource owner before returning "
+                                    "the requested object."
+                                ),
+
+                                "description": (
+                                    "Broken Object Level Authorization detected. "
+                                    "The API returned an object belonging to another "
+                                    "authenticated user."
+                                )
                             })
 
     return findings
