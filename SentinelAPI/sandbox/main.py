@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Header, HTTPException
 
 app = FastAPI(
-    title="SentinelAPI Test API",
+    title="KAVACH Lab - Vulnerable Test API",
     version="1.0.0"
 )
 
@@ -45,8 +45,10 @@ def get_current_user(authorization: str):
 @app.get("/")
 def root():
     return {
-        "service": "SentinelAPI Authorized Test Sandbox",
+        "service": "KAVACH Lab - Controlled Security Sandbox",
         "description": "Authorized demonstration API with intentional BOLA vulnerabilities.",
+        "warning": "INTENTIONALLY VULNERABLE - CONTROLLED TEST ENVIRONMENT",
+        "purpose": "Demonstrating Broken Object Level Authorization (BOLA/IDOR)",
         "status": "online",
         "endpoints": ["/orders", "/orders/{order_id}"],
     }

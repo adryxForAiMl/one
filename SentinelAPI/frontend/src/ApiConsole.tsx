@@ -227,12 +227,33 @@ export default function ApiConsole({
     }
   }
 
-  const copyResponse = () => {
+  const copyResponse = async () => {
     if (!response) return
-    navigator.clipboard.writeText(JSON.stringify(response.body, null, 2))
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    const payload = JSON.stringify(response.body, null, 2)
+
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(payload)
+      } else {
+        const area = document.createElement("textarea")
+        area.value = payload
+        document.body.appendChild(area)
+        area.select()
+        document.execCommand("copy")
+        document.body.removeChild(area)
+      }
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      setError("Clipboard access was blocked. Copy manually from the response panel.")
+    }
   }
+
+  const responseSignal = response?.isBolaViolation
+    ? "Boundary violation confirmed"
+    : response
+    ? "Evidence collected"
+    : "Awaiting request"
 
   // Display discovered endpoints list
   const displayEndpoints =
@@ -273,13 +294,25 @@ export default function ApiConsole({
         <div>
           <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 font-mono text-[10px] font-bold text-cyan-400">
             <Terminal className="h-3.5 w-3.5" />
-            AUTHORIZED SECURITY ASSESSMENT TERMINAL
+            KAVACH LAB · CONTROLLED SECURITY SANDBOX
           </div>
           <h1 className="mt-2 text-3xl font-extrabold text-white tracking-tight">
-            Developer API Console
+            KAVACH LAB
           </h1>
-          <p className="mt-1 text-xs text-slate-400">
-            Dispatch authenticated test requests to verify zero-trust object boundaries in real time.
+          <p className="mt-1 text-sm font-semibold text-cyan-300">
+            Controlled Vulnerability Demonstration Environment
+          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <div className="inline-flex items-center gap-2 rounded-lg border border-red-500/40 bg-red-950/30 px-3 py-1 text-[11px] font-mono font-bold text-red-400">
+              <ShieldAlert className="h-3.5 w-3.5" />
+              INTENTIONALLY VULNERABLE · CONTROLLED TEST ENVIRONMENT
+            </div>
+            <div className="status-pill rounded-full px-2.5 py-1 text-[10px] font-mono font-bold text-cyan-300">
+              {responseSignal}
+            </div>
+          </div>
+          <p className="mt-2 text-xs text-slate-400">
+            Dispatch authenticated test requests across multiple identity profiles to verify zero-trust object authorization boundaries in real time.
           </p>
         </div>
 

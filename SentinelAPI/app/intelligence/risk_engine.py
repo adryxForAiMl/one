@@ -15,9 +15,10 @@ MODEL_DIR = os.path.join(
     "artifacts",
 )
 
-MODEL_PATH = os.path.join(
-    MODEL_DIR,
-    "sentinel_risk_model.joblib",
+MODEL_PATH = (
+    os.path.join(MODEL_DIR, "kavach_risk_model.joblib")
+    if os.path.exists(os.path.join(MODEL_DIR, "kavach_risk_model.joblib"))
+    else os.path.join(MODEL_DIR, "sentinel_risk_model.joblib")
 )
 
 

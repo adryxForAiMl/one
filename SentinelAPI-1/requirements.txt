@@ -1,0 +1,13 @@
+fastapi
+httpx
+pydantic
+sqlalchemy
+uvicorn
+pytest
+pytest-asyncio
+python-dotenv
+loguru
+openapi-schema-validator
+asyncpg
+bcrypt
+```

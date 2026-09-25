@@ -1,30 +1,46 @@
-# SENTINELAPI: Zero-Trust API Security Intelligence
+# KAVACH: Zero-Trust API Security Platform
 
-> **"Discover. Verify. Explain. Remediate."**  
+> **"Discover. Verify. Explain. Protect."**  
 > AI Hackathon — Problem Statement 3: Zero-Trust API Vulnerability Scanner
 
 ---
 
 ## Executive Summary
 
-**SentinelAPI** is an AI-assisted Zero-Trust API Security Operations platform. Rather than naively guessing status codes or running noisy fuzzers, SentinelAPI answers the fundamental zero-trust question:
+**KAVACH** is an enterprise Zero-Trust API Security Operations platform. Rather than naively guessing status codes or running noisy fuzzers, KAVACH enforces the foundational zero-trust paradigm:
 
-> *"Can this API be trusted to correctly enforce security boundaries across authenticated identities?"*
+> *"Authentication does not equal authorization. Can this API be trusted to enforce tenancy and object boundaries across authenticated identities?"*
 
-SentinelAPI combines **Target Preflight Validation**, **OpenAPI 3.x/Swagger Specification Ingestion**, **Multi-Identity Mapping**, **Deterministic BOLA (Broken Object Level Authorization) Testing**, **Behavioral Response Verification & Fingerprinting**, and **Local scikit-learn Machine Learning Anomaly Scoring** to reconstruct verified attack paths and generate actionable developer remediation.
+KAVACH unifies **Target Preflight Validation**, **Netra API Discovery & OpenAPI Ingestion**, **Kavach-Auth Multi-Identity Mapping**, **Raksha Deterministic BOLA/IDOR Detection**, **Pramaan Behavioral Response Verification**, **Drishti Local scikit-learn ML Threat Intelligence**, **Trace Attack-Path Reconstruction**, and **Suraksha Automated Developer Remediation** into a single cohesive security intelligence platform.
+
+---
+
+## The KAVACH Modular Architecture
+
+| Module | Meaning | Functional Purpose |
+|---|---|---|
+| **KAVACH Core** | *Core Engine* | Central security orchestration, scan coordination, risk calculation, and platform lifecycle. |
+| **KAVACH Netra** | *Vision / Eye* | API discovery, OpenAPI 3.x/Swagger 2.0 ingestion, endpoint inventory, and attack-surface mapping. |
+| **KAVACH Kavach-Auth (KAVACH Access)** | *Access* | Multi-identity authentication profiles, token scopes, and authorization boundary testing. |
+| **KAVACH Raksha** | *Protection* | Deterministic Broken Object Level Authorization (BOLA/IDOR) defense and cross-identity verification. |
+| **KAVACH Drishti** | *Insight* | Local scikit-learn Random Forest ML intelligence, anomaly scoring, and 6-category Posture Scorecard. |
+| **KAVACH Trace** | *Pathways* | 9-stage attack path reconstruction, interactive React Flow graph workspace, and security event timeline. |
+| **KAVACH Pramaan** | *Evidence* | Behavioral response verification, normalized SHA-256 fingerprints, and sensitive data exposure detection. |
+| **KAVACH Suraksha** | *Remediation* | Context-aware developer remediation, secure code diffs, architectural guidance, and re-scan triggers. |
+| **KAVACH Dastaavez** | *Documentation* | Executive summaries, technical audit logs, printable reports, and downloadable JSON/CSV exports. |
+| **KAVACH Lab** | *Sandbox* | Controlled vulnerability test environment for live demonstration of authorization boundaries. |
 
 ---
 
 ## Key Differentiators
 
-1. **Target Preflight System**: Validates network connectivity, HTTP response latency, OpenAPI auto-discovery across candidate paths, and evaluates scan readiness *before* sending tests.
-2. **Deterministic BOLA Engine**: Exercises authenticated cross-identity access (User A accessing User B's objects, and vice versa in reverse direction) to prove authorization violations beyond doubt.
-3. **Behavioral Response Verification**: Analyzes HTTP status, response structures, identity vs resource owner mismatches, and SHA-256 normalized response fingerprints.
-4. **Local ML Anomaly Intelligence**: Integrates an on-device Random Forest classifier (scikit-learn) trained on synthetic API vulnerability scenarios to evaluate anomaly probability without external telemetry leak.
-5. **Transparent, Explainable Risk Engine**: Provides clear, human-readable explanations of why an API received its risk score, accompanied by a 6-category **Security Posture Scorecard**.
-6. **Security Investigation Workspace**: 3-column flagship investigation cockpit combining **Attack Paths list**, interactive **9-Node React Flow Graph**, and an **Evidence Inspector** with live **Security Event Timeline**.
-7. **Developer Remediation with Code Diffs**: Provides root-cause diagnosis, safe remediation code snippets in Python/FastAPI, and automated fix verification requirements.
-8. **Audit-Ready Reporting**: One-click printable executive security reports with JSON and CSV exports.
+1. **Deterministic BOLA/IDOR Defense (Raksha)**: Exercises bidirectional authenticated cross-identity access (User A accessing User B's objects, and User B accessing User A's objects) to prove authorization violations with mathematical certainty.
+2. **Behavioral Response Verification (Pramaan)**: Analyzes HTTP status, response payloads, caller-to-owner mismatches, sensitive field exposure (`password`, `token`, `secret`, `ssn`), and normalized SHA-256 structural fingerprints.
+3. **Local Machine Learning Intelligence (Drishti)**: Embedded on-device Random Forest classifier (scikit-learn) trained on synthetic API vulnerability scenarios evaluates anomaly probabilities without external telemetry leaks.
+4. **Transparent, Explainable Risk Engine**: Provides human-readable explanations of why an API received its score, supported by a 6-category **Security Posture Scorecard** (`Authentication`, `Authorization`, `Object Access`, `Data Exposure`, `API Configuration`, `Attack Surface`).
+5. **Security Investigation Workspace (Trace)**: Stacked investigation workspace combining **Attack Paths**, an interactive **9-Node React Flow Graph**, inline node telemetry, an **Evidence Inspector**, and a live **Security Event Timeline**.
+6. **Developer Remediation Center (Suraksha)**: Provides root-cause diagnosis, secure code diffs (Python/FastAPI), architectural policy controls, and verification checklists.
+7. **Compliance & Audit Reporting (Dastaavez)**: One-click printable executive security reports with machine-readable JSON and CSV exports.
 
 ---
 
@@ -32,7 +48,7 @@ SentinelAPI combines **Target Preflight Validation**, **OpenAPI 3.x/Swagger Spec
 
 ```
                           ┌─────────────────────────────────────┐
-                          │     SentinelAPI Web Console        │
+                          │         KAVACH Web Console          │
                           │   React 19 · Vite · TypeScript      │
                           │   Tailwind CSS · React Flow         │
                           │      http://localhost:5173          │
@@ -40,130 +56,109 @@ SentinelAPI combines **Target Preflight Validation**, **OpenAPI 3.x/Swagger Spec
                                              │ REST / JSON
                                              ▼
                           ┌─────────────────────────────────────┐
-                          │       SentinelAPI Core Backend       │
+                          │         KAVACH Core Backend         │
                           │      FastAPI Engine (Port 8001)     │
                           └──────┬───────────┬───────────┬──────┘
                                  │           │           │
-           ┌─────────────────────┴───┐       │       ┌───┴─────────────────────┐
-           ▼                         ▼       │       ▼                         ▼
+            ┌────────────────────┴───┐       │       ┌───┴─────────────────────┐
+            ▼                        ▼       │       ▼                         ▼
 ┌──────────────────────┐ ┌───────────────┐   │ ┌───────────────┐ ┌──────────────────────┐
-│   Target Preflight   │ │OpenAPI Parser │   │ │  BOLA Engine  │ │  Local ML Risk Engine│
-│   Network & Spec     │ │  Swagger 2.0  │   │ │ Bidirectional │ │    Random Forest     │
-│   Probe Candidates   │ │  OpenAPI 3.x  │   │ │ Cross-Testing │ │    scikit-learn      │
+│   Target Preflight   │ │  KAVACH Netra │   │ │ KAVACH Raksha │ │    KAVACH Drishti    │
+│   Network & Spec     │ │ OpenAPI 3.x   │   │ │ BOLA Defense  │ │  Local ML Random     │
+│   Candidate Probing  │ │  Swagger 2.0  │   │ │ Cross-Testing │ │  Forest Classifier   │
 └──────────────────────┘ └───────────────┘   │ └───────────────┘ └──────────────────────┘
                                              │ Target Probes
                                              ▼
                           ┌─────────────────────────────────────┐
-                          │    Authorized Test Sandbox API      │
-                          │  FastAPI Demonstrator (Port 8000)   │
+                          │             KAVACH Lab              │
+                          │   Controlled Test Sandbox (8000)    │
                           │   User A (ID 1) · User B (ID 2)     │
+                          │   INTENTIONALLY VULNERABLE          │
                           └─────────────────────────────────────┘
 ```
 
 ---
 
-## Professional 13-Stage Scan Pipeline
+## Verification Pipeline
 
-SentinelAPI executes an auditable 13-stage security assessment pipeline:
+KAVACH executes an auditable 7-stage zero-trust assessment pipeline:
 
-1. **`01 TARGET PREFLIGHT`**: URL normalization, TCP connectivity check, and latency benchmark.
-2. **`02 API DISCOVERY`**: Automated probing of `/openapi.json`, `/swagger.json`, `/api/openapi.json`, etc.
-3. **`03 OPENAPI ANALYSIS`**: Extraction of paths, parameters, schemas, and security requirements.
-4. **`04 AUTHENTICATION`**: Resolution and safe masking of Bearer tokens and API keys.
-5. **`05 IDENTITY MAPPING`**: Attribution of resource ownership (Identity A vs Identity B).
-6. **`06 AUTHORIZATION TESTING`**: Baseline retrieval of authorized object collections.
-7. **`07 OBJECT ACCESS TESTING`**: Cross-identity parameter injection against object routes.
-8. **`08 RESPONSE ANALYSIS`**: Comparison of status codes, payload structures, and sensitive fields.
-9. **`09 VULNERABILITY VERIFICATION`**: Behavioral response verification and deterministic evidence capture.
-10. **`10 RISK INTELLIGENCE`**: Weighted calculation combining exploitability, severity, and identity scope.
-11. **`11 ATTACK PATH RECONSTRUCTION`**: Node and edge graph synthesis for visual threat modeling.
-12. **`12 REMEDIATION`**: Generation of code fix recommendations and verification steps.
-13. **`13 REPORT GENERATION`**: Compilation of executive scorecards and downloadable artifacts.
+1. **Target Validation**: Normalizes candidate target URI, pings network reachability, evaluates response latency, and validates HTTP connectivity.
+2. **Netra API Discovery**: Discovers specifications across candidate routes (`/openapi.json`, `/swagger.json`, etc.), parses paths, extracts parameters, and categorizes endpoints into Collection and Object routes.
+3. **Access Verification (Kavach-Auth)**: Configures multi-identity profiles, masks credentials (`tok***-a`, `tok***-b`), and establishes baseline tenant tokens.
+4. **Raksha Authorization Tests**: Executes cross-identity authorization matrices, unauthenticated access probes, and out-of-bounds parameter variations.
+5. **Drishti Risk Intelligence**: Evaluates behavioral response signals with local Random Forest ML inference and calculates the 6-category Security Posture Scorecard.
+6. **Pramaan Evidence**: Extracts sensitive fields, compares baseline vs cross-tenant payloads, and computes SHA-256 structural response fingerprints.
+7. **Security Verdict & Remediation (Suraksha)**: Generates actionable code diffs, root-cause guidance, attack-path graphs, and downloadable audit reports.
 
 ---
 
-## Local Sandbox Demonstration
-
-The repository includes an authorized test sandbox (`sandbox/main.py`) running on `http://localhost:8000`:
-- **Identity User A** (`token-user-a`): Owns Order `#101` (MacBook Air)
-- **Identity User B** (`token-user-b`): Owns Order `#102` (iPhone)
-- **Vulnerability**: Endpoint `GET /orders/{order_id}` authenticates callers but omits object ownership validation.
-- **Proof**: User A requests `/orders/102` with `token-user-a` $\rightarrow$ API responds with `HTTP 200 OK` exposing User B's order.
-
----
-
-## Quick Start & Running Locally
+## Quickstart & Local Execution
 
 ### Prerequisites
-- Python 3.10+
-- Node.js 18+ and npm
+- Python 3.10+ (tested on Python 3.14)
+- Node.js 18+ & npm
+- macOS / Linux
 
-### 1. Python Environment Setup
+### 1. Repository Setup
 ```bash
+git clone <repo-url>
 cd SentinelAPI
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-pip install pytest
 ```
 
-### 2. Run the Services
+### 2. Launch Local Environment
 
-**Terminal 1 — Authorized Test Sandbox (Port 8000):**
+**Terminal 1 — KAVACH Lab Sandbox API (Port 8000):**
+> *Note: KAVACH Lab is an intentionally vulnerable test API designed specifically to demonstrate BOLA/IDOR detection.*
 ```bash
-cd SentinelAPI
 source .venv/bin/activate
 uvicorn sandbox.main:app --port 8000 --reload
 ```
 
-**Terminal 2 — SentinelAPI Core Backend (Port 8001):**
+**Terminal 2 — KAVACH Core Backend (Port 8001):**
 ```bash
-cd SentinelAPI
 source .venv/bin/activate
 uvicorn app.main:app --port 8001 --reload
 ```
 
-**Terminal 3 — Frontend Web Application (Port 5173):**
+**Terminal 3 — KAVACH Web Console (Port 5173):**
 ```bash
-cd SentinelAPI/frontend
+cd frontend
+npm install
 npm run dev
 ```
 
-### 3. Run Automated Tests
+Open your browser to: **`http://localhost:5173`**
+
+---
+
+## Automated Verification & Test Suite
+
+Run the automated test suite covering all security engines, ML inference, and API contracts:
 ```bash
-cd SentinelAPI
-source .venv/bin/activate
-pytest tests/ -v
+PYTHONPATH=. .venv/bin/pytest tests/ -v
+```
+
+Run frontend production compilation and linting:
+```bash
+cd frontend
+npm run build
+npx oxlint
 ```
 
 ---
 
-## Live Demo Guide (2–3 Minute Judge Flow)
+## AI Hackathon Compliance & Ethics Notice
 
-1. Open `http://localhost:5173` in any browser.
-2. Note the hero header: **SENTINELAPI: Zero-Trust API Security Intelligence** — *"Discover. Verify. Explain. Remediate."*
-3. Click **"TRY LOCAL SECURITY DEMO"** or navigate to the **API Scanner** tab.
-4. Click **"VALIDATE TARGET"**: Observe the live **Target Preflight** checklist verifying URL format, host latency, OpenAPI parsing, and scan readiness.
-5. Click **"START SECURITY SCAN"**: Watch the live **13-stage scan pipeline** execute.
-6. Review the completed scan card showing **2 Verified BOLA Findings** and a **100/100 Risk Score**.
-7. Click **"VIEW EXECUTIVE DASHBOARD"**:
-   - Inspect the **Radial Risk Posture Gauge** (100 / CRITICAL).
-   - Review the **Zero-Trust Security Posture Scorecard** (Authorization Grade F, Object Access Grade F, Authentication Grade A).
-   - Read the **AI Security Intelligence** section explaining transparently *why* the score was given.
-8. Click any finding to inspect the **Investigation Drawer**:
-   - Compare request vs response headers and JSON payloads with masked credentials.
-   - Review the **Developer Remediation Guidance** showing side-by-side vulnerable vs remediated code diffs.
-9. Navigate to the **Attack Graph** tab:
-   - Interact with the **Attack Path Reconstruction** (Attacker $\rightarrow$ Token $\rightarrow$ Gateway $\rightarrow$ Object ID $\rightarrow$ Victim $\rightarrow$ HTTP 200 Breach).
-   - Toggle to **API Attack Surface Topology** mode to view global endpoint hierarchy.
-10. Navigate to **Reports**: Preview the print-ready executive audit report, or export **JSON** and **CSV** files.
+KAVACH is built strictly for **defensive, authorized API security auditing**:
+- Non-destructive preflight evaluation prevents service degradation.
+- Multi-identity testing requires explicit operator credential provisioning.
+- Passwords, bearer tokens, and API keys are automatically masked across all logs, telemetry, and audit exports.
+- All machine learning inference is performed locally without leaking sensitive API schemas to third-party providers.
 
 ---
 
-## Security Model & Ethical Boundary
-
-SentinelAPI adheres strictly to defensive, authorized API security auditing:
-- Only tests APIs for which authorized credentials and explicit user scope have been defined.
-- Performs non-destructive `GET` verification checks.
-- Masks all sensitive authentication tokens and headers before logging or display.
-- Never performs brute-force attacks, denial-of-service, or remote code execution.
+*KAVACH — Zero-Trust API Security Platform · AI Hackathon Problem Statement 3*

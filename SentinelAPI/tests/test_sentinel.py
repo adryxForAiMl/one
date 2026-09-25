@@ -1,5 +1,5 @@
 """
-SentinelAPI Automated Test Suite.
+KAVACH Automated Test Suite.
 Validates:
 - OpenAPI and Swagger specification parsing
 - Target Preflight validation and checklists
@@ -188,10 +188,10 @@ def test_ml_risk_model_inference():
 
 
 def test_fastapi_endpoints():
-    """Verify SentinelAPI FastAPI routes."""
+    """Verify KAVACH FastAPI routes."""
     res = client.get("/")
     assert res.status_code == 200
-    assert res.json()["name"] == "SentinelAPI"
+    assert res.json()["name"] == "KAVACH"
 
     health_res = client.get("/health")
     assert health_res.status_code == 200
@@ -203,6 +203,23 @@ def test_fastapi_endpoints():
     preflight_data = preflight_res.json()
     assert preflight_data["status"] == "NETWORK_ERROR"
     assert len(preflight_data["checklist"]) > 0
+
+    # Test /validate-target alias with "target" field
+    val_res = client.post("/validate-target", json={"target": "http://127.0.0.1:59999"})
+    assert val_res.status_code == 200
+    assert val_res.json()["status"] == "NETWORK_ERROR"
+
+    # Test empty payload returns 400
+    err_res = client.post("/validate-target", json={"target": ""})
+    assert err_res.status_code == 400
+
+    # Test scan empty payload returns 400
+    scan_err = client.post("/scan", json={})
+    assert scan_err.status_code == 400
+
+    # Test non-existent scan ID returns 404
+    missing_scan = client.get("/scans/non-existent-scan-id")
+    assert missing_scan.status_code == 404
 
 
 def test_sandbox_endpoints():

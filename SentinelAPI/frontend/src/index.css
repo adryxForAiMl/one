@@ -2,8 +2,17 @@
 
 :root {
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: #e2e8f0;
-  background: #02040a;
+  color: #f1f5f9;
+  background: #050b16;
+  --bg-900: #050b16;
+  --bg-800: #0b1221;
+  --panel-900: rgba(11, 18, 34, 0.9);
+  --panel-700: rgba(15, 23, 42, 0.88);
+  --cyan: #22d3ee;
+  --cyan-soft: rgba(34, 211, 238, 0.16);
+  --purple: #a78bfa;
+  --red: #f87171;
+  --green: #34d399;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -22,9 +31,106 @@ body,
 
 body {
   min-height: 100vh;
-  background: #02040a;
+  background:
+    radial-gradient(circle at top, rgba(34, 211, 238, 0.1), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(167, 139, 250, 0.1), transparent 30%),
+    var(--bg-900);
   color: #f1f5f9;
   overflow-x: hidden;
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.28);
+  color: white;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.glass-panel {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(9, 14, 24, 0.96));
+  border: 1px solid rgba(34, 211, 238, 0.14);
+  box-shadow: 0 18px 50px rgba(2, 6, 23, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transform-style: preserve-3d;
+  transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+}
+
+.glass-panel:hover {
+  transform: translateY(-3px) rotateX(1deg) translateZ(8px);
+  border-color: rgba(56, 189, 248, 0.32);
+  box-shadow: 0 24px 52px rgba(2, 6, 23, 0.55), 0 0 24px rgba(34, 211, 238, 0.07);
+}
+
+.depth-stage {
+  perspective: 1400px;
+  perspective-origin: 50% 0%;
+}
+
+.depth-card {
+  position: relative;
+  transform: translateZ(0);
+  transform-style: preserve-3d;
+  transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+}
+
+.depth-card::after {
+  content: "";
+  position: absolute;
+  inset: 8px -8px -12px;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.16), transparent 48%, rgba(15, 23, 42, 0.8));
+  filter: blur(14px);
+  opacity: 0.55;
+  transform: translateZ(-28px);
+  pointer-events: none;
+}
+
+.depth-card:hover {
+  transform: translateY(-4px) rotateX(1deg) rotateY(-1deg) translateZ(10px);
+  border-color: rgba(56, 189, 248, 0.38);
+  box-shadow: 0 24px 55px rgba(2, 6, 23, 0.58), 0 0 28px rgba(34, 211, 238, 0.08);
+}
+
+.depth-layer {
+  transform: translateZ(18px);
+}
+
+.cyber-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.18), transparent);
+  transform: translateX(-120%);
+  transition: transform 0.5s ease;
+}
+
+.cyber-button:hover::before {
+  transform: translateX(120%);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #c4b5fd 0%, #67e8f9 40%, #e2e8f0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.status-pill {
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: rgba(15, 23, 42, 0.8);
 }
 
 /* Custom Scrollbar */
@@ -33,7 +139,7 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #030712;
+  background: #0a1020;
 }
 ::-webkit-scrollbar-thumb {
   background: #1e293b;
@@ -44,18 +150,20 @@ body {
   background: #0284c7;
 }
 
-/* Futuristic Cyber Grid Background */
+/* Futuristic Cyber Grid Background with Dark Navy Tint */
 .cyber-grid {
+  background-color: #080d1a;
   background-image: 
-    linear-gradient(to right, rgba(6, 182, 212, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(6, 182, 212, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(6, 182, 212, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
 .cyber-grid-dense {
+  background-color: #0a1122;
   background-image: 
-    linear-gradient(to right, rgba(14, 165, 233, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(14, 165, 233, 0.06) 1px, transparent 1px);
+    linear-gradient(to right, rgba(14, 165, 233, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(14, 165, 233, 0.07) 1px, transparent 1px);
   background-size: 16px 16px;
 }
 
@@ -90,14 +198,22 @@ body {
   animation: cyber-pulse 3s ease-in-out infinite;
 }
 
-/* Holographic Sheen */
+/* Holographic Sheen - Rich Navy / Slate base */
 .hologram-card {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(3, 7, 18, 0.85) 100%);
+  background: linear-gradient(135deg, rgba(17, 26, 49, 0.88) 0%, rgba(11, 18, 36, 0.94) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(56, 189, 248, 0.15);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   position: relative;
+  transform-style: preserve-3d;
+  transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+}
+
+.hologram-card:hover {
+  transform: translateY(-4px) rotateX(1deg) rotateY(-1deg) translateZ(10px);
+  border-color: rgba(56, 189, 248, 0.38);
+  box-shadow: 0 24px 55px rgba(2, 6, 23, 0.58), 0 0 28px rgba(34, 211, 238, 0.08);
 }
 
 .hologram-card::before {
@@ -107,7 +223,27 @@ body {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.6), transparent);
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.5), transparent);
+  transform: translateZ(14px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .depth-card,
+  .glass-panel,
+  .hologram-card,
+  .depth-card::after {
+    transition: none;
+    animation: none;
+  }
+
+  .depth-card:hover {
+    transform: none;
+  }
+
+  .glass-panel:hover,
+  .hologram-card:hover {
+    transform: none;
+  }
 }
 
 /* Terminal & Code Block styling */
@@ -124,7 +260,7 @@ body {
   width: 9px;
   height: 9px;
   background: #38bdf8 !important;
-  border: 2px solid #030712 !important;
+  border: 2px solid #0b1224 !important;
   box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
 }
 
@@ -136,9 +272,9 @@ body {
   border: 1px solid rgba(56, 189, 248, 0.25) !important;
   border-radius: 12px !important;
   overflow: hidden;
-  background: rgba(3, 7, 18, 0.85) !important;
+  background: rgba(11, 18, 36, 0.9) !important;
   backdrop-filter: blur(12px) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .react-flow__controls-button {
@@ -151,7 +287,7 @@ body {
 }
 
 .react-flow__controls-button:hover {
-  background: rgba(14, 165, 233, 0.15) !important;
+  background: rgba(14, 165, 233, 0.2) !important;
   color: #38bdf8 !important;
 }
 
@@ -168,13 +304,13 @@ body {
   overflow: hidden;
   border: 1px solid rgba(56, 189, 248, 0.25) !important;
   border-radius: 12px !important;
-  background: rgba(3, 7, 18, 0.9) !important;
+  background: rgba(11, 18, 36, 0.95) !important;
   backdrop-filter: blur(12px) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .react-flow__minimap-mask {
-  fill: rgba(2, 6, 23, 0.8) !important;
+  fill: rgba(8, 13, 26, 0.85) !important;
 }
 
 .react-flow__minimap-node {

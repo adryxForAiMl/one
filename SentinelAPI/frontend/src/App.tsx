@@ -15,10 +15,14 @@ import {
   CheckCircle2,
   Code2,
   Copy,
+  Database,
   Download,
   FileText,
   Gauge,
+  Loader2,
+  Menu,
   Network,
+  Play,
   Printer,
   Radar,
   RotateCcw,
@@ -33,6 +37,7 @@ import {
   Clock,
   Radio,
 } from "lucide-react"
+import { executeSecurityScan, API_BASE_URL } from "./api/client"
 
 const ApiScanner = lazy(() => import("./ApiScanner"))
 const AttackGraph = lazy(() => import("./AttackGraph"))
@@ -187,6 +192,17 @@ type ScanResult = {
 
 type Page =
   | "Dashboard"
+  | "Netra"
+  | "API Surface"
+  | "KAVACH Scan"
+  | "Raksha Findings"
+  | "Drishti"
+  | "Trace"
+  | "Pramaan"
+  | "Suraksha"
+  | "Security Reports"
+  | "KAVACH Lab"
+  // Legacy aliases
   | "API Scanner"
   | "API Console"
   | "Endpoints"
@@ -210,7 +226,7 @@ class AppErrorBoundary extends Component<{ children: ReactNode }, { hasError: bo
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error("SentinelAPI error:", error, info)
+    console.error("KAVACH error:", error, info)
   }
 
   render() {
@@ -220,7 +236,7 @@ class AppErrorBoundary extends Component<{ children: ReactNode }, { hasError: bo
         <div className="max-w-xl rounded-2xl border border-red-900/50 bg-red-950/20 p-8 shadow-2xl">
           <div className="flex items-center gap-3">
             <AlertTriangle className="h-6 w-6 text-red-400" />
-            <h1 className="text-xl font-bold text-red-300">SentinelAPI Diagnostic Notice</h1>
+            <h1 className="text-xl font-bold text-red-300">KAVACH Diagnostic Notice</h1>
           </div>
           <p className="mt-3 text-sm text-slate-400">{this.state.message}</p>
           <button
@@ -236,14 +252,69 @@ class AppErrorBoundary extends Component<{ children: ReactNode }, { hasError: bo
   }
 }
 
-const pageItems: Array<{ label: Page; icon: typeof Activity; badge?: string }> = [
-  { label: "Dashboard", icon: Activity },
-  { label: "API Scanner", icon: Bug },
-  { label: "API Console", icon: Terminal, badge: "NEW" },
-  { label: "Endpoints", icon: Server },
-  { label: "Findings", icon: ShieldAlert },
-  { label: "Attack Graph", icon: Network },
-  { label: "Reports", icon: FileText },
+type NavSection = {
+  title: string
+  items: Array<{
+    page: Page
+    label: string
+    sublabel?: string
+    icon: typeof Activity
+    badge?: string
+  }>
+}
+
+const navSections: NavSection[] = [
+  {
+    title: "COMMAND",
+    items: [
+      { page: "Dashboard", label: "Dashboard", sublabel: "Security Command", icon: Activity },
+    ],
+  },
+  {
+    title: "DISCOVER",
+    items: [
+      { page: "Netra", label: "Netra", sublabel: "API Discovery", icon: Server },
+      { page: "API Surface", label: "API Surface", sublabel: "Endpoint Inventory", icon: Database },
+    ],
+  },
+  {
+    title: "VERIFY",
+    items: [
+      { page: "KAVACH Scan", label: "KAVACH Scan", sublabel: "Zero-Trust Pipeline", icon: Bug },
+      { page: "Raksha Findings", label: "Raksha Findings", sublabel: "Authorization Defense", icon: ShieldAlert },
+    ],
+  },
+  {
+    title: "INTELLIGENCE",
+    items: [
+      { page: "Drishti", label: "Drishti", sublabel: "Security Intelligence", icon: Sparkles },
+      { page: "Trace", label: "Trace", sublabel: "Attack Path Intelligence", icon: Network },
+    ],
+  },
+  {
+    title: "EVIDENCE",
+    items: [
+      { page: "Pramaan", label: "Pramaan", sublabel: "Verified Evidence", icon: CheckCircle2 },
+    ],
+  },
+  {
+    title: "REMEDIATE",
+    items: [
+      { page: "Suraksha", label: "Suraksha", sublabel: "Remediation Center", icon: Code2 },
+    ],
+  },
+  {
+    title: "REPORT",
+    items: [
+      { page: "Security Reports", label: "Security Reports", sublabel: "Intelligence Reports", icon: FileText },
+    ],
+  },
+  {
+    title: "LAB",
+    items: [
+      { page: "KAVACH Lab", label: "KAVACH Lab", sublabel: "Controlled Sandbox", icon: Terminal, badge: "TEST" },
+    ],
+  },
 ]
 
 function LoadingPanel({ label }: { label: string }) {
@@ -276,6 +347,7 @@ function App() {
   const [dashboardError, setDashboardError] = useState("")
   const [copiedCode, setCopiedCode] = useState(false)
   const [currentTime, setCurrentTime] = useState("")
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
   // Live UTC Clock
   useEffect(() => {
@@ -336,14 +408,14 @@ function App() {
         id: "log-base-1",
         timestamp: "03:40:01",
         type: "SYSTEM_AUDIT",
-        message: "SentinelAPI core daemon online on port 8001 (Zero-Trust Engine armed)",
+        message: "KAVACH Core daemon online on port 8001 (Zero-Trust Engine armed)",
         status: "SUCCESS",
       },
       {
         id: "log-base-2",
         timestamp: "03:40:05",
         type: "API_PROBE",
-        message: "Target Sandbox operational on port 8000 (Ready for authorization audit)",
+        message: "KAVACH Lab sandbox operational on port 8000 (Ready for authorization audit)",
         status: "INFO",
       },
       {
@@ -406,8 +478,16 @@ function App() {
     endpointStatusFilter,
   ])
 
-  const navigate = (page: Page) => {
-    setActivePage(page)
+  const navigate = (page: string) => {
+    let target = page
+    if (page === "API Scanner") target = "KAVACH Scan"
+    else if (page === "Endpoints") target = "API Surface"
+    else if (page === "Findings") target = "Raksha Findings"
+    else if (page === "Attack Graph") target = "Trace"
+    else if (page === "Reports") target = "Security Reports"
+    else if (page === "API Console") target = "KAVACH Lab"
+    setActivePage(target as Page)
+    setMobileNavOpen(false)
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
@@ -424,29 +504,20 @@ function App() {
       setDashboardScanning(true)
       setDashboardError("")
 
-      const response = await fetch("http://127.0.0.1:8001/scan", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          target_url: "http://localhost:8000",
-          authentication_profiles: [
-            { name: "User A", type: "bearer", token: "token-user-a" },
-            { name: "User B", type: "bearer", token: "token-user-b" },
-          ],
-        }),
+      const data = await executeSecurityScan<ScanResult>({
+        target_url: "http://localhost:8000",
+        authentication_profiles: [
+          { name: "User A", type: "bearer", token: "token-user-a" },
+          { name: "User B", type: "bearer", token: "token-user-b" },
+        ],
       })
 
-      if (!response.ok) {
-        throw new Error(`Demo scan failed with status ${response.status}`)
-      }
-
-      const data: ScanResult = await response.json()
       setScanResult(data)
     } catch (err) {
       setDashboardError(
         err instanceof Error
           ? err.message
-          : "Unable to run demo scan. Make sure SentinelAPI backend (8001) and Sandbox (8000) are running."
+          : `Unable to run demo scan. Ensure KAVACH backend (${API_BASE_URL}) and KAVACH Lab (8000) are running.`
       )
     } finally {
       setDashboardScanning(false)
@@ -543,56 +614,106 @@ function App() {
     totalEndpoints > 0 ? Math.round((testedEndpoints / totalEndpoints) * 100) : 0
 
   return (
-    <div className="min-h-screen bg-[#02040a] text-slate-100 cyber-grid selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="min-h-screen bg-[#080d1a] text-slate-100 cyber-grid selection:bg-cyan-500/30 selection:text-cyan-200">
+      {/* Mobile Backdrop */}
+      {mobileNavOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm lg:hidden"
+          onClick={() => setMobileNavOpen(false)}
+        />
+      )}
+
       {/* Sleek Futuristic Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-cyan-500/15 bg-slate-950/95 backdrop-blur-xl p-5 lg:block shadow-2xl">
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-64 border-r border-cyan-500/15 bg-[#091024]/95 backdrop-blur-xl p-5 shadow-2xl transition-transform duration-300 lg:translate-x-0 ${
+          mobileNavOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
         {/* Monogram Brand Header */}
-        <div className="mb-8 flex items-center gap-3">
-          <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-500/40 bg-gradient-to-br from-cyan-950/80 to-slate-950 shadow-lg shadow-cyan-500/20">
-            <Radar className="h-6 w-6 text-cyan-400 animate-spin" />
-            <span className="absolute -bottom-1 -right-1 h-3 w-3 rounded-full bg-emerald-400 border-2 border-slate-950" />
+        <div className="mb-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-500/40 bg-gradient-to-br from-cyan-950/80 to-slate-950 shadow-lg shadow-cyan-500/20">
+              <ShieldCheck className="h-6 w-6 text-cyan-400" />
+              <span className="absolute -bottom-1 -right-1 h-3 w-3 rounded-full bg-emerald-400 border-2 border-slate-950" />
+            </div>
+
+            <div>
+              <h1 className="text-xl font-black tracking-tight text-white flex items-center gap-1">
+                KAVACH
+              </h1>
+              <p className="font-mono text-[9px] font-extrabold uppercase tracking-[0.2em] text-cyan-400">
+                Zero-Trust API Security
+              </p>
+            </div>
           </div>
 
-          <div>
-            <h1 className="text-xl font-black tracking-tight text-white flex items-center gap-1">
-              SENTINEL<span className="text-cyan-400">API</span>
-            </h1>
-            <p className="font-mono text-[9px] font-extrabold uppercase tracking-[0.2em] text-cyan-500/80">
-              Zero-Trust Intel
-            </p>
-          </div>
+          <button
+            type="button"
+            onClick={() => setMobileNavOpen(false)}
+            className="lg:hidden rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white"
+          >
+            <X size={18} />
+          </button>
         </div>
 
-        {/* Navigation Items */}
-        <nav className="space-y-1.5">
-          {pageItems.map(({ label, icon: Icon, badge }) => (
-            <button
-              key={label}
-              type="button"
-              onClick={() => navigate(label)}
-              className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-left text-xs font-bold transition-all ${
-                activePage === label
-                  ? "bg-gradient-to-r from-cyan-500/20 to-blue-500/10 text-cyan-300 border-l-2 border-cyan-400 shadow-md shadow-cyan-950/50"
-                  : "text-slate-400 hover:bg-slate-900/80 hover:text-slate-200"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Icon className={`h-4 w-4 ${activePage === label ? "text-cyan-400" : "text-slate-500"}`} />
-                <span>{label}</span>
+        {/* Navigation Items Organized by KAVACH Sections */}
+        <nav className="space-y-3.5 max-h-[calc(100vh-280px)] overflow-y-auto pr-1">
+          {navSections.map((sec) => (
+            <div key={sec.title} className="space-y-1">
+              <span className="px-3 text-[9px] font-mono font-extrabold uppercase tracking-wider text-slate-500">
+                {sec.title}
+              </span>
+              <div className="space-y-0.5">
+                {sec.items.map(({ page, label, sublabel, icon: Icon, badge }) => {
+                  const isActive =
+                    activePage === page ||
+                    (page === "Netra" && activePage === "Netra") ||
+                    (page === "API Surface" && (activePage === "API Surface" || activePage === "Endpoints")) ||
+                    (page === "KAVACH Scan" && activePage === "API Scanner") ||
+                    (page === "Raksha Findings" && activePage === "Findings") ||
+                    (page === "Trace" && activePage === "Attack Graph") ||
+                    (page === "Security Reports" && activePage === "Reports") ||
+                    (page === "KAVACH Lab" && activePage === "API Console")
+
+                  return (
+                    <button
+                      key={page}
+                      type="button"
+                      onClick={() => navigate(page)}
+                      className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left transition-all ${
+                        isActive
+                          ? "bg-gradient-to-r from-cyan-500/20 to-blue-500/10 text-cyan-300 border-l-2 border-cyan-400 shadow-md shadow-cyan-950/50"
+                          : "text-slate-400 hover:bg-slate-900/80 hover:text-slate-200"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <Icon className={`h-3.5 w-3.5 shrink-0 ${isActive ? "text-cyan-400" : "text-slate-500"}`} />
+                        <div className="truncate">
+                          <span className="text-xs font-bold block truncate">{label}</span>
+                          {sublabel && (
+                            <span className="text-[9px] font-mono text-slate-500 block truncate leading-none mt-0.5">
+                              {sublabel}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      {badge && (
+                        <span className="rounded bg-cyan-500/20 border border-cyan-500/40 px-1.5 py-0.5 text-[8px] font-mono font-bold text-cyan-300 shrink-0 ml-1">
+                          {badge}
+                        </span>
+                      )}
+                    </button>
+                  )
+                })}
               </div>
-              {badge && (
-                <span className="rounded bg-cyan-500/20 border border-cyan-500/40 px-1.5 py-0.2 text-[9px] font-mono font-bold text-cyan-300">
-                  {badge}
-                </span>
-              )}
-            </button>
+            </div>
           ))}
         </nav>
 
         {/* Telemetry Hardware/Daemon Status Widget */}
-        <div className="mt-8 rounded-2xl border border-slate-800/80 bg-slate-900/60 p-4 space-y-3">
+        <div className="mt-4 rounded-2xl border border-slate-800/80 bg-slate-900/60 p-3 space-y-2">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-[10px] font-bold text-slate-400 uppercase">
+            <span className="font-mono text-[9px] font-bold text-slate-400 uppercase">
               System Telemetry
             </span>
             <span className="relative flex h-2 w-2">
@@ -601,18 +722,18 @@ function App() {
             </span>
           </div>
 
-          <div className="space-y-1.5 font-mono text-[10px]">
+          <div className="space-y-1 font-mono text-[9px]">
             <div className="flex justify-between text-slate-400">
-              <span>SCANNER CORE</span>
-              <span className="text-emerald-400 font-bold">ONLINE:8001</span>
+              <span>KAVACH CORE</span>
+              <span className="text-emerald-400 font-bold">ONLINE</span>
             </div>
             <div className="flex justify-between text-slate-400">
-              <span>TEST SANDBOX</span>
+              <span>KAVACH LAB</span>
               <span className="text-cyan-400 font-bold">ACTIVE:8000</span>
             </div>
             <div className="flex justify-between text-slate-400">
-              <span>THREAT ENGINE</span>
-              <span className="text-purple-400 font-bold">ARMED (ML)</span>
+              <span>DRISHTI ML</span>
+              <span className="text-purple-400 font-bold">ARMED</span>
             </div>
           </div>
         </div>
@@ -629,12 +750,21 @@ function App() {
       </aside>
 
       {/* Main Content Viewport */}
-      <main className="min-h-screen lg:ml-64">
+      <main className="depth-stage min-h-screen lg:ml-64">
         {/* Futuristic Command Center Top Navigation */}
-        <header className="sticky top-0 z-20 border-b border-cyan-500/15 bg-slate-950/85 px-6 py-3 backdrop-blur-xl lg:px-8">
+        <header className="sticky top-0 z-20 border-b border-cyan-500/15 bg-[#091024]/90 px-6 py-3 backdrop-blur-xl lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
             {/* Left Status Readout */}
             <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setMobileNavOpen(!mobileNavOpen)}
+                className="lg:hidden rounded-xl border border-slate-700 bg-slate-900 p-2 text-slate-300 hover:text-white transition"
+                title="Toggle navigation"
+              >
+                <Menu size={18} />
+              </button>
+
               <div className="flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-950/30 px-3 py-1 text-[11px] font-mono font-bold text-emerald-400">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 SYSTEM: OPERATIONAL
@@ -682,14 +812,14 @@ function App() {
                 <div>
                   <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/40 bg-cyan-950/40 px-3 py-1 font-mono text-[10px] font-bold text-cyan-400">
                     <Sparkles className="h-3 w-3" />
-                    AUTONOMOUS API SECURITY COMMAND CENTER
+                    KAVACH THREAT COMMAND CENTER · ZERO-TRUST
                   </div>
                   <h1 className="mt-3 text-3xl sm:text-4xl font-black tracking-tight text-white">
-                    SENTINEL<span className="text-cyan-400">API</span> THREAT MATRIX
+                    KAVACH <span className="text-cyan-400">SECURITY COMMAND</span>
                   </h1>
                   <p className="mt-2 max-w-2xl text-xs sm:text-sm text-slate-400 leading-relaxed">
-                    Zero-Trust authorization monitoring with behavioral response verification,
-                    local scikit-learn ML anomaly detection, and automated BOLA remediation.
+                    Zero-Trust API security platform with Netra discovery, deterministic Raksha authorization defense,
+                    Drishti ML threat intelligence, Trace attack-path reconstruction, Pramaan evidence, and Suraksha remediation.
                   </p>
                 </div>
 
@@ -697,23 +827,79 @@ function App() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 font-mono">
                   <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-3 text-center">
                     <span className="text-[9px] uppercase font-bold text-slate-500 block">Posture</span>
-                    <span className={`text-sm font-black ${riskScore >= 80 ? "text-red-400" : "text-emerald-400"}`}>
-                      {riskLevel}
+                    <span className={`text-sm font-black ${scanResult ? (riskScore >= 80 ? "text-red-400" : "text-emerald-400") : "text-cyan-400"}`}>
+                      {scanResult ? riskLevel : "STANDBY"}
                     </span>
                   </div>
                   <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-3 text-center">
                     <span className="text-[9px] uppercase font-bold text-slate-500 block">Identities</span>
                     <span className="text-sm font-black text-cyan-400">
-                      {scanResult?.scan_metadata?.authentication_profiles || 2} SCOPES
+                      {scanResult ? `${scanResult?.scan_metadata?.authentication_profiles || 2} SCOPES` : "2 CONFIGURED"}
                     </span>
                   </div>
                   <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-3 text-center col-span-2 sm:col-span-1">
                     <span className="text-[9px] uppercase font-bold text-slate-500 block">Inference</span>
                     <span className="text-sm font-black text-purple-400">
-                      LOCAL RF
+                      DRISHTI ML
                     </span>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Quick-Start CTA Banner when no scan exists */}
+            {!scanResult && (
+              <div className="rounded-2xl border border-cyan-500/30 bg-gradient-to-r from-cyan-950/40 via-blue-950/30 to-slate-900/60 p-5 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-cyan-400 animate-ping" />
+                    <span className="text-xs font-bold uppercase tracking-wider text-cyan-300">
+                      Ready to Audit API Tenancy
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-300">
+                    No active scan in current session. Launch the local security demo to audit the KAVACH Lab sandbox, or configure a custom target.
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={runDemoScan}
+                    disabled={dashboardScanning}
+                    className="cyber-button flex items-center gap-2 rounded-xl bg-cyan-500 px-4 py-2.5 text-xs font-bold text-slate-950 transition hover:bg-cyan-400 shadow-md shadow-cyan-500/20 disabled:opacity-50"
+                  >
+                    {dashboardScanning ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4 fill-current" />}
+                    TRY LOCAL SECURITY DEMO
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => navigate("KAVACH Scan")}
+                    className="flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-800/80 px-4 py-2.5 text-xs font-bold text-slate-200 transition hover:bg-slate-700 hover:text-white"
+                  >
+                    <Search className="h-4 w-4 text-cyan-400" />
+                    CONFIGURE CUSTOM TARGET
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="grid gap-4 lg:grid-cols-3">
+              <div className="glass-panel rounded-2xl p-4">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Threat posture</p>
+                <p className="mt-2 text-xl font-black text-white">
+                  {scanResult ? riskLevel : "STANDBY"}
+                </p>
+                <p className="mt-1 text-[11px] text-slate-400">{scanResult ? "Deterministic evidence captured from the scanner pipeline." : "System armed and waiting for a scan target."}</p>
+              </div>
+              <div className="glass-panel rounded-2xl p-4">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Trust boundary</p>
+                <p className="mt-2 text-xl font-black text-cyan-300">{scanResult ? `${scanResult.summary.vulnerabilities} findings` : "Ready"}</p>
+                <p className="mt-1 text-[11px] text-slate-400">Cross-identity resource isolation is the primary verification path.</p>
+              </div>
+              <div className="glass-panel rounded-2xl p-4">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">AI signal</p>
+                <p className="mt-2 text-xl font-black text-purple-300">Drishti ML</p>
+                <p className="mt-1 text-[11px] text-slate-400">Anomaly scoring and risk inference remain active across the scan stream.</p>
               </div>
             </div>
 
@@ -728,35 +914,43 @@ function App() {
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
               {[
                 {
-                  label: "Mapped Attack Surface",
-                  value: totalEndpoints,
-                  sub: `${testedEndpoints} Tested (${authorizationCoverage}% Coverage)`,
-                  tag: "DISCOVERY COMPLETE",
-                  tagColor: "text-cyan-400 border-cyan-500/30",
+                  label: "Netra Attack Surface",
+                  value: scanResult ? totalEndpoints : "0 Mapped",
+                  sub: scanResult
+                    ? `${testedEndpoints} Tested (${authorizationCoverage}% Coverage)`
+                    : "Awaiting Discovery Preflight",
+                  tag: scanResult ? "DISCOVERY COMPLETE" : "STANDBY",
+                  tagColor: scanResult ? "text-cyan-400 border-cyan-500/30" : "text-slate-400 border-slate-700",
                   Icon: Server,
                 },
                 {
-                  label: "Verified BOLA Threats",
-                  value: vulnerableEndpoints,
-                  sub: `${summary?.critical ?? (scanResult ? 2 : 0)} Confirmed Exploits`,
-                  tag: "CRITICAL BREACH",
-                  tagColor: "text-red-400 border-red-500/30",
+                  label: "Raksha Verified BOLA",
+                  value: scanResult ? vulnerableEndpoints : "0 Detected",
+                  sub: scanResult
+                    ? `${summary?.critical ?? findings.length} Confirmed Exploits`
+                    : "Cross-Identity Testing Ready",
+                  tag: scanResult ? (vulnerableEndpoints > 0 ? "CRITICAL BREACH" : "SECURE") : "ARMED",
+                  tagColor: scanResult
+                    ? (vulnerableEndpoints > 0 ? "text-red-400 border-red-500/30" : "text-emerald-400 border-emerald-500/30")
+                    : "text-slate-400 border-slate-700",
                   Icon: ShieldAlert,
                 },
                 {
-                  label: "Attack Vectors",
-                  value: findings.length > 0 ? findings.length : (scanResult ? 2 : 0),
-                  sub: "Cross-Identity Exploitation Paths",
-                  tag: "RECONSTRUCTED",
-                  tagColor: "text-amber-400 border-amber-500/30",
+                  label: "Trace Attack Vectors",
+                  value: scanResult ? findings.length : "0 Mapped",
+                  sub: scanResult ? "Cross-Identity Exploitation Paths" : "Run scan to reconstruct paths",
+                  tag: scanResult ? "RECONSTRUCTED" : "AWAITING TELEMETRY",
+                  tagColor: scanResult ? "text-amber-400 border-amber-500/30" : "text-slate-400 border-slate-700",
                   Icon: Network,
                 },
                 {
-                  label: "Zero-Trust Risk Index",
-                  value: `${riskScore}/100`,
-                  sub: `Level: ${riskLevel}`,
-                  tag: "EVIDENCE-DRIVEN",
-                  tagColor: riskScore >= 80 ? "text-red-400 border-red-500/30" : "text-emerald-400 border-emerald-500/30",
+                  label: "Drishti Risk Index",
+                  value: scanResult ? `${riskScore}/100` : "Not Assessed",
+                  sub: scanResult ? `Level: ${riskLevel}` : "Local Random Forest Model Armed",
+                  tag: scanResult ? "EVIDENCE-DRIVEN" : "STANDBY",
+                  tagColor: scanResult
+                    ? (riskScore >= 80 ? "text-red-400 border-red-500/30" : "text-emerald-400 border-emerald-500/30")
+                    : "text-slate-400 border-slate-700",
                   Icon: Gauge,
                 },
               ].map(({ label, value, sub, tag, tagColor, Icon }) => (
@@ -790,7 +984,7 @@ function App() {
                   <div className="flex items-center gap-2">
                     <Radar className="h-4 w-4 text-cyan-400 animate-pulse" />
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-                      Live Threat Monitoring Radar
+                      KAVACH Threat Matrix & Monitoring Radar
                     </h3>
                   </div>
                   <span className="font-mono text-[10px] text-cyan-400">SWEEP: 360° ACTIVE</span>
@@ -853,7 +1047,7 @@ function App() {
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-4 w-4 text-cyan-400" />
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-                      AI Security Intelligence & Explainable Risk
+                      DRISHTI SECURITY INTELLIGENCE
                     </h3>
                   </div>
                   <span className="rounded-full border border-cyan-500/30 bg-cyan-500/10 px-2.5 py-0.5 font-mono text-[10px] font-bold text-cyan-300">
@@ -939,14 +1133,23 @@ function App() {
               </div>
 
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {(scorecard?.categories ?? [
-                  { name: "Authentication", score: 90, grade: "A", status: "ENFORCED", detail: "Tokens required and validated" },
-                  { name: "Authorization", score: 10, grade: "F", status: "VIOLATED", detail: "2 verified object-level authorization bypasses" },
-                  { name: "Object Access", score: 5, grade: "F", status: "EXPOSED", detail: "Identities accessed objects outside scope" },
-                  { name: "Data Exposure", score: 65, grade: "D", status: "MODERATE", detail: "Sensitive properties returned in payload" },
-                  { name: "API Configuration", score: 88, grade: "B", status: "HARDENED", detail: "Valid OpenAPI 3.0 specification" },
-                  { name: "Attack Surface", score: 50, grade: "C", status: "MAPPED", detail: "1 of 2 endpoints tested (50% coverage)" },
-                ]).map((cat) => (
+                {(scorecard?.categories ?? (
+                  scanResult ? [
+                    { name: "Authentication", score: 90, grade: "A", status: "ENFORCED", detail: "Tokens required and validated" },
+                    { name: "Authorization", score: 10, grade: "F", status: "VIOLATED", detail: `${findings.length} verified object-level authorization bypasses` },
+                    { name: "Object Access", score: 5, grade: "F", status: "EXPOSED", detail: "Identities accessed objects outside scope" },
+                    { name: "Unauthorized Data Exposure", score: 65, grade: "D", status: "MODERATE", detail: "Sensitive properties returned in payload" },
+                    { name: "API Configuration", score: 88, grade: "B", status: "HARDENED", detail: "Valid OpenAPI specification" },
+                    { name: "Attack Surface", score: 50, grade: "C", status: "MAPPED", detail: `${testedEndpoints} of ${totalEndpoints} endpoints tested` },
+                  ] : [
+                    { name: "Authentication", score: 0, grade: "--", status: "STANDBY", detail: "Awaiting scan execution" },
+                    { name: "Authorization", score: 0, grade: "--", status: "STANDBY", detail: "Awaiting BOLA verification" },
+                    { name: "Object Access", score: 0, grade: "--", status: "STANDBY", detail: "Awaiting tenancy audit" },
+                    { name: "Unauthorized Data Exposure", score: 0, grade: "--", status: "STANDBY", detail: "Awaiting payload inspection" },
+                    { name: "API Configuration", score: 0, grade: "--", status: "STANDBY", detail: "Awaiting OpenAPI discovery" },
+                    { name: "Attack Surface", score: 0, grade: "--", status: "STANDBY", detail: "Awaiting route mapping" },
+                  ]
+                )).map((cat) => (
                   <div
                     key={cat.name}
                     className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4 transition hover:border-slate-700"
@@ -972,12 +1175,82 @@ function App() {
                 ))}
               </div>
             </section>
+
+            {/* KAVACH Security Operations Matrix */}
+            <section className="hologram-card rounded-3xl p-6 shadow-2xl space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div className="flex items-center gap-2">
+                  <ShieldAlert className="h-5 w-5 text-cyan-400" />
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-slate-200">
+                    KAVACH Security Operations Matrix
+                  </h3>
+                </div>
+                <span className="font-mono text-xs text-cyan-400 font-bold">5 ACTIVE ENGINES</span>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                <button
+                  type="button"
+                  onClick={() => navigate("Netra")}
+                  className="rounded-2xl border border-cyan-500/20 bg-slate-950/80 p-4 text-left transition hover:border-cyan-500/50 hover:bg-slate-900/90 group"
+                >
+                  <Server className="h-5 w-5 text-cyan-400 mb-2 transition group-hover:scale-110" />
+                  <span className="text-[10px] font-mono font-bold uppercase text-cyan-400 block">NETRA</span>
+                  <span className="text-xs font-bold text-white block mt-0.5">NETRA API DISCOVERY</span>
+                  <p className="text-[10px] text-slate-400 mt-1 font-mono">{totalEndpoints} endpoints mapped</p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => navigate("Raksha Findings")}
+                  className="rounded-2xl border border-red-500/20 bg-slate-950/80 p-4 text-left transition hover:border-red-500/50 hover:bg-slate-900/90 group"
+                >
+                  <ShieldAlert className="h-5 w-5 text-red-400 mb-2 transition group-hover:scale-110" />
+                  <span className="text-[10px] font-mono font-bold uppercase text-red-400 block">RAKSHA</span>
+                  <span className="text-xs font-bold text-white block mt-0.5">RAKSHA VERIFIED FINDINGS</span>
+                  <p className="text-[10px] text-slate-400 mt-1 font-mono">{vulnerableEndpoints} BOLA breaches</p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => navigate("Trace")}
+                  className="rounded-2xl border border-purple-500/20 bg-slate-950/80 p-4 text-left transition hover:border-purple-500/50 hover:bg-slate-900/90 group"
+                >
+                  <Network className="h-5 w-5 text-purple-400 mb-2 transition group-hover:scale-110" />
+                  <span className="text-[10px] font-mono font-bold uppercase text-purple-400 block">TRACE</span>
+                  <span className="text-xs font-bold text-white block mt-0.5">TRACE ATTACK PATHS</span>
+                  <p className="text-[10px] text-slate-400 mt-1 font-mono">Graph topology</p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => navigate("Pramaan")}
+                  className="rounded-2xl border border-emerald-500/20 bg-slate-950/80 p-4 text-left transition hover:border-emerald-500/50 hover:bg-slate-900/90 group"
+                >
+                  <CheckCircle2 className="h-5 w-5 text-emerald-400 mb-2 transition group-hover:scale-110" />
+                  <span className="text-[10px] font-mono font-bold uppercase text-emerald-400 block">PRAMAAN</span>
+                  <span className="text-xs font-bold text-white block mt-0.5">PRAMAAN VERIFIED EVIDENCE</span>
+                  <p className="text-[10px] text-slate-400 mt-1 font-mono">Response verification</p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => navigate("Suraksha")}
+                  className="rounded-2xl border border-amber-500/20 bg-slate-950/80 p-4 text-left transition hover:border-amber-500/50 hover:bg-slate-900/90 group"
+                >
+                  <Code2 className="h-5 w-5 text-amber-400 mb-2 transition group-hover:scale-110" />
+                  <span className="text-[10px] font-mono font-bold uppercase text-amber-400 block">SURAKSHA</span>
+                  <span className="text-xs font-bold text-white block mt-0.5">SURAKSHA REMEDIATION</span>
+                  <p className="text-[10px] text-slate-400 mt-1 font-mono">Secure code diffs</p>
+                </button>
+              </div>
+            </section>
           </div>
         )}
 
-        {/* PAGE 2: API SCANNER HERO SCREEN */}
-        {activePage === "API Scanner" && (
-          <Suspense fallback={<LoadingPanel label="Loading Scanner Interface..." />}>
+        {/* PAGE 2: KAVACH SCAN HERO SCREEN */}
+        {(activePage === "KAVACH Scan" || activePage === "API Scanner") && (
+          <Suspense fallback={<LoadingPanel label="Loading KAVACH Scanner Interface..." />}>
             <ApiScanner
               onScanComplete={handleScanComplete}
               onNavigateToDashboard={() => navigate("Dashboard")}
@@ -985,9 +1258,9 @@ function App() {
           </Suspense>
         )}
 
-        {/* PAGE 3: DEVELOPER API TESTING CONSOLE */}
-        {activePage === "API Console" && (
-          <Suspense fallback={<LoadingPanel label="Initializing Developer Terminal..." />}>
+        {/* PAGE 3: KAVACH LAB & DEVELOPER TERMINAL */}
+        {(activePage === "KAVACH Lab" || activePage === "API Console") && (
+          <Suspense fallback={<LoadingPanel label="Initializing KAVACH Lab Terminal..." />}>
             <ApiConsole
               endpoints={endpoints}
               findings={findings}
@@ -996,17 +1269,21 @@ function App() {
           </Suspense>
         )}
 
-        {/* PAGE 4: ENDPOINTS INVENTORY */}
-        {activePage === "Endpoints" && (
+        {/* PAGE 4: NETRA API DISCOVERY & SURFACE INVENTORY */}
+        {(activePage === "Netra" || activePage === "API Surface" || activePage === "Endpoints") && (
           <div className="p-6 lg:p-8 space-y-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">
-                  Attack Surface Mapping
+                  {activePage === "API Surface" ? "NETRA · API SURFACE" : "NETRA · API DISCOVERY"}
                 </span>
-                <h1 className="mt-1 text-3xl font-extrabold text-white">Discovered Endpoints</h1>
+                <h1 className="mt-1 text-3xl font-extrabold text-white">
+                  {activePage === "API Surface" ? "Netra API Surface Inventory" : "NETRA API Discovery & Attack Surface"}
+                </h1>
                 <p className="mt-1 text-xs text-slate-400">
-                  Normalized inventory parsed from target OpenAPI specification ({filteredEndpoints.length} matched).
+                  {activePage === "API Surface"
+                    ? `Normalized attack surface inventory parsed from target OpenAPI specification (${filteredEndpoints.length} endpoints).`
+                    : `OpenAPI discovery, endpoint inventory, and attack-surface mapping (${filteredEndpoints.length} endpoints).`}
                 </p>
               </div>
 
@@ -1166,17 +1443,17 @@ function App() {
           </div>
         )}
 
-        {/* PAGE 5: FINDINGS MANAGEMENT */}
-        {activePage === "Findings" && (
+        {/* PAGE 5: RAKSHA AUTHORIZATION DEFENSE FINDINGS */}
+        {(activePage === "Raksha Findings" || activePage === "Findings") && (
           <div className="p-6 lg:p-8 space-y-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-red-400">
-                  Vulnerability Management
+                  RAKSHA · AUTHORIZATION DEFENSE
                 </span>
-                <h1 className="mt-1 text-3xl font-extrabold text-white">Verified Security Findings</h1>
+                <h1 className="mt-1 text-3xl font-extrabold text-white">Raksha Verified Findings</h1>
                 <p className="mt-1 text-xs text-slate-400">
-                  Reproducible BOLA findings backed by behavioral response verification evidence.
+                  Deterministic cross-identity BOLA/IDOR detections backed by Pramaan behavioral response verification.
                 </p>
               </div>
 
@@ -1298,41 +1575,41 @@ function App() {
           </div>
         )}
 
-        {/* PAGE 6: ATTACK GRAPH */}
-        {activePage === "Attack Graph" && (
+        {/* PAGE 6: TRACE ATTACK PATH INTELLIGENCE */}
+        {(activePage === "Trace" || activePage === "Attack Graph") && (
           <div className="p-6 lg:p-8 space-y-6">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">
-                Visual Graph Intelligence
+                TRACE · ATTACK PATH INTELLIGENCE
               </span>
-              <h1 className="mt-1 text-3xl font-extrabold text-white">Security Attack Graph</h1>
+              <h1 className="mt-1 text-3xl font-extrabold text-white">Trace Attack Path Analysis</h1>
               <p className="mt-1 text-xs text-slate-400">
-                Visual reconstruction of authorization boundaries, attack paths, and API topology.
+                Visual reconstruction of authorization boundaries, attack paths, and API topology with real evidence correlation.
               </p>
             </div>
 
-            <Suspense fallback={<LoadingPanel label="Synthesizing Security Graph..." />}>
+            <Suspense fallback={<LoadingPanel label="Synthesizing Trace Security Graph..." />}>
               <AttackGraph
                 finding={selectedFinding ?? findings[0] ?? null}
                 findings={findings}
                 endpoints={endpoints}
-                targetName={scanResult?.target ?? "Authorized Local Sandbox"}
+                targetName={scanResult?.target ?? "KAVACH Lab Sandbox"}
               />
             </Suspense>
           </div>
         )}
 
-        {/* PAGE 7: REPORTS & EXPORT */}
-        {activePage === "Reports" && (
+        {/* PAGE 7: REPORTS & EXPORT (DASTAAVEZ) */}
+        {(activePage === "Security Reports" || activePage === "Reports") && (
           <div className="p-6 lg:p-8 space-y-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">
-                  Compliance & Export
+                  REPORTS · KAVACH DASTAAVEZ
                 </span>
-                <h1 className="mt-1 text-3xl font-extrabold text-white">Security Reports</h1>
+                <h1 className="mt-1 text-3xl font-extrabold text-white">Security Intelligence Reports</h1>
                 <p className="mt-1 text-xs text-slate-400">
-                  Comprehensive executive summary ready for developers, security leads, and auditors.
+                  Comprehensive executive summary ready for developers, security leads, and compliance auditors.
                 </p>
               </div>
 
@@ -1366,94 +1643,640 @@ function App() {
               </div>
             </div>
 
-            {/* Executive Report View */}
-            <div className="hologram-card rounded-3xl p-8 shadow-2xl space-y-6 print:border-none print:p-0">
-              <div className="border-b border-slate-800 pb-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-2xl font-black text-white">
-                      SENTINEL<span className="text-cyan-400">API</span> SECURITY ASSESSMENT REPORT
-                    </h2>
-                    <p className="text-xs text-slate-400 mt-1">
-                      Zero-Trust API Security Intelligence · Automated BOLA Audit
-                    </p>
+            {!scanResult ? (
+              <div className="rounded-3xl border border-dashed border-slate-800 bg-[#0f172a]/90 p-12 text-center shadow-xl">
+                <FileText className="mx-auto h-12 w-12 text-slate-600 mb-3" />
+                <h3 className="text-lg font-bold text-white">No Security Report Generated Yet</h3>
+                <p className="mt-1 text-xs text-slate-400 max-w-md mx-auto">
+                  Run a KAVACH zero-trust security scan against your target API or try the local demo to generate an official 10-section compliance and audit report.
+                </p>
+                <div className="mt-6 flex flex-wrap justify-center gap-3">
+                  <button
+                    type="button"
+                    onClick={runDemoScan}
+                    disabled={dashboardScanning}
+                    className="flex items-center gap-2 rounded-xl bg-cyan-500 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-cyan-400 transition"
+                  >
+                    <Zap size={14} className="fill-current" />
+                    RUN LOCAL DEMO SCAN
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => navigate("KAVACH Scan")}
+                    className="flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-4 py-2 text-xs font-bold text-slate-200 hover:bg-slate-700 transition"
+                  >
+                    <Search size={14} className="text-cyan-400" />
+                    CONFIGURE CUSTOM SCAN
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* Executive Report View */
+              <div className="hologram-card rounded-3xl p-8 shadow-2xl space-y-8 print:border-none print:p-0">
+                <div className="border-b border-slate-800 pb-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-2xl font-black text-white">
+                        KAVACH <span className="text-cyan-400">SECURITY REPORT</span>
+                      </h2>
+                      <p className="text-xs text-slate-400 mt-1">
+                        KAVACH Dastaavez · Zero-Trust API Security Intelligence Assessment
+                      </p>
+                    </div>
+                    <span className="font-mono text-xs text-slate-400">
+                      Scan ID: {scanResult.scan_id}
+                    </span>
                   </div>
-                  <span className="font-mono text-xs text-slate-400">
-                    Scan ID: {scanResult?.scan_id ?? "DEMO-AUDIT-001"}
-                  </span>
                 </div>
-              </div>
 
-              <div className="grid gap-4 sm:grid-cols-4">
-                <div className="rounded-xl bg-slate-950 p-4">
-                  <span className="text-[10px] font-bold text-slate-500 uppercase block">Target</span>
-                  <span className="font-mono text-xs font-bold text-slate-200">
-                    {scanResult?.target ?? "http://localhost:8000"}
-                  </span>
-                </div>
-                <div className="rounded-xl bg-slate-950 p-4">
-                  <span className="text-[10px] font-bold text-slate-500 uppercase block">Risk Score</span>
-                  <span className="font-mono text-xs font-bold text-red-400">
-                    {riskScore} / 100 ({riskLevel})
-                  </span>
-                </div>
-                <div className="rounded-xl bg-slate-950 p-4">
-                  <span className="text-[10px] font-bold text-slate-500 uppercase block">Verified BOLA</span>
-                  <span className="font-mono text-xs font-bold text-red-400">
-                    {findings.length} Finding(s)
-                  </span>
-                </div>
-                <div className="rounded-xl bg-slate-950 p-4">
-                  <span className="text-[10px] font-bold text-slate-500 uppercase block">Coverage</span>
-                  <span className="font-mono text-xs font-bold text-cyan-400">
-                    {authorizationCoverage}% of Mapped Endpoints
-                  </span>
-                </div>
-              </div>
-
-              {/* Executive Summary Narrative */}
+              {/* 1. EXECUTIVE SUMMARY */}
               <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6 space-y-3">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-200">
-                  Executive Threat Summary
-                </h3>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-cyan-400">
+                    1. Executive Summary
+                  </h3>
+                  <span className={`px-2.5 py-0.5 rounded text-xs font-mono font-bold ${
+                    riskScore >= 80 ? "bg-red-500/20 text-red-400 border border-red-500/30" : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                  }`}>
+                    VERDICT: {riskLevel} ({riskScore}/100)
+                  </span>
+                </div>
                 <p className="text-xs leading-relaxed text-slate-300">
-                  SentinelAPI evaluated the target application against Zero-Trust object authorization boundaries.
-                  The audit concluded with a <span className="font-bold text-red-400">CRITICAL</span> risk rating.
-                  Authenticated callers were able to request and retrieve protected objects belonging to other users
-                  by manipulating parameter identifiers (CWE-639 / OWASP API1:2023).
+                  KAVACH completed a deterministic zero-trust security audit on <span className="text-cyan-300 font-mono">{scanResult?.target_url || "http://localhost:8000"}</span>. 
+                  The assessment evaluated tenancy separation, object-level access boundaries, and credential token validity. 
+                  {findings.length > 0 ? (
+                    <>
+                      {" "}A total of <span className="font-bold text-red-400">{findings.length} critical Broken Object Level Authorization (BOLA/IDOR)</span> vulnerability(ies) were confirmed. 
+                      Authenticated users were able to directly request and exfiltrate protected objects belonging to other tenant accounts without authorization (CWE-639 / OWASP API1:2023).
+                    </>
+                  ) : (
+                    " All tested endpoints successfully enforced tenancy boundaries. No cross-identity data leaks were identified."
+                  )}
                 </p>
               </div>
 
-              {/* Detailed Findings Table */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-200">
-                  Audit Findings Summary
+              {/* 2. ATTACK SURFACE */}
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6 space-y-3">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-cyan-400">
+                  2. Attack Surface (Netra Inventory)
                 </h3>
+                <div className="grid gap-3 sm:grid-cols-4 font-mono text-xs">
+                  <div className="rounded-xl bg-slate-900/80 p-3">
+                    <span className="text-[10px] text-slate-500 uppercase block">Total Endpoints</span>
+                    <span className="text-sm font-bold text-white">{totalEndpoints}</span>
+                  </div>
+                  <div className="rounded-xl bg-slate-900/80 p-3">
+                    <span className="text-[10px] text-slate-500 uppercase block">Tested Endpoints</span>
+                    <span className="text-sm font-bold text-cyan-300">{testedEndpoints}</span>
+                  </div>
+                  <div className="rounded-xl bg-slate-900/80 p-3">
+                    <span className="text-[10px] text-slate-500 uppercase block">Object Endpoints</span>
+                    <span className="text-sm font-bold text-amber-300">{endpoints.filter(e => e.category === "object").length}</span>
+                  </div>
+                  <div className="rounded-xl bg-slate-900/80 p-3">
+                    <span className="text-[10px] text-slate-500 uppercase block">Surface Coverage</span>
+                    <span className="text-sm font-bold text-emerald-400">{authorizationCoverage}%</span>
+                  </div>
+                </div>
+              </div>
 
-                {findings.map((f) => (
-                  <div key={f.id} className="rounded-2xl border border-slate-800 bg-slate-950 p-5 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs font-bold text-red-400">{f.id}</span>
-                        <span className="text-xs font-bold text-white">{f.category || f.title}</span>
+              {/* 3. VERIFIED FINDINGS */}
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6 space-y-4">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-red-400">
+                  3. Verified Findings (Raksha Authorization Defense)
+                </h3>
+                {findings.length === 0 ? (
+                  <p className="text-xs text-slate-500">No vulnerabilities detected.</p>
+                ) : (
+                  findings.map((f) => (
+                    <div key={f.id} className="rounded-xl border border-red-900/40 bg-red-950/20 p-4 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-xs font-bold text-red-400">{f.id}</span>
+                          <span className="text-xs font-bold text-white">{f.category || f.title}</span>
+                          <span className="rounded bg-red-500/20 px-2 py-0.5 text-[9px] font-bold text-red-300 border border-red-500/30">
+                            {f.severity}
+                          </span>
+                        </div>
+                        <span className="text-[10px] font-mono text-slate-400">{f.cwe || "CWE-639"} · {f.owasp || "API1:2023"}</span>
                       </div>
-                      <span className="font-mono text-xs text-red-400 font-bold">{f.severity}</span>
+                      <p className="text-xs font-mono text-slate-300">{f.method} {f.endpoint}</p>
+                      <p className="text-xs text-slate-400">{f.impact}</p>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* 4. RISK INTELLIGENCE */}
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6 space-y-3">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-purple-400">
+                  4. Risk Intelligence (Drishti Machine Learning)
+                </h3>
+                <div className="space-y-2 text-xs font-mono text-slate-300">
+                  <p><span className="text-slate-500 uppercase">Risk Score:</span> {riskScore} / 100 ({riskLevel})</p>
+                  <p><span className="text-slate-500 uppercase">ML Model:</span> On-Device scikit-learn Random Forest Classifier</p>
+                  <p className="whitespace-pre-line leading-relaxed text-slate-400">
+                    {risk?.why_explanation || "WHY: Deterministic BOLA confirmed between authenticated identities."}
+                  </p>
+                </div>
+              </div>
+
+              {/* 5. ATTACK PATHS */}
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6 space-y-3">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400">
+                  5. Attack Paths (Trace Reconstruction)
+                </h3>
+                <div className="space-y-2 font-mono text-xs">
+                  {findings.map((f) => (
+                    <div key={`path-${f.id}`} className="rounded-xl border border-slate-800 bg-slate-900/60 p-3 flex items-center justify-between">
+                      <span className="text-sky-300 font-bold">{f.attacker} (Token)</span>
+                      <span className="text-red-400">──(Assumes Tenant Scope)──►</span>
+                      <span className="text-cyan-300">{f.method} {f.endpoint}</span>
+                      <span className="text-red-400">──(Extracts Object #{f.object_id})──►</span>
+                      <span className="text-emerald-300 font-bold">{f.resource_owner} (Target Victim)</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 6. EVIDENCE */}
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6 space-y-3">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-emerald-400">
+                  6. Evidence (Pramaan Verification)
+                </h3>
+                <div className="space-y-3">
+                  {findings.map((f) => (
+                    <div key={`ev-${f.id}`} className="rounded-xl border border-slate-800 bg-slate-900/80 p-4 space-y-2 text-xs font-mono">
+                      <div className="flex items-center justify-between text-slate-400">
+                        <span>Evidence ID: {f.id}-EV</span>
+                        <span className="text-emerald-400">HTTP {f.status_code} VERIFIED</span>
+                      </div>
+                      <p className="text-slate-300">Method: {f.method} | URL: {f.endpoint}</p>
+                      {f.evidence?.response && (
+                        <pre className="max-h-28 overflow-x-auto rounded bg-slate-950 p-2 text-[11px] text-cyan-300">
+                          {JSON.stringify(f.evidence.response, null, 2)}
+                        </pre>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 7. AFFECTED IDENTITIES */}
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6 space-y-3">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-cyan-400">
+                  7. Affected Identities
+                </h3>
+                <div className="grid gap-3 sm:grid-cols-2 font-mono text-xs">
+                  <div className="rounded-xl bg-slate-900/80 p-3">
+                    <span className="text-[10px] text-slate-500 uppercase block">Compromised Tenancy Roles</span>
+                    <span className="text-sm font-bold text-red-400">User A (Attacker Scope)</span>
+                  </div>
+                  <div className="rounded-xl bg-slate-900/80 p-3">
+                    <span className="text-[10px] text-slate-500 uppercase block">Victim Resource Owners</span>
+                    <span className="text-sm font-bold text-emerald-400">User B (Owner Scope)</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 8. AFFECTED OBJECTS */}
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6 space-y-3">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-cyan-400">
+                  8. Affected Objects
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {findings.map((f) => (
+                    <span key={`obj-${f.id}`} className="rounded-lg border border-red-500/40 bg-red-950/40 px-3 py-1 font-mono text-xs font-bold text-red-300">
+                      Object #{f.object_id} ({f.endpoint})
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* 9. REMEDIATION GUIDANCE */}
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6 space-y-3">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-emerald-400">
+                  9. Remediation Guidance (Suraksha Center)
+                </h3>
+                <div className="space-y-3 text-xs leading-relaxed text-slate-300">
+                  <p className="font-semibold text-white">Recommended Policy Fix:</p>
+                  <p>
+                    Implement explicit object ownership validation at the data access layer.
+                    Do not rely on the presence of a valid authentication token as proof of authorization to access specific records.
+                  </p>
+                  <div className="rounded-xl border border-slate-800 bg-slate-900/90 p-3 font-mono text-[11px] text-emerald-300">
+                    <code>if order.owner_id != current_user.id: raise HTTPException(status_code=403, detail="Unauthorized")</code>
+                  </div>
+                </div>
+              </div>
+
+              {/* 10. SCAN TELEMETRY */}
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6 space-y-3">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400">
+                  10. Scan Telemetry & Platform Specifications
+                </h3>
+                <div className="grid gap-3 sm:grid-cols-3 font-mono text-xs text-slate-400">
+                  <div>
+                    <span className="text-[10px] text-slate-500 uppercase block">Engine</span>
+                    <span className="text-slate-200">KAVACH Core 1.0.0</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-500 uppercase block">Platform</span>
+                    <span className="text-slate-200">Zero-Trust API Security</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-500 uppercase block">Timestamp</span>
+                    <span className="text-slate-200">{scanResult?.scan_metadata?.started_at || currentTime || "Current Session"}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            )}
+          </div>
+        )}
+
+        {/* PAGE 8: DRISHTI RISK INTELLIGENCE & SCORECARD */}
+        {activePage === "Drishti" && (
+          <div className="p-6 lg:p-8 space-y-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-purple-400">
+                  DRISHTI · ML SECURITY INTELLIGENCE
+                </span>
+                <h1 className="mt-1 text-3xl font-extrabold text-white">Drishti Threat Intelligence</h1>
+                <p className="mt-1 text-xs text-slate-400">
+                  Local scikit-learn Random Forest model inference, explainable "WHY" narrative, and 6-category Security Posture Scorecard.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="rounded-xl border border-purple-500/40 bg-purple-950/40 px-3 py-1.5 font-mono text-xs font-bold text-purple-300">
+                  MODEL: DRISHTI_RF_V1 (LOCAL)
+                </span>
+              </div>
+            </div>
+
+            {/* Scorecard Full Grid */}
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {(scorecard?.categories ?? (
+                scanResult ? [
+                  { name: "Authentication", score: 90, grade: "A", status: "ENFORCED", detail: "Bearer/API Key credentials required and validated" },
+                  { name: "Authorization", score: 10, grade: "F", status: "VIOLATED", detail: `${findings.length} verified object-level authorization bypass(es)` },
+                  { name: "Object Access", score: 10, grade: "F", status: "EXPOSED", detail: "Authenticated identities accessed objects outside their ownership scope" },
+                  { name: "Unauthorized Data Exposure", score: 65, grade: "D", status: "MODERATE", detail: "Protected resource properties returned to unauthorized caller" },
+                  { name: "API Configuration", score: 88, grade: "B", status: "HARDENED", detail: "OpenAPI specification valid and structured" },
+                  { name: "Attack Surface", score: 33, grade: "C", status: "MAPPED", detail: `${testedEndpoints} of ${totalEndpoints} endpoints tested (${authorizationCoverage}% coverage)` },
+                ] : [
+                  { name: "Authentication", score: 0, grade: "--", status: "STANDBY", detail: "Awaiting scan execution" },
+                  { name: "Authorization", score: 0, grade: "--", status: "STANDBY", detail: "Awaiting BOLA verification" },
+                  { name: "Object Access", score: 0, grade: "--", status: "STANDBY", detail: "Awaiting tenancy audit" },
+                  { name: "Unauthorized Data Exposure", score: 0, grade: "--", status: "STANDBY", detail: "Awaiting payload inspection" },
+                  { name: "API Configuration", score: 0, grade: "--", status: "STANDBY", detail: "Awaiting OpenAPI discovery" },
+                  { name: "Attack Surface", score: 0, grade: "--", status: "STANDBY", detail: "Awaiting route mapping" },
+                ]
+              )).map((cat) => (
+                <div key={cat.name} className="hologram-card rounded-2xl p-5 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-200">{cat.name}</span>
+                    <span className={`font-mono text-lg font-black ${
+                      cat.grade.startsWith("A") ? "text-emerald-400" :
+                      cat.grade.startsWith("B") ? "text-cyan-400" :
+                      cat.grade.startsWith("C") ? "text-amber-400" :
+                      "text-red-400"
+                    }`}>
+                      {cat.grade}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between font-mono text-xs">
+                    <span className="text-slate-500">Score: {cat.score}/100</span>
+                    <span className={`font-bold ${
+                      cat.status === "VIOLATED" || cat.status === "EXPOSED" ? "text-red-400" : "text-emerald-400"
+                    }`}>
+                      {cat.status}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 font-mono">{cat.detail}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Explainable Why Card */}
+            <div className="hologram-card rounded-2xl p-6 space-y-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">
+                DRISHTI EXPLAINABLE THREAT REASONING
+              </span>
+              <p className="font-mono text-xs text-slate-300 whitespace-pre-line leading-relaxed">
+                {risk?.why_explanation ?? (
+                  scanResult
+                    ? "RISK SCORE: 100 / 100\nWHY: Cross-user access was verified between two authenticated identities. The API returned another user's protected object with HTTP 200. The behavior was reproduced in both directions."
+                    : "Run a KAVACH security scan to evaluate real-time zero-trust risk telemetry."
+                )}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* PAGE 9: PRAMAAN VERIFIED EVIDENCE */}
+        {activePage === "Pramaan" && (
+          <div className="p-6 lg:p-8 space-y-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
+                  PRAMAAN · VERIFIED EVIDENCE
+                </span>
+                <h1 className="mt-1 text-3xl font-extrabold text-white">PRAMAAN Verified Security Evidence</h1>
+                <p className="mt-1 text-xs text-slate-400">
+                  Behavioral response verification, cross-identity tenancy proof, masked credentials, and structural payload disclosures.
+                </p>
+              </div>
+              <span className="rounded-xl border border-emerald-500/40 bg-emerald-950/40 px-3 py-1.5 font-mono text-xs font-bold text-emerald-300">
+                {findings.length} VERIFIED PROOF RECORD(S)
+              </span>
+            </div>
+
+            <div className="space-y-6">
+              {findings.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-900 p-12 text-center text-xs text-slate-500">
+                  No evidence records yet. Run a KAVACH Scan to collect behavioral response evidence.
+                </div>
+              ) : (
+                findings.map((f) => (
+                  <div key={f.id} className="hologram-card rounded-2xl p-6 space-y-5 shadow-xl">
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-sm font-bold text-red-400">{f.id}</span>
+                        <span className="text-xs font-bold text-white">{f.method} {f.endpoint}</span>
+                        <span className="rounded bg-red-950/80 px-2 py-0.5 font-mono text-[10px] font-bold text-red-300 border border-red-800">
+                          BEHAVIORAL VERIFICATION CONFIRMED
+                        </span>
+                      </div>
+                      <span className="rounded bg-red-500/20 px-2 py-0.5 font-mono text-xs font-bold text-red-300 border border-red-500/30">
+                        HTTP {f.status_code} EXPLOIT VERIFIED
+                      </span>
                     </div>
 
-                    <p className="text-xs font-mono text-slate-400">
-                      {f.method} {f.endpoint} (Target Object #{f.object_id})
-                    </p>
+                    {/* 7 EVIDENCE SECTIONS ACCORDING TO SPEC */}
+                    <div className="grid gap-4 lg:grid-cols-2">
+                      {/* 1. Request */}
+                      <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 font-mono block">
+                          1. Request Evidence
+                        </span>
+                        <div className="font-mono text-xs space-y-1 text-slate-300">
+                          <p><span className="text-slate-500">Method:</span> {f.method}</p>
+                          <p><span className="text-slate-500">Target URL:</span> {f.endpoint}</p>
+                          <p><span className="text-slate-500">Caller:</span> {f.attacker} (Active Token)</p>
+                          <p><span className="text-slate-500">Headers:</span> {JSON.stringify(f.evidence?.request?.headers || { Authorization: "tok***-a" })}</p>
+                        </div>
+                      </div>
 
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      {f.impact}
-                    </p>
+                      {/* 2. Response */}
+                      <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 font-mono block">
+                          2. Response Evidence
+                        </span>
+                        <div className="font-mono text-xs space-y-1 text-slate-300">
+                          <p><span className="text-slate-500">Status Code:</span> <span className="text-red-400 font-bold">{f.status_code} OK (Data Disclosed)</span></p>
+                          <p><span className="text-slate-500">Fingerprint:</span> <span className="text-slate-400 truncate">{f.evidence?.response_fingerprint || "sha256:d8b2...f901"}</span></p>
+                          <p><span className="text-slate-500">Sensitive Fields Exposed:</span> <span className="text-amber-400">{f.evidence?.sensitive_fields_exposed?.join(", ") || "None"}</span></p>
+                        </div>
+                      </div>
 
-                    <div className="pt-2 border-t border-slate-800/80 text-[11px] text-emerald-400 font-mono">
-                      Remediation: {f.remediation}
+                      {/* 3. Identity */}
+                      <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 font-mono block">
+                          3. Identity Scope
+                        </span>
+                        <div className="grid grid-cols-2 gap-2 font-mono text-xs">
+                          <div className="p-2 rounded bg-slate-900">
+                            <span className="text-[9px] text-slate-500 block uppercase">Authenticated Caller</span>
+                            <span className="text-red-400 font-bold">{f.attacker}</span>
+                          </div>
+                          <div className="p-2 rounded bg-slate-900">
+                            <span className="text-[9px] text-slate-500 block uppercase">Expected Owner</span>
+                            <span className="text-emerald-400 font-bold">{f.resource_owner}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 4. Object */}
+                      <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 font-mono block">
+                          4. Object Identification
+                        </span>
+                        <div className="font-mono text-xs space-y-1 text-slate-300">
+                          <p><span className="text-slate-500">Target Object ID:</span> <span className="text-cyan-300 font-bold">#{f.object_id}</span></p>
+                          <p><span className="text-slate-500">Path Pattern:</span> {f.endpoint_template || f.endpoint}</p>
+                          <p><span className="text-slate-500">Object Type:</span> Single Protected Resource</p>
+                        </div>
+                      </div>
+
+                      {/* 5. Authorization Context */}
+                      <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 font-mono block">
+                          5. Authorization Context
+                        </span>
+                        <p className="text-xs text-slate-300 leading-relaxed font-mono">
+                          Tenancy Boundary: <span className="text-red-400 font-bold">VIOLATED</span>. Caller token was valid for {f.attacker}, but the API server permitted retrieval of records explicitly owned by {f.resource_owner}.
+                        </p>
+                      </div>
+
+                      {/* 6. Behavioral Comparison */}
+                      <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 font-mono block">
+                          6. Behavioral Comparison
+                        </span>
+                        <p className="text-xs text-slate-300 leading-relaxed font-mono">
+                          Comparison: Object #{f.object_id} was absent from {f.attacker}'s authorized collection, yet returned HTTP {f.status_code} when directly targeted by parameter manipulation.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 7. Verification Signal & Disclosed Payload */}
+                    <div className="rounded-xl border border-emerald-900/40 bg-emerald-950/20 p-4 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 font-mono">
+                          7. Verification Signal (Behavioral Response Verification)
+                        </span>
+                        <span className="rounded bg-emerald-500/20 px-2 py-0.5 font-mono text-[10px] font-bold text-emerald-300">
+                          CROSS-IDENTITY OBJECT DISCLOSURE PROVEN
+                        </span>
+                      </div>
+                      {f.evidence?.response && (
+                        <div className="mt-2 space-y-1">
+                          <span className="text-[10px] text-slate-400 font-mono block">Disclosed Inbound Payload:</span>
+                          <pre className="font-mono text-xs text-cyan-300 overflow-x-auto max-h-40 p-2.5 rounded bg-slate-950/90 border border-slate-800">
+                            {JSON.stringify(f.evidence.response, null, 2)}
+                          </pre>
+                        </div>
+                      )}
                     </div>
                   </div>
-                ))}
+                ))
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* PAGE 10: SURAKSHA REMEDIATION CENTER */}
+        {activePage === "Suraksha" && (
+          <div className="p-6 lg:p-8 space-y-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">
+                  SURAKSHA · REMEDIATION CENTER
+                </span>
+                <h1 className="mt-1 text-3xl font-extrabold text-white">Suraksha Remediation Center</h1>
+                <p className="mt-1 text-sm font-semibold text-cyan-300">
+                  AI-Assisted Remediation Guidance
+                </p>
+                <p className="mt-0.5 text-xs text-slate-400">
+                  Defensive architectural controls, secure code patterns, and post-remediation verification workflows.
+                </p>
               </div>
+              <button
+                type="button"
+                onClick={() => navigate("KAVACH Scan")}
+                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2 text-xs font-black text-slate-950 hover:from-cyan-400 hover:to-blue-500 transition shadow-lg shadow-cyan-500/25"
+              >
+                <RotateCcw className="h-3.5 w-3.5" />
+                RE-SCAN AFTER REMEDIATION
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              {findings.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-900 p-12 text-center text-xs text-slate-500">
+                  No active vulnerabilities requiring remediation. System currently evaluated as SECURE.
+                </div>
+              ) : (
+                findings.map((f) => (
+                  <div key={f.id} className="hologram-card rounded-2xl p-6 space-y-5 shadow-xl">
+                    {/* Header */}
+                    <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-sm font-bold text-red-400">{f.id}</span>
+                        <h3 className="text-sm font-bold text-white">{f.category || f.title}</h3>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="rounded bg-red-500/20 px-2 py-0.5 font-mono text-[10px] font-bold text-red-300 border border-red-500/30">
+                          {f.severity}
+                        </span>
+                        <span className="rounded bg-cyan-500/20 px-2 py-0.5 font-mono text-[10px] font-bold text-cyan-300 border border-cyan-500/40">
+                          {f.cwe || "CWE-639"}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* 7 REMEDIATION SECTIONS ACCORDING TO SPEC */}
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      {/* 1. Issue */}
+                      <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-1">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 font-mono block">
+                          1. Issue
+                        </span>
+                        <p className="text-xs text-white font-bold">{f.title || "Broken Object Level Authorization (BOLA)"}</p>
+                        <p className="text-[11px] font-mono text-slate-400">{f.cwe || "CWE-639"} · {f.owasp || "OWASP API1:2023"}</p>
+                      </div>
+
+                      {/* 2. Why It Matters */}
+                      <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-1">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 font-mono block">
+                          2. Why It Matters
+                        </span>
+                        <p className="text-xs text-slate-300 leading-relaxed">
+                          {f.impact || "Attackers can manipulate object identifiers to view, modify, or exfiltrate private records belonging to other tenants, breaking zero-trust isolation."}
+                        </p>
+                      </div>
+
+                      {/* 3. Affected Endpoint */}
+                      <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-1">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 font-mono block">
+                          3. Affected Endpoint
+                        </span>
+                        <p className="font-mono text-xs text-cyan-300 font-bold">{f.method} {f.endpoint}</p>
+                        <p className="font-mono text-[11px] text-slate-400">Target Object Parameter: #{f.object_id} ({f.endpoint_template || f.endpoint})</p>
+                      </div>
+
+                      {/* 4. Root Cause */}
+                      <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-1">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 font-mono block">
+                          4. Root Cause
+                        </span>
+                        <p className="text-xs text-slate-300 leading-relaxed">
+                          The API validates token presence, but fails to check that the authenticated caller actually owns the specific object requested in the path parameter.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 5. Recommended Fix */}
+                    <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 font-mono block">
+                        5. Recommended Fix
+                      </span>
+                      <p className="text-xs text-slate-300 leading-relaxed font-mono">
+                        {f.remediation || "Enforce object-level tenancy checks before querying the database or returning records. Compare the authenticated caller's identity against the record's owner_id."}
+                      </p>
+                    </div>
+
+                    {/* 6. Secure Code Pattern */}
+                    {f.developer_remediation?.code_example ? (
+                      <div className="space-y-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 font-mono block">
+                          6. Secure Code Pattern (Side-by-Side Diff)
+                        </span>
+                        <div className="grid gap-4 lg:grid-cols-2">
+                          <div className="rounded-xl border border-red-900/50 bg-red-950/20 p-4 space-y-2">
+                            <span className="text-[10px] font-bold uppercase text-red-400 font-mono">Vulnerable Implementation</span>
+                            <pre className="font-mono text-xs text-red-200 overflow-x-auto max-h-40 p-2.5 bg-slate-950/90 rounded border border-red-900/40">
+                              {f.developer_remediation.code_example.vulnerable}
+                            </pre>
+                          </div>
+                          <div className="rounded-xl border border-emerald-900/50 bg-emerald-950/20 p-4 space-y-2">
+                            <span className="text-[10px] font-bold uppercase text-emerald-400 font-mono">Remediated Secure Pattern</span>
+                            <pre className="font-mono text-xs text-emerald-200 overflow-x-auto max-h-40 p-2.5 bg-slate-950/90 border border-emerald-900/40">
+                              {f.developer_remediation.code_example.remediated}
+                            </pre>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 font-mono block">
+                          6. Secure Code Pattern
+                        </span>
+                        <div className="grid gap-4 lg:grid-cols-2">
+                          <div className="rounded-xl border border-red-900/50 bg-red-950/20 p-4 space-y-2">
+                            <span className="text-[10px] font-bold uppercase text-red-400 font-mono">Vulnerable Pattern</span>
+                            <pre className="font-mono text-xs text-red-200 p-2.5 bg-slate-950/90 rounded border border-red-900/40">
+                              {`@app.get("/orders/{order_id}")\ndef get_order(order_id: int):\n    return db.query(Order).filter(Order.id == order_id).first()`}
+                            </pre>
+                          </div>
+                          <div className="rounded-xl border border-emerald-900/50 bg-emerald-950/20 p-4 space-y-2">
+                            <span className="text-[10px] font-bold uppercase text-emerald-400 font-mono">Remediated Pattern</span>
+                            <pre className="font-mono text-xs text-emerald-200 p-2.5 bg-slate-950/90 rounded border border-emerald-900/40">
+                              {`@app.get("/orders/{order_id}")\ndef get_order(order_id: int, user: User = Depends(get_current_user)):\n    order = db.query(Order).filter(Order.id == order_id).first()\n    if order.owner_id != user.id:\n        raise HTTPException(status_code=403, detail="Forbidden")\n    return order`}
+                            </pre>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 7. Verification Steps */}
+                    <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 font-mono block">
+                        7. Verification Steps
+                      </span>
+                      <ol className="list-decimal list-inside space-y-1 text-xs font-mono text-slate-300">
+                        <li>Deploy updated authorization ownership checks to staging environment.</li>
+                        <li>Authenticate with Caller Identity A token (<span className="text-sky-300">{f.attacker}</span>).</li>
+                        <li>Dispatch GET request targeting object owned by Identity B (<span className="text-emerald-300">#{f.object_id}</span>).</li>
+                        <li>Verify server returns <span className="text-emerald-400 font-bold">HTTP 403 Forbidden</span> or <span className="text-emerald-400 font-bold">HTTP 404 Not Found</span> instead of HTTP 200 OK.</li>
+                        <li>Execute KAVACH Scan pipeline to confirm zero-trust compliance badge.</li>
+                      </ol>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         )}

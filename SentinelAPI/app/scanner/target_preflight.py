@@ -1,5 +1,5 @@
 """
-Target Preflight Engine for SentinelAPI.
+Target Preflight Engine for KAVACH.
 Validates reachability, HTTP connectivity, latency, OpenAPI discovery,
 and evaluates scan readiness with structured security checks.
 """

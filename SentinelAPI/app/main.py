@@ -1,8 +1,8 @@
 """
-SentinelAPI Main Application
-Zero-Trust API Security Intelligence Platform.
-Provides Target Preflight, OpenAPI Ingestion, Deterministic BOLA Authorization Testing,
-Local ML Risk Scoring, Attack Graph Synthesis, and Security Posture Scorecards.
+KAVACH Core Main Application.
+Zero-Trust API Security and Authorization Intelligence Platform.
+Provides Target Preflight, Netra Discovery, Deterministic Raksha BOLA Testing,
+Drishti Local ML Risk Scoring, Trace Attack Graph Synthesis, and Security Posture Scorecards.
 """
 
 from __future__ import annotations
@@ -21,12 +21,16 @@ from pydantic import BaseModel, Field
 from app.intelligence.risk_engine import calculate_intelligent_risk
 from app.scanner.bola_scanner import find_object_endpoints, scan_bola
 from app.scanner.openapi_parser import OpenAPIParser
-from app.scanner.target_preflight import run_target_preflight
+from app.scanner.target_preflight import (
+    OPENAPI_CANDIDATE_PATHS,
+    normalize_target_url,
+    run_target_preflight,
+)
 
 
 app = FastAPI(
-    title="SentinelAPI",
-    description="Zero-Trust API Security Intelligence",
+    title="KAVACH Security Engine",
+    description="Zero-Trust API Security and Authorization Intelligence Engine",
     version="1.0.0",
 )
 
@@ -64,34 +68,74 @@ class AuthenticationProfile(BaseModel):
 
 
 class PreflightRequest(BaseModel):
-    target_url: str
+    target_url: str | None = None
+    target: str | None = None
+    url: str | None = None
+
+    @property
+    def resolved_url(self) -> str:
+        val = self.target_url or self.target or self.url
+        if not val or not str(val).strip():
+            raise HTTPException(
+                status_code=400,
+                detail="Target API URL cannot be empty.",
+            )
+        return str(val).strip()
 
 
 class ScanRequest(BaseModel):
-    target_url: str
+    target_url: str | None = None
+    target: str | None = None
+    url: str | None = None
     authentication_profiles: list[AuthenticationProfile] = Field(default_factory=list)
     authentication: AuthenticationConfig | None = None
+    user_a_token: str | None = None
+    user_b_token: str | None = None
+    auth_header: str | None = None
+
+    @property
+    def resolved_target_url(self) -> str:
+        val = self.target_url or self.target or self.url
+        if not val or not str(val).strip():
+            raise HTTPException(
+                status_code=400,
+                detail="Target API URL cannot be empty.",
+            )
+        return str(val).strip()
 
 
 @app.get("/")
 def home():
     return {
-        "name": "SentinelAPI",
-        "tagline": "Zero-Trust API Security Intelligence",
-        "mission": "Discover. Verify. Explain. Remediate.",
+        "name": "KAVACH",
+        "title": "KAVACH — Zero-Trust API Security Platform",
+        "tagline": "Zero-Trust API Security",
+        "mission": "Discover. Verify. Explain. Protect.",
         "status": "online",
         "version": "1.0.0",
+        "modules": {
+            "core": "KAVACH Core",
+            "discovery": "KAVACH Netra",
+            "intelligence": "KAVACH Drishti",
+            "authorization": "KAVACH Kavach-Auth",
+            "bola": "KAVACH Raksha",
+            "trace": "KAVACH Trace",
+            "evidence": "KAVACH Pramaan",
+            "remediation": "KAVACH Suraksha",
+            "reports": "KAVACH Dastaavez",
+            "lab": "KAVACH Lab",
+        },
         "capabilities": [
             "target-preflight",
-            "openapi-swagger-discovery",
-            "multi-identity-mapping",
-            "deterministic-bola-testing",
-            "response-fingerprinting",
-            "local-ml-risk-scoring",
-            "attack-graph-reconstruction",
-            "developer-remediation",
+            "netra-openapi-discovery",
+            "kavach-auth-identity-mapping",
+            "raksha-deterministic-bola-testing",
+            "pramaan-response-fingerprinting",
+            "drishti-local-ml-risk-scoring",
+            "trace-attack-graph-reconstruction",
+            "suraksha-developer-remediation",
             "security-scorecard",
-            "audit-reporting",
+            "dastaavez-audit-reporting",
         ],
     }
 
@@ -100,51 +144,43 @@ def home():
 def health():
     return {
         "status": "healthy",
-        "service": "SentinelAPI",
+        "service": "KAVACH Security Engine",
         "version": "1.0.0",
         "timestamp": datetime.now(timezone.utc).isoformat(),
     }
 
 
+@app.post("/validate-target")
 @app.post("/preflight")
 def preflight(request: PreflightRequest):
     """
     Execute non-destructive preflight validation on a target API.
     Validates URL, connectivity, latency, OpenAPI discovery, and scan readiness.
     """
-    result = run_target_preflight(request.target_url)
+    target = request.resolved_url
+    result = run_target_preflight(target)
     return result
 
 
 def normalize_target(target_url: str) -> str:
-    target = target_url.strip().rstrip("/")
-    if not target:
+    try:
+        return normalize_target_url(target_url)
+    except ValueError as exc:
         raise HTTPException(
             status_code=400,
-            detail="Target URL cannot be empty.",
+            detail=str(exc),
         )
-    if not target.startswith(("http://", "https://")):
-        target = f"http://{target}"
-    return target
 
 
 def discover_openapi_endpoints(
     target: str,
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     """Discover, ingest, and normalize OpenAPI/Swagger endpoints."""
-    candidate_paths = [
-        "/openapi.json",
-        "/swagger.json",
-        "/api/openapi.json",
-        "/v1/openapi.json",
-        "/api/v1/openapi.json",
-    ]
-
     spec: dict[str, Any] | None = None
     found_url: str | None = None
 
     with httpx.Client(timeout=10.0, follow_redirects=True) as client:
-        for path in candidate_paths:
+        for path in OPENAPI_CANDIDATE_PATHS:
             try:
                 res = client.get(f"{target}{path}")
                 if res.status_code == 200:
@@ -268,7 +304,7 @@ def select_authentication(
 ) -> tuple[dict[str, str], str, str]:
     is_sandbox = target in ("http://127.0.0.1:8000", "http://localhost:8000")
 
-    if is_sandbox and not request.authentication_profiles:
+    if is_sandbox and not request.authentication_profiles and not (request.user_a_token and request.user_b_token):
         return (
             {
                 "User A": "token-user-a",
@@ -276,6 +312,16 @@ def select_authentication(
             },
             "authorization",
             "Authorization",
+        )
+
+    if request.user_a_token and request.user_b_token:
+        return (
+            {
+                "User A": request.user_a_token,
+                "User B": request.user_b_token,
+            },
+            "authorization" if is_sandbox else "bearer",
+            request.auth_header or "Authorization",
         )
 
     credentials: dict[str, str] = {}
@@ -443,10 +489,11 @@ def build_attack_graph_data(
     }
 
 
+@app.post("/scans")
 @app.post("/scan")
 def scan(request: ScanRequest):
     started_at = datetime.now(timezone.utc)
-    target = normalize_target(request.target_url)
+    target = normalize_target(request.resolved_target_url)
 
     spec, discovered_endpoints = discover_openapi_endpoints(target)
     credentials, scanner_auth_type, scanner_auth_header = select_authentication(request, target)
@@ -493,8 +540,10 @@ def scan(request: ScanRequest):
         "target": target_name,
         "target_url": target,
         "scan_metadata": {
-            "scanner": "SentinelAPI Zero-Trust Engine",
-            "tagline": "Zero-Trust API Security Intelligence",
+            "scanner": "KAVACH Zero-Trust Security Engine",
+            "tagline": "Zero-Trust API Security",
+            "platform": "KAVACH",
+            "core_engine": "KAVACH Core",
             "started_at": started_at.isoformat(),
             "authentication_profiles": len(credentials),
             "authorization_testing": len(credentials) >= 2,
@@ -503,7 +552,7 @@ def scan(request: ScanRequest):
             "discovered_endpoints": len(endpoint_results),
             "tested_endpoints": tested_endpoints,
             "vulnerable_endpoints": vulnerable_endpoints,
-            "intelligence_engine": "enabled",
+            "intelligence_engine": "drishti-ml-enabled",
         },
         "discovery": {
             "openapi_url": f"{target}/openapi.json",

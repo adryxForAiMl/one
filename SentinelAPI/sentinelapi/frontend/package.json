@@ -1,0 +1,35 @@
+{
+  "name": "sentinelapi-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for the SentinelAPI project, a Zero-Trust API Vulnerability Scanner.",
+  "main": "src/main.tsx",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "lint": "eslint . --ext .ts,.tsx"
+  },
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.0.0",
+    "axios": "^0.24.0",
+    "redux": "^4.1.0",
+    "react-redux": "^8.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.0",
+    "vite": "^2.6.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-react": "^7.28.0"
+  },
+  "keywords": [
+    "API",
+    "security",
+    "vulnerability",
+    "scanner",
+    "frontend"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

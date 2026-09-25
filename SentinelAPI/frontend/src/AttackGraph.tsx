@@ -209,10 +209,11 @@ function SecurityGraphNode({ data }: { data: NodeData }) {
   }
 
   const s = styles[data.variant] || styles.api
+  const detailEntries = Object.entries(data.details ?? {}).slice(0, 2)
 
   return (
     <div
-      className={`min-w-[190px] max-w-[230px] rounded-xl border ${s.border} ${s.bg} p-3 shadow-2xl backdrop-blur-md transition-all hover:scale-[1.03] cursor-pointer ${
+      className={`min-w-[220px] max-w-[260px] rounded-xl border ${s.border} ${s.bg} p-3 shadow-2xl backdrop-blur-md transition-all hover:scale-[1.03] cursor-pointer ${
         data.highlighted ? "ring-2 ring-cyan-400 shadow-cyan-900/50" : ""
       }`}
     >
@@ -236,19 +237,29 @@ function SecurityGraphNode({ data }: { data: NodeData }) {
               </span>
             )}
           </div>
-          <p className={`mt-0.5 truncate text-xs font-extrabold tracking-tight ${s.text}`}>
+          <p className={`mt-0.5 break-words text-xs font-extrabold tracking-tight ${s.text}`}>
             {data.label}
           </p>
-          <p className="truncate font-mono text-[10px] text-slate-400">
+          <p className="break-words font-mono text-[10px] text-slate-400">
             {data.subtitle}
           </p>
           {data.meta && (
-            <span className="mt-1.5 inline-block rounded border border-slate-800 bg-slate-900/90 px-1.5 py-0.5 text-[9px] font-mono text-slate-300">
+            <span className="mt-1.5 inline-block max-w-full break-words rounded border border-slate-800 bg-slate-900/90 px-1.5 py-0.5 text-[9px] font-mono text-slate-300">
               {data.meta}
             </span>
           )}
         </div>
       </div>
+      {detailEntries.length > 0 && (
+        <div className="mt-2 space-y-1.5 border-t border-slate-800/80 pt-2">
+          {detailEntries.map(([key, value]) => (
+            <div key={key} className="rounded-md border border-slate-800/70 bg-slate-900/70 px-2 py-1">
+              <p className="truncate text-[8px] font-bold uppercase tracking-wider text-slate-500">{key}</p>
+              <p className="mt-0.5 break-words font-mono text-[9px] leading-tight text-slate-200">{String(value)}</p>
+            </div>
+          ))}
+        </div>
+      )}
       <Handle
         type="source"
         position={Position.Right}
@@ -278,102 +289,12 @@ function AttackGraphInner({
   >("SUMMARY")
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
 
-  // Fallback demo findings if none exist yet
+  // Real findings list - strictly derived from real scan findings
   const activeFindingsList = useMemo(() => {
-    if (findings.length > 0) return findings
-    return [
-      {
-        id: "BOLA-001",
-        title: "Broken Object Level Authorization (BOLA)",
-        type: "BOLA",
-        severity: "CRITICAL",
-        category: "Broken Object Level Authorization",
-        cwe: "CWE-639",
-        owasp: "API1:2023 - Broken Object Level Authorization",
-        endpoint: "/orders/102",
-        endpoint_template: "/orders/{order_id}",
-        method: "GET",
-        attacker: "User A",
-        resource_owner: "User B",
-        object_id: 102,
-        status_code: 200,
-        status: "vulnerable",
-        confidence: 1.0,
-        confidence_label: "VERY HIGH",
-        anomaly_score: 1.0,
-        anomaly_label: "SEVERE",
-        impact: "User A exfiltrated protected Order #102 owned by User B.",
-        remediation: "Verify authenticated_user.id == order.owner_id before returning.",
-        security_reasoning: [
-          "Attacker authenticated as User A with valid token.",
-          "Object #102 owned by User B requested via GET /orders/102.",
-          "API returned HTTP 200 OK without verifying resource ownership.",
-          "Deterministic cross-user object access verified.",
-        ],
-        evidence: {
-          finding_id: "BOLA-001",
-          request: {
-            method: "GET",
-            url: "/orders/102",
-            user: "User A",
-            headers: { Authorization: "Bearer tok***-a" },
-          },
-          response: {
-            order_id: 102,
-            owner_id: 2,
-            product: "iPhone",
-            amount: 799,
-          },
-          response_fingerprint: "7ce0f17cb9d049b9",
-        },
-      },
-      {
-        id: "BOLA-002",
-        title: "Broken Object Level Authorization (Reverse)",
-        type: "BOLA",
-        severity: "CRITICAL",
-        category: "Broken Object Level Authorization",
-        cwe: "CWE-639",
-        owasp: "API1:2023 - Broken Object Level Authorization",
-        endpoint: "/orders/101",
-        endpoint_template: "/orders/{order_id}",
-        method: "GET",
-        attacker: "User B",
-        resource_owner: "User A",
-        object_id: 101,
-        status_code: 200,
-        status: "vulnerable",
-        confidence: 1.0,
-        confidence_label: "VERY HIGH",
-        anomaly_score: 1.0,
-        anomaly_label: "SEVERE",
-        impact: "User B exfiltrated protected Order #101 owned by User A.",
-        remediation: "Verify authenticated_user.id == order.owner_id before returning.",
-        security_reasoning: [
-          "Attacker authenticated as User B with valid token.",
-          "Object #101 owned by User A requested via GET /orders/101.",
-          "API returned HTTP 200 OK without verifying resource ownership.",
-          "Deterministic bidirectional authorization failure confirmed.",
-        ],
-        evidence: {
-          finding_id: "BOLA-002",
-          request: {
-            method: "GET",
-            url: "/orders/101",
-            user: "User B",
-            headers: { Authorization: "Bearer tok***-b" },
-          },
-          response: {
-            order_id: 101,
-            owner_id: 1,
-            product: "MacBook Air",
-            amount: 999,
-          },
-          response_fingerprint: "a8f7f1d499a73a0f",
-        },
-      },
-    ]
-  }, [findings])
+    if (findings && findings.length > 0) return findings
+    if (finding) return [finding]
+    return []
+  }, [findings, finding])
 
   // Select active finding
   const activeFinding = useMemo(() => {
@@ -382,7 +303,7 @@ function AttackGraphInner({
       if (match) return match
     }
     if (finding) return finding
-    return activeFindingsList[0]
+    return activeFindingsList[0] || null
   }, [selectedPathId, finding, activeFindingsList])
 
   // Handle selecting an attack path from the left panel
@@ -400,6 +321,9 @@ function AttackGraphInner({
 
   // 1. Build the 9-Node Security Pipeline Graph for Attack Path Reconstruction
   const { pathNodes, pathEdges } = useMemo(() => {
+    if (!activeFinding) {
+      return { pathNodes: [], pathEdges: [] }
+    }
     const f = activeFinding
     const req = f.evidence?.request
     const tokenDisplay = req?.headers?.Authorization || "Bearer tok***-a"
@@ -804,24 +728,25 @@ function AttackGraphInner({
 
   // Security Event Timeline Milestones
   const timelineMilestones = useMemo(() => {
+    if (!activeFinding) return []
     const f = activeFinding
     return [
       {
         id: "tm-1",
         label: "Target Validated",
-        detail: "Host reachable, HTTP 200 OK (5.9 ms response latency)",
+        detail: "Host reachable, HTTP 200 OK (response latency verified)",
         status: "success",
       },
       {
         id: "tm-2",
         label: "OpenAPI Discovered",
-        detail: "Ingested specification version 3.1.0 at /openapi.json",
+        detail: "Ingested API specification at target schema route",
         status: "success",
       },
       {
         id: "tm-3",
         label: "Endpoints Mapped",
-        detail: "Identified collection (/orders) and object (/orders/{order_id}) routes",
+        detail: `Mapped collection and object routes: ${f.endpoint}`,
         status: "success",
       },
       {
@@ -857,7 +782,7 @@ function AttackGraphInner({
       {
         id: "tm-9",
         label: "Risk Intelligence Computed",
-        detail: "Random Forest anomaly model calculated probability at 1.0 (SEVERE)",
+        detail: "Random Forest anomaly model calculated threat probability",
         status: "critical",
       },
       {
@@ -869,8 +794,45 @@ function AttackGraphInner({
     ]
   }, [activeFinding])
 
+  const investigationSummary = useMemo(() => {
+    if (!activeFinding) return null
+
+    return {
+      whatHappened:
+        `${activeFinding.attacker} successfully accessed protected object #${activeFinding.object_id} that belonged to ${activeFinding.resource_owner} via ${activeFinding.method} ${activeFinding.endpoint}.`,
+      whyItMatters:
+        `The API accepted a valid token but failed to enforce ownership validation, exposing private data and violating zero-trust authorization boundaries.`,
+      recommendedFix:
+        `Enforce object ownership checks at the authorization layer and reject requests when the requester identity does not match the resource owner before returning any payload.`,
+      evidence: {
+        "Severity": activeFinding.severity,
+        "CWE": activeFinding.cwe || "CWE-639",
+        "OWASP": activeFinding.owasp || "API1:2023",
+        "HTTP": `${activeFinding.status_code} OK`,
+        "Confidence": `${Math.round((activeFinding.confidence ?? 1.0) * 100)}%`,
+        "Anomaly": `${Math.round((activeFinding.anomaly_score ?? 1.0) * 100)}%`,
+      },
+    }
+  }, [activeFinding])
+
+  if (activeFindingsList.length === 0 || !activeFinding) {
+    return (
+      <div className="rounded-3xl border border-cyan-500/20 bg-gradient-to-br from-slate-900/90 via-[#0d152a] to-slate-950 p-12 text-center shadow-2xl backdrop-blur-xl">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-cyan-500/30 bg-cyan-950/60 text-cyan-400 shadow-lg shadow-cyan-950/50">
+          <Network className="h-8 w-8" />
+        </div>
+        <h3 className="mt-5 text-xl font-extrabold text-white">
+          No Attack Paths Reconstructed Yet
+        </h3>
+        <p className="mt-2 max-w-md mx-auto text-sm text-slate-300 leading-relaxed">
+          Run a KAVACH zero-trust security scan against your target API to detect broken object level authorization (BOLA) and reconstruct full attack path graphs.
+        </p>
+      </div>
+    )
+  }
+
   return (
-    <div className="space-y-4">
+    <div className="depth-stage space-y-4">
       {/* 1. TOP BAR: ATTACK PATH SUMMARY (Section 10) */}
       <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-4 shadow-xl backdrop-blur-md">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -878,7 +840,7 @@ function AttackGraphInner({
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-red-400 animate-ping" />
               <span className="text-[10px] font-bold uppercase tracking-wider text-red-400">
-                Security Investigation Workspace
+                KAVACH TRACE · ATTACK PATH INTELLIGENCE WORKSPACE
               </span>
               <span className="rounded bg-red-500/20 px-2 py-0.5 text-[9px] font-mono font-bold text-red-300 border border-red-500/30">
                 {activeFindingsList.length} ATTACK PATHS RECONSTRUCTED
@@ -973,8 +935,52 @@ function AttackGraphInner({
         </div>
       </div>
 
+      {investigationSummary && (
+        <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-4 shadow-xl backdrop-blur-md">
+            <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+              <ShieldAlert className="h-4 w-4 text-red-400" />
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">Investigation Summary</h3>
+            </div>
+
+            <div className="mt-3 space-y-3">
+              <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-3">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">What happened</p>
+                <p className="mt-1 text-sm text-slate-200 leading-relaxed">{investigationSummary.whatHappened}</p>
+              </div>
+
+              <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-3">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Why it matters</p>
+                <p className="mt-1 text-sm text-slate-300 leading-relaxed">{investigationSummary.whyItMatters}</p>
+              </div>
+
+              <div className="rounded-xl border border-cyan-500/30 bg-cyan-950/20 p-3">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-cyan-300">Recommended fix</p>
+                <p className="mt-1 text-sm text-slate-200 leading-relaxed">{investigationSummary.recommendedFix}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-4 shadow-xl backdrop-blur-md">
+            <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+              <CheckCircle2 className="h-4 w-4 text-cyan-400" />
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">Evidence Ledger</h3>
+            </div>
+
+            <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
+              {Object.entries(investigationSummary.evidence).map(([key, value]) => (
+                <div key={key} className="rounded-xl border border-slate-800 bg-slate-950/80 p-2.5">
+                  <p className="text-[9px] font-bold uppercase tracking-wider text-slate-500">{key}</p>
+                  <p className="mt-1 font-mono text-xs text-slate-200">{String(value)}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 2. THREE-COLUMN WORKSPACE: LEFT (PATHS) | CENTER (GRAPH) | RIGHT (EVIDENCE INSPECTOR) */}
-      <div className="grid gap-4 lg:grid-cols-[280px_1fr_360px]">
+      <div className="grid gap-4">
         {/* LEFT PANEL: ATTACK PATHS (Section 10) */}
         <div className="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/80 p-4 shadow-xl backdrop-blur-md">
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -1041,10 +1047,10 @@ function AttackGraphInner({
             </span>
             <div className="grid grid-cols-2 gap-1.5 text-[9px] font-mono text-slate-400">
               <span className="flex items-center gap-1">
-                <span className="h-2 w-2 rounded-full bg-sky-400" /> Caller
+                <span className="h-2 w-2 rounded-full bg-sky-400" /> Identity
               </span>
               <span className="flex items-center gap-1">
-                <span className="h-2 w-2 rounded-full bg-purple-400" /> Auth Gate
+                <span className="h-2 w-2 rounded-full bg-purple-400" /> Credential
               </span>
               <span className="flex items-center gap-1">
                 <span className="h-2 w-2 rounded-full bg-cyan-400" /> Endpoint
@@ -1056,7 +1062,7 @@ function AttackGraphInner({
                 <span className="h-2 w-2 rounded-full bg-emerald-400" /> Owner
               </span>
               <span className="flex items-center gap-1">
-                <span className="h-2 w-2 rounded-full bg-red-400" /> BOLA Leak
+                <span className="h-2 w-2 rounded-full bg-red-400" /> Verified Response
               </span>
             </div>
           </div>

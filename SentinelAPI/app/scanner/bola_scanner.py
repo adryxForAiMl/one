@@ -1,5 +1,5 @@
 """
-SentinelAPI Zero-Trust Authorization Testing Engine.
+KAVACH Raksha - Zero-Trust Authorization Testing Engine.
 Implements deterministic Broken Object Level Authorization (BOLA / IDOR) detection,
 bidirectional verification, response fingerprinting, excessive data exposure analysis,
 and reproducible evidence generation.
@@ -15,6 +15,7 @@ from typing import Any
 import httpx
 
 from app.scanner.openapi_parser import OpenAPIParser
+from app.scanner.target_preflight import OPENAPI_CANDIDATE_PATHS
 
 
 DEFAULT_TIMEOUT = 10.0
@@ -271,7 +272,7 @@ def scan_bola(
     with httpx.Client(timeout=DEFAULT_TIMEOUT, follow_redirects=True, limits=limits) as client:
         # Fetch OpenAPI specification
         spec: dict[str, Any] | None = None
-        for path in ("/openapi.json", "/swagger.json", "/api/openapi.json", "/v1/openapi.json"):
+        for path in OPENAPI_CANDIDATE_PATHS:
             try:
                 res = client.get(f"{base_url}{path}")
                 if res.status_code == 200:
