@@ -62,7 +62,7 @@ const PRESET_PAYLOADS = [
     name: "PROBE: User A → Order #102 (BOLA Attack)",
     description: "User A attempts to access User B's order 102",
     method: "GET",
-    url: "http://localhost:8000/orders/102",
+    path: "/orders/102",
     headers: [{ key: "Authorization", value: "token-user-a", enabled: true }],
     body: "",
   },
@@ -70,7 +70,7 @@ const PRESET_PAYLOADS = [
     name: "PROBE: User B → Order #101 (BOLA Attack)",
     description: "User B attempts to access User A's order 101",
     method: "GET",
-    url: "http://localhost:8000/orders/101",
+    path: "/orders/101",
     headers: [{ key: "Authorization", value: "token-user-b", enabled: true }],
     body: "",
   },
@@ -78,7 +78,7 @@ const PRESET_PAYLOADS = [
     name: "BENCHMARK: User A → Own Order #101",
     description: "Legitimate request to self-owned object",
     method: "GET",
-    url: "http://localhost:8000/orders/101",
+    path: "/orders/101",
     headers: [{ key: "Authorization", value: "token-user-a", enabled: true }],
     body: "",
   },
@@ -86,7 +86,7 @@ const PRESET_PAYLOADS = [
     name: "UNAUTHENTICATED: Direct Query (No Token)",
     description: "Probes authentication boundary without headers",
     method: "GET",
-    url: "http://localhost:8000/orders/102",
+    path: "/orders/102",
     headers: [],
     body: "",
   },
@@ -97,8 +97,9 @@ export default function ApiConsole({
   findings = [],
   targetUrl = "http://localhost:8000",
 }: ApiConsoleProps) {
+  const targetBaseUrl = targetUrl.replace(/\/+$/, "")
   const [method, setMethod] = useState("GET")
-  const [url, setUrl] = useState("http://localhost:8000/orders/102")
+  const [url, setUrl] = useState(`${targetUrl.replace(/\/+$/, "")}/orders/102`)
   const [headers, setHeaders] = useState<HeaderRow[]>([
     { key: "Authorization", value: "token-user-a", enabled: true },
     { key: "Accept", value: "application/json", enabled: true },
@@ -111,7 +112,7 @@ export default function ApiConsole({
 
   const applyPreset = (preset: typeof PRESET_PAYLOADS[0]) => {
     setMethod(preset.method)
-    setUrl(preset.url)
+    setUrl(`${targetBaseUrl}${preset.path}`)
     setHeaders(
       preset.headers.length > 0
         ? preset.headers
