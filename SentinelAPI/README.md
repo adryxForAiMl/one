@@ -159,6 +159,117 @@ KAVACH is built strictly for **defensive, authorized API security auditing**:
 - Passwords, bearer tokens, and API keys are automatically masked across all logs, telemetry, and audit exports.
 - All machine learning inference is performed locally without leaking sensitive API schemas to third-party providers.
 
+## Project Map
+
+```text
+SentinelAPI/
+├── app/
+│   ├── main.py                    # FastAPI orchestration and scan endpoints
+│   ├── scanner/
+│   │   ├── target_preflight.py    # Reachability and OpenAPI discovery
+│   │   ├── openapi_parser.py      # Endpoint and object-route extraction
+│   │   └── bola_scanner.py        # Cross-identity authorization tests
+│   └── intelligence/
+│       └── risk_engine.py         # Drishti ML scoring and scorecard
+├── sandbox/main.py                # Intentionally vulnerable demo target
+├── frontend/src/
+│   ├── App.tsx                    # Dashboard shell and navigation
+│   ├── ApiScanner.tsx             # Target, identities, and scan workflow
+│   ├── AttackGraph.tsx            # Trace graph and evidence inspector
+│   ├── ApiConsole.tsx             # Manual request and response workspace
+│   └── api/client.ts               # Centralized backend client
+├── tests/                         # Maintained KAVACH test suite
+├── scripts/create_kavach_deck.py  # Presentation generator
+└── docs/KAVACH_Project_Deck.pptx  # Project presentation
+```
+
+## Live Demo Links
+
+When the local services are running:
+
+| Service | URL | Purpose |
+|---|---|---|
+| Web Console | `http://127.0.0.1:5173` | React security dashboard |
+| KAVACH Core | `http://127.0.0.1:8001/health` | Backend health check |
+| KAVACH Lab | `http://127.0.0.1:8000` | Controlled vulnerable target |
+| OpenAPI Schema | `http://127.0.0.1:8000/openapi.json` | Demo target specification |
+
+Open the Web Console, select **KAVACH Scan**, use **TRY LOCAL SECURITY DEMO**, validate the target, and start the scan.
+
+## Configuration
+
+Create `frontend/.env.local` when using a non-default backend or target API:
+
+```env
+VITE_API_BASE_URL=http://localhost:8001
+VITE_TARGET_API_URL=http://localhost:8000
+```
+
+`VITE_API_BASE_URL` is the KAVACH backend. `VITE_TARGET_API_URL` is the API that KAVACH audits. They are intentionally separate so the scanner can audit a remote, authorized API without changing the security engine location.
+
+## API Contract
+
+Validate a target before scanning:
+
+```http
+POST /validate-target
+Content-Type: application/json
+
+{"target_url":"http://127.0.0.1:8000"}
+```
+
+Run a multi-identity scan:
+
+```http
+POST /scan
+Content-Type: application/json
+
+{
+       "target_url": "http://127.0.0.1:8000",
+       "authentication_profiles": [
+              {"name": "User A", "type": "bearer", "token": "token-user-a"},
+              {"name": "User B", "type": "bearer", "token": "token-user-b"}
+       ]
+}
+```
+
+The scan response contains the normalized target, endpoint inventory, findings, evidence, risk score, Drishti model metadata, Trace graph data, and report identifiers.
+
+## Troubleshooting
+
+### `python: command not found`
+
+Use the repository virtual environment explicitly:
+
+```bash
+.venv/bin/python -m uvicorn sandbox.main:app --port 8000
+.venv/bin/python -m uvicorn app.main:app --port 8001
+```
+
+### Target is not scan-ready
+
+The target must be reachable and expose an OpenAPI or Swagger document. Check `/openapi.json`, `/swagger.json`, or the target's documented schema route.
+
+### Frontend cannot reach the backend
+
+Confirm that port `8001` is running and that `frontend/.env.local` points `VITE_API_BASE_URL` to the same address. Restart Vite after changing environment variables.
+
+### Test collection includes the legacy nested project
+
+The root `pytest.ini` intentionally limits collection to `tests/`, the maintained KAVACH suite:
+
+```bash
+PYTHONPATH=. .venv/bin/python -m pytest -q
+```
+
+## Presentation
+
+The project presentation is available at [docs/KAVACH_Project_Deck.pptx](docs/KAVACH_Project_Deck.pptx). Regenerate it with:
+
+```bash
+.venv/bin/python scripts/create_kavach_deck.py
+```
+
 ---
 
 *KAVACH — Zero-Trust API Security Platform · AI Hackathon Problem Statement 3*
