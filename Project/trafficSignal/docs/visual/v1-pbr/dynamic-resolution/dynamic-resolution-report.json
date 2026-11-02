@@ -1,0 +1,9 @@
+{
+  "captured_at": "2026-10-26T11:08:18.001Z",
+  "test": "controlled main-thread frame pressure followed by recovery",
+  "initial_scale": 1,
+  "minimum_observed_scale": 0.9,
+  "scale_after_recovery": 0.95,
+  "expected_behavior": "reduce device pixel ratio after sustained frame intervals above 18.2 ms, restore gradually after stable intervals below 16.9 ms",
+  "errors": []
+}

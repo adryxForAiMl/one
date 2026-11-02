@@ -1,0 +1,12 @@
+"""Centralized WeatherLab visual theme."""
+
+BG = "#030405"
+SIDEBAR = "#08090B"
+SURFACE = "#111316"
+SURFACE_HOVER = "#1B1D20"
+BORDER = "#2A2B2D"
+TEXT = "#F4F4F4"
+MUTED = "#A0A0A0"
+ACCENT = "#FF6B1A"
+ACCENT_DARK = "#9B3A05"
+DANGER = "#FF827A"

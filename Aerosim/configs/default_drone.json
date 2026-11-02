@@ -1,0 +1,46 @@
+{
+  "name": "AeroSim Pro Quadcopter",
+  "version": "2.0",
+  "airframe": {
+    "type": "quad_x",
+    "mass_kg": 1.35,
+    "arm_length_m": 0.24,
+    "drag_coefficients": {
+      "linear": 0.22,
+      "angular": 0.12
+    },
+    "moments_of_inertia": {
+      "ixx": 0.022,
+      "iyy": 0.022,
+      "izz": 0.038
+    }
+  },
+  "propulsion": {
+    "motor_count": 4,
+    "max_rpm": 12000.0,
+    "idle_rpm": 900.0,
+    "max_thrust_n_per_motor": 7.5,
+    "motor_time_constant_s": 0.08
+  },
+  "power_system": {
+    "battery_type": "LiPo",
+    "cells": 4,
+    "capacity_mah": 3500.0,
+    "nominal_voltage": 14.8,
+    "max_voltage": 16.8,
+    "min_voltage": 12.8
+  },
+  "gimbal_camera": {
+    "has_gimbal": true,
+    "max_pitch_deg": 30.0,
+    "min_pitch_deg": -90.0,
+    "fov_deg": 84.0,
+    "resolution": "3840x2160"
+  },
+  "autopilot_tuning": {
+    "altitude_pid": { "kp": 0.35, "ki": 0.12, "kd": 0.25 },
+    "position_pid": { "kp": 0.22, "ki": 0.03, "kd": 0.30 },
+    "attitude_pid": { "kp": 3.8, "ki": 0.2, "kd": 0.8 },
+    "yaw_pid": { "kp": 2.2, "ki": 0.1, "kd": 0.4 }
+  }
+}

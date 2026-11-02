@@ -1,0 +1,17 @@
+<connections>
+    <!--
+      OSM way 603915294 (Boring Road) is tagged with 2 lanes, but narrows/merges into way 140114355#4 (1 lane).
+      OSM contains no turn-lane tags. netconvert requires explicit connection definitions for all incoming lanes
+      when connection file overrides are used. Both lane 0 and lane 1 merge into the outgoing single lane (tagged 'assumed').
+    -->
+    <connection from="603915294#11" to="140114355#4" fromLane="0" toLane="0"/>
+    <connection from="603915294#11" to="140114355#4" fromLane="1" toLane="0"/>
+
+    <!--
+      OSM way 746885310 (Boring Road) is tagged with 2 lanes, but narrows/merges into way 121070865#7 (1 lane).
+      OSM contains no turn-lane tags. netconvert requires explicit connection definitions for all incoming lanes
+      when connection file overrides are used. Both lane 0 and lane 1 merge into the outgoing single lane (tagged 'assumed').
+    -->
+    <connection from="746885310#4" to="121070865#7" fromLane="0" toLane="0"/>
+    <connection from="746885310#4" to="121070865#7" fromLane="1" toLane="0"/>
+</connections>

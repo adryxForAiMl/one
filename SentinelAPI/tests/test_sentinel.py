@@ -243,3 +243,9 @@ def test_sandbox_endpoints():
     assert res_bola.status_code == 200
     assert res_bola.json()["order_id"] == 102
     assert res_bola.json()["owner_id"] == 2  # Belongs to user B!
+
+
+if __name__ == "__main__":
+    import sys
+    sys.exit(pytest.main([__file__, "-v"]))
+

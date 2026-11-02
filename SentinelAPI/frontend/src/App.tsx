@@ -38,6 +38,7 @@ import {
   Radio,
 } from "lucide-react"
 import { executeSecurityScan, API_BASE_URL } from "./api/client"
+import FallingStarsBackground from "./FallingStarsBackground"
 
 const ApiScanner = lazy(() => import("./ApiScanner"))
 const AttackGraph = lazy(() => import("./AttackGraph"))
@@ -614,7 +615,9 @@ function App() {
     totalEndpoints > 0 ? Math.round((testedEndpoints / totalEndpoints) * 100) : 0
 
   return (
-    <div className="min-h-screen bg-[#080d1a] text-slate-100 cyber-grid selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="relative isolate min-h-screen bg-[#030303] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
+      <FallingStarsBackground />
+      <div className="relative z-10 min-h-screen">
       {/* Mobile Backdrop */}
       {mobileNavOpen && (
         <div
@@ -625,7 +628,7 @@ function App() {
 
       {/* Sleek Futuristic Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 border-r border-cyan-500/15 bg-[#091024]/95 backdrop-blur-xl p-5 shadow-2xl transition-transform duration-300 lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 border-r border-cyan-500/15 bg-[#070605]/80 backdrop-blur-lg p-5 shadow-2xl transition-transform duration-300 lg:translate-x-0 ${
           mobileNavOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -752,7 +755,7 @@ function App() {
       {/* Main Content Viewport */}
       <main className="depth-stage min-h-screen lg:ml-64">
         {/* Futuristic Command Center Top Navigation */}
-        <header className="sticky top-0 z-20 border-b border-cyan-500/15 bg-[#091024]/90 px-6 py-3 backdrop-blur-xl lg:px-8">
+        <header className="sticky top-0 z-20 border-b border-cyan-500/15 bg-[#070605]/72 px-6 py-3 backdrop-blur-lg lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
             {/* Left Status Readout */}
             <div className="flex items-center gap-3">
@@ -804,10 +807,7 @@ function App() {
         {activePage === "Dashboard" && (
           <div className="p-6 lg:p-8 space-y-8">
             {/* Hero Command Banner */}
-            <div className="relative overflow-hidden rounded-3xl border border-cyan-500/20 bg-gradient-to-br from-slate-900/90 via-slate-950 to-slate-950 p-7 shadow-2xl">
-              <div className="absolute right-0 top-0 -mr-20 -mt-20 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none" />
-              <div className="absolute left-1/4 bottom-0 -mb-20 h-64 w-64 rounded-full bg-purple-500/10 blur-3xl pointer-events-none" />
-
+            <div className="relative overflow-hidden rounded-3xl border border-orange-400/25 bg-black/25 p-7 shadow-2xl backdrop-blur-[2px]">
               <div className="relative z-10 flex flex-col xl:flex-row xl:items-center justify-between gap-6">
                 <div>
                   <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/40 bg-cyan-950/40 px-3 py-1 font-mono text-[10px] font-bold text-cyan-400">
@@ -1644,7 +1644,7 @@ function App() {
             </div>
 
             {!scanResult ? (
-              <div className="rounded-3xl border border-dashed border-slate-800 bg-[#0f172a]/90 p-12 text-center shadow-xl">
+              <div className="rounded-3xl border border-dashed border-slate-800 bg-[#17100c]/90 p-12 text-center shadow-xl">
                 <FileText className="mx-auto h-12 w-12 text-slate-600 mb-3" />
                 <h3 className="text-lg font-bold text-white">No Security Report Generated Yet</h3>
                 <p className="mt-1 text-xs text-slate-400 max-w-md mx-auto">
@@ -2817,6 +2817,7 @@ function App() {
           </aside>
         </div>
       )}
+      </div>
     </div>
   )
 }

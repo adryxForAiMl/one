@@ -1,0 +1,11 @@
+time,mode,active_vehicles,completed_vehicles,total_queue,queue_north,queue_south,queue_east,queue_west,avg_waiting_time,accumulated_delay,avg_speed,current_phase,phase_green_time
+1.0,Fixed_Baseline,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,41.0
+2.0,Fixed_Baseline,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,41.0
+3.0,Fixed_Baseline,1,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,11.0,0,41.0
+4.0,Fixed_Baseline,3,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,11.593015648288963,0,41.0
+5.0,Fixed_Baseline,3,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,10.694438882059728,0,41.0
+6.0,Fixed_Baseline,2,1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,11.195657462516179,0,41.0
+7.0,Fixed_Baseline,2,1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,12.052276768168745,0,41.0
+8.0,Fixed_Baseline,1,2,0.0,0.0,0.0,0.0,0.0,0.0,0.0,13.638197986059822,0,41.0
+9.0,Fixed_Baseline,1,2,0.0,0.0,0.0,0.0,0.0,0.0,0.0,14.207487933570519,0,41.0
+10.0,Fixed_Baseline,2,2,0.0,0.0,0.0,0.0,0.0,0.0,0.0,14.010686595225707,0,41.0

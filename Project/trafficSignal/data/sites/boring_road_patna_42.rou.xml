@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <!-- Indian heterogeneous traffic vTypes with sublane lateral resolution (assumed) -->
+    <vType id="car" length="4.2" width="1.8" height="1.5" accel="2.6" decel="4.5" maxSpeed="14.0" minGap="2.0" minGapLat="0.5" latAlignment="compact" sigma="0.5"/>
+    <vType id="auto_rickshaw" length="2.8" width="1.3" height="1.8" accel="2.0" decel="3.5" maxSpeed="11.0" minGap="1.5" minGapLat="0.35" latAlignment="compact" sigma="0.5"/>
+    <vType id="e_rickshaw" length="2.6" width="1.0" height="1.7" accel="1.2" decel="3.0" maxSpeed="7.0" minGap="1.2" minGapLat="0.3" latAlignment="compact" sigma="0.5"/>
+    <vType id="two_wheeler" length="1.9" width="0.75" height="1.2" accel="3.0" decel="5.0" maxSpeed="15.0" minGap="1.0" minGapLat="0.25" latAlignment="arbitrary" sigma="0.5"/>
+    <vType id="bus" length="11.0" width="2.6" height="3.2" accel="1.2" decel="3.5" maxSpeed="10.0" minGap="3.0" minGapLat="0.8" latAlignment="right" sigma="0.5"/>
+    <vType id="truck" length="9.0" width="2.5" height="3.2" accel="1.4" decel="3.8" maxSpeed="10.0" minGap="3.0" minGapLat="0.8" latAlignment="right" sigma="0.5"/>
+    <route id="r_boring_north_to_south" edges="603915294#10 603915294#11 140114355#4 140114355#5"/>
+    <route id="r_boring_south_to_north" edges="746885310#3 746885310#4 121070865#7"/>
+    <route id="r_boring_canal_east" edges="121070865#5 121070865#6"/>
+    <route id="r_boring_canal_west" edges="140114355#2 140114355#3"/>
+    <vehicle id="veh_0" type="auto_rickshaw" route="r_boring_canal_east" depart="2.14" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_1" type="e_rickshaw" route="r_boring_canal_west" depart="4.53" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_2" type="two_wheeler" route="r_boring_south_to_north" depart="7.41" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_3" type="car" route="r_boring_north_to_south" depart="8.16" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_4" type="bus" route="r_boring_canal_west" depart="10.58" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_5" type="car" route="r_boring_north_to_south" depart="10.73" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_6" type="auto_rickshaw" route="r_boring_south_to_north" depart="17.87" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_7" type="car" route="r_boring_canal_west" depart="17.95" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_8" type="auto_rickshaw" route="r_boring_canal_west" depart="21.34" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_9" type="e_rickshaw" route="r_boring_north_to_south" depart="21.40" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_10" type="auto_rickshaw" route="r_boring_canal_west" depart="25.00" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_11" type="car" route="r_boring_north_to_south" depart="39.22" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_12" type="car" route="r_boring_north_to_south" depart="43.60" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_13" type="auto_rickshaw" route="r_boring_north_to_south" depart="45.58" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_14" type="car" route="r_boring_north_to_south" depart="45.79" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_15" type="auto_rickshaw" route="r_boring_south_to_north" depart="46.80" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_16" type="auto_rickshaw" route="r_boring_canal_west" depart="52.37" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_17" type="two_wheeler" route="r_boring_south_to_north" depart="53.23" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_18" type="auto_rickshaw" route="r_boring_north_to_south" depart="54.19" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_19" type="truck" route="r_boring_canal_west" depart="55.35" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_20" type="auto_rickshaw" route="r_boring_north_to_south" depart="56.18" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_21" type="e_rickshaw" route="r_boring_canal_east" depart="56.84" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_22" type="two_wheeler" route="r_boring_south_to_north" depart="60.94" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_23" type="car" route="r_boring_canal_west" depart="63.89" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_24" type="car" route="r_boring_canal_west" depart="64.47" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_25" type="e_rickshaw" route="r_boring_canal_east" depart="66.61" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_26" type="two_wheeler" route="r_boring_south_to_north" depart="67.83" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_27" type="car" route="r_boring_south_to_north" depart="68.20" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_28" type="car" route="r_boring_north_to_south" depart="69.44" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_29" type="car" route="r_boring_south_to_north" depart="70.93" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_30" type="car" route="r_boring_south_to_north" depart="73.05" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_31" type="e_rickshaw" route="r_boring_south_to_north" depart="75.66" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_32" type="two_wheeler" route="r_boring_canal_west" depart="76.32" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_33" type="auto_rickshaw" route="r_boring_south_to_north" depart="79.29" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_34" type="car" route="r_boring_south_to_north" depart="81.17" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_35" type="e_rickshaw" route="r_boring_north_to_south" depart="82.56" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_36" type="car" route="r_boring_canal_west" depart="82.90" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_37" type="car" route="r_boring_north_to_south" depart="85.88" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_38" type="truck" route="r_boring_canal_west" depart="88.67" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_39" type="two_wheeler" route="r_boring_canal_east" depart="88.82" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_40" type="car" route="r_boring_canal_east" depart="91.94" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_41" type="car" route="r_boring_canal_east" depart="96.49" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_42" type="truck" route="r_boring_canal_west" depart="97.71" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_43" type="bus" route="r_boring_canal_east" depart="99.33" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_44" type="e_rickshaw" route="r_boring_south_to_north" depart="103.24" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_45" type="car" route="r_boring_south_to_north" depart="110.76" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_46" type="car" route="r_boring_north_to_south" depart="111.09" departLane="best" departSpeed="max"/>
+    <vehicle id="veh_47" type="car" route="r_boring_north_to_south" depart="111.87" departLane="best" departSpeed="max"/>
+</routes>

@@ -1,0 +1,40 @@
+{
+  "metadata": {
+    "scenario": "balanced",
+    "seed": 42,
+    "duration_sim_seconds": 20,
+    "north_south_veh_per_hour_per_approach": 900,
+    "east_west_veh_per_hour_per_approach": 700
+  },
+  "fixed": {
+    "mode": "Fixed_Baseline",
+    "duration": 19.0,
+    "total_completed_trips": 3,
+    "mean_queue_length": 0.75,
+    "peak_95th_queue_length": 1.0500000000000007,
+    "mean_waiting_time": 1.3310810810810811,
+    "peak_waiting_time": 3.0,
+    "total_accumulated_delay": 14.0,
+    "mean_speed_kmh": 24.155836049145574,
+    "numerical_integration_error": 0.3333333333333333
+  },
+  "adaptive": {
+    "mode": "Adaptive_Optimized",
+    "duration": 19.0,
+    "total_completed_trips": 3,
+    "mean_queue_length": 0.75,
+    "peak_95th_queue_length": 1.0500000000000007,
+    "mean_waiting_time": 1.3310810810810811,
+    "peak_waiting_time": 3.0,
+    "total_accumulated_delay": 14.0,
+    "mean_speed_kmh": 24.155836049145574,
+    "numerical_integration_error": 0.3333333333333333
+  },
+  "change_vs_fixed_percent": {
+    "mean_wait_reduction": 0.0,
+    "delay_reduction": 0.0,
+    "mean_queue_reduction": 0.0,
+    "completed_trips_change": 0.0
+  },
+  "adaptive_decisions": []
+}

@@ -1,0 +1,38 @@
+{
+    "system": "AI Landslide Early Warning System (Landslide_AI)",
+    "version": "2.0.0",
+    "last_trained": "2026-10-23T05:34:05.027956",
+    "models": {
+        "regional_model": {
+            "name": "Random Forest Regional Predictor",
+            "path": "landslide_model.pkl",
+            "features": 5,
+            "input_columns": [
+                "location",
+                "rainfall_mm",
+                "soil_moisture_percent",
+                "slope_degree",
+                "elevation_m"
+            ],
+            "metrics": {
+                "Accuracy": 0.9067,
+                "Precision": 0.7975,
+                "Recall": 0.8936,
+                "F1 Score": 0.8428,
+                "ROC-AUC": 0.9339
+            }
+        },
+        "wsn_sensor_model": {
+            "name": "WSN Geotechnical Sensor Classifier",
+            "path": "wsn_landslide_model.pkl",
+            "features": 34,
+            "metrics": {
+                "Accuracy": 0.9782,
+                "Precision": 0.9817,
+                "Recall": 0.9748,
+                "F1 Score": 0.9782,
+                "ROC-AUC": 0.9746
+            }
+        }
+    }
+}

@@ -1,0 +1,8 @@
+Metric,Baseline (Fixed),Proposed (Adaptive),Change vs Fixed (%)
+Average Waiting Time (s),3.56,2.82,20.8%
+Total Accumulated Delay (veh-s),702.5,639.5,9.0%
+Mean Total Queue (veh),5.88,5.36,8.9%
+95th Percentile Peak Queue (veh),17.00,16.00,5.9%
+Total Throughput (Completed Trips),31,36,16.1%
+Average Network Speed (km/h),31.69,33.02,4.2%
+Trapezoidal Numerical Truncation Error (s),1.5000,1.1667,N/A

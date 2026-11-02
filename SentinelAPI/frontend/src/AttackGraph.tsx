@@ -515,8 +515,8 @@ function AttackGraphInner({
         target: "node-auth",
         label: "Presents Token",
         animated: true,
-        style: { stroke: "#38bdf8", strokeWidth: 2 },
-        labelStyle: { fill: "#7dd3fc", fontSize: 10, fontWeight: 700 },
+        style: { stroke: "#f97316", strokeWidth: 2 },
+        labelStyle: { fill: "#fdba74", fontSize: 10, fontWeight: 700 },
       },
       {
         id: "e-auth-api",
@@ -524,8 +524,8 @@ function AttackGraphInner({
         target: "node-api",
         label: "Passes Auth Gate",
         animated: true,
-        style: { stroke: "#a855f7", strokeWidth: 2 },
-        labelStyle: { fill: "#c084fc", fontSize: 10, fontWeight: 700 },
+        style: { stroke: "#f43f5e", strokeWidth: 2 },
+        labelStyle: { fill: "#fda4af", fontSize: 10, fontWeight: 700 },
       },
       {
         id: "e-api-ep",
@@ -533,8 +533,8 @@ function AttackGraphInner({
         target: "node-endpoint",
         label: "Dispatches Route",
         animated: true,
-        style: { stroke: "#06b6d4", strokeWidth: 2 },
-        labelStyle: { fill: "#22d3ee", fontSize: 10, fontWeight: 700 },
+        style: { stroke: "#f97316", strokeWidth: 2 },
+        labelStyle: { fill: "#fb923c", fontSize: 10, fontWeight: 700 },
       },
       {
         id: "e-ep-obj",
@@ -670,10 +670,10 @@ function AttackGraphInner({
         label: ep.category,
         animated: isVulnerable,
         style: {
-          stroke: isVulnerable ? "#ef4444" : "#06b6d4",
+          stroke: isVulnerable ? "#ef4444" : "#f97316",
           strokeWidth: isVulnerable ? 2.5 : 1.5,
         },
-        labelStyle: { fill: "#94a3b8", fontSize: 9 },
+        labelStyle: { fill: "#b8aa9d", fontSize: 9 },
       })
 
       if (isVulnerable) {
@@ -1100,18 +1100,18 @@ function AttackGraphInner({
             onNodeClick={handleNodeClick}
             proOptions={{ hideAttribution: true }}
           >
-            <Background gap={24} size={1} color="#1e293b" />
+            <Background gap={24} size={1} color="#38261b" />
             <Controls />
             <MiniMap
               nodeColor={(node) => {
                 const variant = (node.data as NodeData)?.variant
                 if (variant === "vulnerability" || variant === "exposure") return "#ef4444"
-                if (variant === "endpoint" || variant === "api") return "#06b6d4"
+                if (variant === "endpoint" || variant === "api") return "#f97316"
                 if (variant === "object") return "#f59e0b"
                 if (variant === "owner" || variant === "secure") return "#10b981"
-                if (variant === "auth") return "#a855f7"
-                if (variant === "identity") return "#38bdf8"
-                return "#94a3b8"
+                if (variant === "auth") return "#f43f5e"
+                if (variant === "identity") return "#fbbf24"
+                return "#b8aa9d"
               }}
             />
           </ReactFlow>

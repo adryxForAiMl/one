@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aerosim"
+version = "0.2.0"
+description = "Professional Drone Flight Simulator & Ground Control Station with 3D Photorealistic Simulation and Real-World MAVLink Flight"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24.0",
+    "fastapi>=0.110.0",
+    "uvicorn>=0.28.0",
+    "websockets>=12.0",
+    "pymavlink>=2.4.40",
+    "pyserial>=3.5",
+]
+
+[project.optional-dependencies]
+desktop = [
+    "Panda3D>=1.10.14"
+]
+
+[project.scripts]
+aerosim = "aerosim.main:main"
+aerosim-gcs = "aerosim.server:run_server"

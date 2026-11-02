@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <exception>
+#include <utility>
 using namespace std;
 
 class Item {
@@ -33,9 +35,7 @@ class Item {
             isBorrowed = false;
         }
 
-        virtual ~Item() {
-            cout << "Item destroyed: " << title << endl;
-        }
+        virtual ~Item() = default;
 };
 class Book : public Item {
     private:
@@ -80,37 +80,45 @@ class Member {
     private:
         string name;
         string memberId;
-        vector<string> borrowedItemIds;   // tracks which item IDs this member has borrowed
+        vector<string> borrowedItemIds;
 
     public:
-        Member(string name, string memberId) {
-            this->name = name;
-            this->memberId = memberId;
+        Member(string name, string memberId)
+            : name(std::move(name)), memberId(std::move(memberId)) {}
+
+        string getMemberId() const { return memberId; }
+        string getName() const { return name; }
+
+        bool hasBorrowedItem(const string& itemId) const {
+            for (const string& borrowedId : borrowedItemIds) {
+                if (borrowedId == itemId) {
+                    return true;
+                }
+            }
+            return false;
         }
 
-        string getMemberId() { return memberId; }
-        string getName() { return name; }
-
-        void addBorrowedItem(string itemId) {
+        void addBorrowedItem(const string& itemId) {
             borrowedItemIds.push_back(itemId);
         }
 
-        void removeBorrowedItem(string itemId) {
-            for (int i = 0; i < borrowedItemIds.size(); i++) {
-                if (borrowedItemIds[i] == itemId) {
-                    borrowedItemIds.erase(borrowedItemIds.begin() + i);
-                    break;
+        void removeBorrowedItem(const string& itemId) {
+            for (auto item = borrowedItemIds.begin(); item != borrowedItemIds.end(); ++item) {
+                if (*item == itemId) {
+                    borrowedItemIds.erase(item);
+                    return;
                 }
             }
         }
 
-        void displayBorrowedItems() {
-            cout << name << "'s borrowed items: ";
+        void displayBorrowedItems() const {
+            cout << "  Borrowed item IDs: ";
             if (borrowedItemIds.empty()) {
                 cout << "None";
-            }
-            for (string id : borrowedItemIds) {
-                cout << id << " ";
+            } else {
+                for (const string& id : borrowedItemIds) {
+                    cout << id << " ";
+                }
             }
             cout << endl;
         }
@@ -121,17 +129,27 @@ class Library {
         vector<Member> members;              // Library manages its members directly
 
     public:
-        // Add a new item to the library — takes ownership via move
         void addItem(unique_ptr<Item> item) {
-            cout << "Added: " << item->getTitle() << endl;
-            items.push_back(std::move(item));     // MOVE, not copy — unique_ptr can't be copied
+            if (!item) {
+                return;
+            }
+            if (findItem(item->getItemId())) {
+                cout << "An item with that ID already exists.\n";
+                return;
+            }
+            cout << "Added: " << item->getTitle() << " (" << item->getItemId() << ")\n";
+            items.push_back(std::move(item));
         }
 
         void addMember(string name, string memberId) {
+            if (findMember(memberId)) {
+                cout << "A member with that ID already exists.\n";
+                return;
+            }
             members.push_back(Member(name, memberId));
+            cout << "Registered member: " << name << " (" << memberId << ")\n";
         }
 
-        // Find item by ID — returns raw pointer (non-owning, just for use)
         Item* findItem(string itemId) {
             for (auto& item : items) {
                 if (item->getItemId() == itemId) {
@@ -176,8 +194,16 @@ class Library {
             Item* item = findItem(itemId);
             Member* member = findMember(memberId);
 
-            if (!item || !member) {
-                cout << "Invalid item or member." << endl;
+            if (!item) {
+                cout << "Item not found.\n";
+                return;
+            }
+            if (!member) {
+                cout << "Member not found.\n";
+                return;
+            }
+            if (!member->hasBorrowedItem(itemId)) {
+                cout << "This member has not borrowed that item.\n";
                 return;
             }
 
@@ -188,35 +214,152 @@ class Library {
 
         void displayAllItems() {
             cout << "\n--- Library Catalog ---" << endl;
+            if (items.empty()) {
+                cout << "No items in the library yet.\n";
+                return;
+            }
             for (auto& item : items) {
-                item->displayInfo();     // POLYMORPHISM — calls Book's or Magazine's version automatically
+                item->displayInfo();
+            }
+        }
+
+        void displayMembers() {
+            cout << "\n--- Library Members ---\n";
+            if (members.empty()) {
+                cout << "No members registered yet.\n";
+                return;
+            }
+            for (const Member& member : members) {
+                cout << member.getName() << " (" << member.getMemberId() << ")\n";
+                member.displayBorrowedItems();
+            }
+        }
+
+        void searchItems(const string& query) {
+            bool found = false;
+            for (const auto& item : items) {
+                if (item->getItemId() == query || item->getTitle().find(query) != string::npos) {
+                    item->displayInfo();
+                    found = true;
+                }
+            }
+            if (!found) {
+                cout << "No matching items found.\n";
             }
         }
 };
+
+bool readText(const string& prompt, string& value) {
+    cout << prompt;
+    return static_cast<bool>(getline(cin, value));
+}
+
+bool readInteger(const string& prompt, int& value) {
+    string input;
+    while (readText(prompt, input)) {
+        try {
+            size_t parsedCharacters = 0;
+            int parsedValue = stoi(input, &parsedCharacters);
+            if (parsedCharacters == input.size()) {
+                value = parsedValue;
+                return true;
+            }
+        } catch (const exception&) {
+        }
+        cout << "Please enter a valid number.\n";
+    }
+    return false;
+}
+
 int main() {
     Library library;
+    int choice;
 
-    library.addItem(make_unique<Book>("The Hobbit", "B001", "J.R.R. Tolkien"));
-    library.addItem(make_unique<Book>("1984", "B002", "George Orwell"));
-    library.addItem(make_unique<Magazine>("National Geographic", "M001", 245));
+    while (true) {
+        cout << "\n===== Library Management System =====\n"
+             << "1. Add book\n"
+             << "2. Add magazine\n"
+             << "3. Register member\n"
+             << "4. Display catalog\n"
+             << "5. Display members\n"
+             << "6. Issue item\n"
+             << "7. Return item\n"
+             << "8. Search catalog\n"
+             << "0. Exit\n";
 
-    library.addMember("Aditya Kumar", "MEM001");
+        if (!readInteger("Choose an option: ", choice)) {
+            cout << "\nInput ended. Exiting.\n";
+            break;
+        }
 
-    library.displayAllItems();
+        string title;
+        string itemId;
+        string name;
+        string memberId;
+        string author;
+        int issueNumber;
 
-    cout << endl;
-    library.borrowItem("MEM001", "B001");
-    library.borrowItem("MEM001", "M001");
-
-    cout << endl;
-    library.displayAllItems();
-
-    Member* m = library.findMember("MEM001");
-    if (m) m->displayBorrowedItems();
-
-    cout << endl;
-    library.returnItem("MEM001", "B001");
-    library.displayAllItems();
+        switch (choice) {
+            case 1:
+                if (!readText("Book title: ", title) ||
+                    !readText("Book ID: ", itemId) ||
+                    !readText("Author: ", author)) {
+                    return 0;
+                }
+                library.addItem(make_unique<Book>(title, itemId, author));
+                break;
+            case 2:
+                if (!readText("Magazine title: ", title) ||
+                    !readText("Magazine ID: ", itemId) ||
+                    !readInteger("Issue number: ", issueNumber)) {
+                    return 0;
+                }
+                if (issueNumber <= 0) {
+                    cout << "Issue number must be positive.\n";
+                    break;
+                }
+                library.addItem(make_unique<Magazine>(title, itemId, issueNumber));
+                break;
+            case 3:
+                if (!readText("Member name: ", name) ||
+                    !readText("Member ID: ", memberId)) {
+                    return 0;
+                }
+                library.addMember(name, memberId);
+                break;
+            case 4:
+                library.displayAllItems();
+                break;
+            case 5:
+                library.displayMembers();
+                break;
+            case 6:
+                if (!readText("Member ID: ", memberId) ||
+                    !readText("Item ID: ", itemId)) {
+                    return 0;
+                }
+                library.borrowItem(memberId, itemId);
+                break;
+            case 7:
+                if (!readText("Member ID: ", memberId) ||
+                    !readText("Item ID: ", itemId)) {
+                    return 0;
+                }
+                library.returnItem(memberId, itemId);
+                break;
+            case 8:
+                if (!readText("Search by title or item ID: ", title)) {
+                    return 0;
+                }
+                library.searchItems(title);
+                break;
+            case 0:
+                cout << "Goodbye.\n";
+                return 0;
+            default:
+                cout << "Invalid option. Choose a number from 0 to 8.\n";
+        }
+    }
 
     return 0;
 }

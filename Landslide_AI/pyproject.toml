@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "landslide-ai"
+version = "2.0.0"
+description = "Advanced AI Landslide Early Warning & Risk Assessment System"
+readme = "README.md"
+authors = [{ name = "AI Landslide Research Team" }]
+license = { text = "MIT" }
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+    "scipy>=1.10.0",
+    "scikit-learn>=1.3.0",
+    "joblib>=1.3.0",
+    "matplotlib>=3.7.0",
+    "seaborn>=0.12.0",
+    "folium>=0.14.0",
+    "streamlit>=1.30.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]

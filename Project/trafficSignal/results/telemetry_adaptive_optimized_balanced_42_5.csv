@@ -1,0 +1,6 @@
+time,mode,active_vehicles,completed_vehicles,total_queue,queue_north,queue_south,queue_east,queue_west,avg_waiting_time,accumulated_delay,avg_speed,current_phase,phase_green_time
+1.0,Adaptive_Optimized,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,44.57142855865615
+2.0,Adaptive_Optimized,1,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,14.0,0,44.57142855865615
+3.0,Adaptive_Optimized,2,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,11.72059181723371,0,44.57142855865615
+4.0,Adaptive_Optimized,4,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,11.26304633103017,0,44.57142855865615
+5.0,Adaptive_Optimized,4,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,9.859117271933325,0,44.57142855865615

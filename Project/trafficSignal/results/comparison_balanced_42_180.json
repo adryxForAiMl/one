@@ -1,0 +1,247 @@
+{
+  "metadata": {
+    "scenario": "balanced",
+    "seed": 42,
+    "duration_sim_seconds": 180
+  },
+  "fixed": {
+    "mode": "Fixed_Baseline",
+    "duration": 179.0,
+    "total_completed_trips": 54,
+    "mean_queue_length": 7.666666666666667,
+    "peak_95th_queue_length": 18.0,
+    "mean_waiting_time": 5.143101604278075,
+    "peak_waiting_time": 19.807692307692307,
+    "total_accumulated_delay": 1370.0,
+    "mean_speed_kmh": 27.66410316109797,
+    "numerical_integration_error": 7.333333333333333
+  },
+  "adaptive": {
+    "mode": "Adaptive_Optimized",
+    "duration": 179.0,
+    "total_completed_trips": 55,
+    "mean_queue_length": 5.794444444444444,
+    "peak_95th_queue_length": 13.049999999999983,
+    "mean_waiting_time": 3.6156013978130987,
+    "peak_waiting_time": 13.32,
+    "total_accumulated_delay": 1040.5,
+    "mean_speed_kmh": 29.52966116461932,
+    "numerical_integration_error": 2.1666666666666665
+  },
+  "change_vs_fixed_percent": {
+    "mean_wait_reduction": 29.69998113967628,
+    "delay_reduction": 24.05109489051095,
+    "mean_queue_reduction": 24.42028985507247,
+    "completed_trips_change": 1.8518518518518516
+  },
+  "adaptive_decisions": [
+    {
+      "queues_ns": 2.0,
+      "queues_ew": 6.0,
+      "arrival_rates_ns": 0.6274509803921569,
+      "arrival_rates_ew": 0.29411764705882354,
+      "estimate_source": "Gauss-Jordan detector estimate",
+      "estimate_status": "unique",
+      "flow_estimation": {
+        "method": "Gauss\u2013Jordan normal-equation solve",
+        "matrix": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "rhs": [
+          0.6274509803921569,
+          0.29411764705882354
+        ],
+        "detector_counts": {
+          "North": 14.0,
+          "South": 18.0,
+          "East": 8.0,
+          "West": 7.0
+        },
+        "detector_rates": {
+          "North": 0.27450980392156865,
+          "South": 0.35294117647058826,
+          "East": 0.1568627450980392,
+          "West": 0.13725490196078433
+        },
+        "interval_seconds": 51.0,
+        "solution": [
+          0.6274509803921569,
+          0.29411764705882354
+        ],
+        "status": "unique",
+        "rank": 2,
+        "residual": 0.0,
+        "row_operations": [],
+        "used": true
+      },
+      "green_ns": 53.10638298672881,
+      "green_ew": 24.89361702928201,
+      "reason": "minimize measured queue delay; Gauss-Jordan detector estimate (unique)",
+      "optimizer": "SLSQP",
+      "optimizer_status": "SLSQP converged: Optimization terminated successfully"
+    },
+    {
+      "queues_ns": 13.0,
+      "queues_ew": 0.0,
+      "arrival_rates_ns": 0.25806451612903225,
+      "arrival_rates_ew": 0.0967741935483871,
+      "estimate_source": "Gauss-Jordan detector estimate",
+      "estimate_status": "unique",
+      "flow_estimation": {
+        "method": "Gauss\u2013Jordan normal-equation solve",
+        "matrix": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "rhs": [
+          0.25806451612903225,
+          0.0967741935483871
+        ],
+        "detector_counts": {
+          "North": 5.0,
+          "South": 3.0,
+          "East": 2.0,
+          "West": 1.0
+        },
+        "detector_rates": {
+          "North": 0.16129032258064516,
+          "South": 0.0967741935483871,
+          "East": 0.06451612903225806,
+          "West": 0.03225806451612903
+        },
+        "interval_seconds": 31.0,
+        "solution": [
+          0.25806451612903225,
+          0.0967741935483871
+        ],
+        "status": "unique",
+        "rank": 2,
+        "residual": 0.0,
+        "row_operations": [],
+        "used": true
+      },
+      "green_ns": 56.72727275978435,
+      "green_ew": 21.272727305238902,
+      "reason": "minimize measured queue delay; Gauss-Jordan detector estimate (unique)",
+      "optimizer": "SLSQP",
+      "optimizer_status": "SLSQP converged: Optimization terminated successfully"
+    },
+    {
+      "queues_ns": 1.0,
+      "queues_ew": 7.0,
+      "arrival_rates_ns": 0.5714285714285714,
+      "arrival_rates_ew": 0.2222222222222222,
+      "estimate_source": "Gauss-Jordan detector estimate",
+      "estimate_status": "unique",
+      "flow_estimation": {
+        "method": "Gauss\u2013Jordan normal-equation solve",
+        "matrix": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "rhs": [
+          0.5714285714285714,
+          0.2222222222222222
+        ],
+        "detector_counts": {
+          "North": 16.0,
+          "South": 20.0,
+          "East": 8.0,
+          "West": 6.0
+        },
+        "detector_rates": {
+          "North": 0.25396825396825395,
+          "South": 0.31746031746031744,
+          "East": 0.12698412698412698,
+          "West": 0.09523809523809523
+        },
+        "interval_seconds": 63.0,
+        "solution": [
+          0.5714285714285714,
+          0.2222222222222222
+        ],
+        "status": "unique",
+        "rank": 2,
+        "residual": 0.0,
+        "row_operations": [],
+        "used": true
+      },
+      "green_ns": 56.15999998703599,
+      "green_ew": 21.839999987035988,
+      "reason": "minimize measured queue delay; Gauss-Jordan detector estimate (unique)",
+      "optimizer": "SLSQP",
+      "optimizer_status": "SLSQP converged: Optimization terminated successfully"
+    },
+    {
+      "queues_ns": 14.0,
+      "queues_ew": 1.0,
+      "arrival_rates_ns": 0.4642857142857143,
+      "arrival_rates_ew": 0.25,
+      "estimate_source": "Gauss-Jordan detector estimate",
+      "estimate_status": "unique",
+      "flow_estimation": {
+        "method": "Gauss\u2013Jordan normal-equation solve",
+        "matrix": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "rhs": [
+          0.4642857142857143,
+          0.25
+        ],
+        "detector_counts": {
+          "North": 1.0,
+          "South": 12.0,
+          "East": 4.0,
+          "West": 3.0
+        },
+        "detector_rates": {
+          "North": 0.03571428571428571,
+          "South": 0.42857142857142855,
+          "East": 0.14285714285714285,
+          "West": 0.10714285714285714
+        },
+        "interval_seconds": 28.0,
+        "solution": [
+          0.4642857142857143,
+          0.25
+        ],
+        "status": "unique",
+        "rank": 2,
+        "residual": 0.0,
+        "row_operations": [],
+        "used": true
+      },
+      "green_ns": 50.70000001247973,
+      "green_ew": 27.30000001247972,
+      "reason": "minimize measured queue delay; Gauss-Jordan detector estimate (unique)",
+      "optimizer": "SLSQP",
+      "optimizer_status": "SLSQP converged: Optimization terminated successfully"
+    }
+  ]
+}

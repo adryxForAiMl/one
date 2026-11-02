@@ -1,0 +1,1061 @@
+{
+  "latest_state": {
+    "status": "connected",
+    "scenario": "balanced",
+    "site_id": "default_four_way",
+    "disclaimer": "Synthetic four-way baseline",
+    "attribution": "© OpenStreetMap contributors",
+    "seed": 42,
+    "speed_multiplier": 8,
+    "simulation_time_seconds": 54,
+    "wall_elapsed_seconds": 10.168886957999803,
+    "controllers": {
+      "fixed": {
+        "mode": "fixed",
+        "metrics": {
+          "active_vehicles": 25,
+          "completed_vehicles": 4,
+          "total_queue_vehicles": 5,
+          "queues_by_approach": {
+            "North": 3,
+            "South": 2,
+            "East": 0,
+            "West": 0
+          },
+          "average_wait_seconds": 1.08,
+          "accumulated_delay_vehicle_seconds": 110.5,
+          "average_speed_mps": 8.84939813089121,
+          "phase_green_seconds": 37,
+          "average_completed_trip_travel_time_seconds": 39.75
+        },
+        "signal": {
+          "phase": 3,
+          "phase_state": "rrrGGgrrrGGg",
+          "green_seconds_remaining": 30
+        },
+        "vehicles": [
+          {
+            "vehicle_id": "veh_1",
+            "x_m": 32.87996032606331,
+            "y_m": -4.8,
+            "angle_degrees": 90,
+            "speed_mps": 11.31874260865152,
+            "lane_id": "edge_E_out_0",
+            "type_id": "suv"
+          },
+          {
+            "vehicle_id": "veh_10",
+            "x_m": -4.8,
+            "y_m": -153.7694990466,
+            "angle_degrees": 180,
+            "speed_mps": 11.9974275994231,
+            "lane_id": "edge_S_out_0",
+            "type_id": "van"
+          },
+          {
+            "vehicle_id": "veh_11",
+            "x_m": -4.8,
+            "y_m": 11.401057551112956,
+            "angle_degrees": 180,
+            "speed_mps": 0,
+            "lane_id": "edge_N_in_0",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_12",
+            "x_m": -4.8,
+            "y_m": 18.50210308618881,
+            "angle_degrees": 180,
+            "speed_mps": 0.00012982292749977471,
+            "lane_id": "edge_N_in_0",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_13",
+            "x_m": 4.8,
+            "y_m": 203.5320221016184,
+            "angle_degrees": 0,
+            "speed_mps": 14.96839438774623,
+            "lane_id": "edge_N_out_0",
+            "type_id": "hatchback"
+          },
+          {
+            "vehicle_id": "veh_14",
+            "x_m": 4.8,
+            "y_m": -11.401071186557061,
+            "angle_degrees": 0,
+            "speed_mps": 0,
+            "lane_id": "edge_S_in_0",
+            "type_id": "bus"
+          },
+          {
+            "vehicle_id": "veh_15",
+            "x_m": -4.8,
+            "y_m": 26.10369678973376,
+            "angle_degrees": 180,
+            "speed_mps": 0.0017099478392229677,
+            "lane_id": "edge_N_in_0",
+            "type_id": "van"
+          },
+          {
+            "vehicle_id": "veh_16",
+            "x_m": 4.8,
+            "y_m": -25.40248708850214,
+            "angle_degrees": 0,
+            "speed_mps": 0.0027097537422883615,
+            "lane_id": "edge_S_in_0",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_17",
+            "x_m": -4.8,
+            "y_m": 59.9371754220856,
+            "angle_degrees": 180,
+            "speed_mps": 12.130309319617332,
+            "lane_id": "edge_N_in_0",
+            "type_id": "suv"
+          },
+          {
+            "vehicle_id": "veh_18",
+            "x_m": 1.6,
+            "y_m": -45.790992114289224,
+            "angle_degrees": 0,
+            "speed_mps": 13.53637875764528,
+            "lane_id": "edge_S_in_1",
+            "type_id": "suv"
+          },
+          {
+            "vehicle_id": "veh_19",
+            "x_m": 30.496270196558925,
+            "y_m": 4.8,
+            "angle_degrees": 270,
+            "speed_mps": 14.827800255687908,
+            "lane_id": "edge_E_in_0",
+            "type_id": "hatchback"
+          },
+          {
+            "vehicle_id": "veh_20",
+            "x_m": 1.6,
+            "y_m": -71.1393526220694,
+            "angle_degrees": 0,
+            "speed_mps": 13.508493784163147,
+            "lane_id": "edge_S_in_1",
+            "type_id": "suv"
+          },
+          {
+            "vehicle_id": "veh_21",
+            "x_m": 4.8,
+            "y_m": -107.95124024694724,
+            "angle_degrees": 0,
+            "speed_mps": 11.778999687921852,
+            "lane_id": "edge_S_in_0",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_22",
+            "x_m": 1.6,
+            "y_m": -110.33235068954528,
+            "angle_degrees": 0,
+            "speed_mps": 13.748661716934294,
+            "lane_id": "edge_S_in_1",
+            "type_id": "suv"
+          },
+          {
+            "vehicle_id": "veh_23",
+            "x_m": -1.6,
+            "y_m": 115.29261353425682,
+            "angle_degrees": 180,
+            "speed_mps": 14.113250952842645,
+            "lane_id": "edge_N_in_1",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_24",
+            "x_m": 4.8,
+            "y_m": -144.01638378431687,
+            "angle_degrees": 0,
+            "speed_mps": 12.60138536272496,
+            "lane_id": "edge_S_in_0",
+            "type_id": "hatchback"
+          },
+          {
+            "vehicle_id": "veh_25",
+            "x_m": 159.2268106924291,
+            "y_m": 4.8,
+            "angle_degrees": 270,
+            "speed_mps": 14.364893612259143,
+            "lane_id": "edge_E_in_0",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_26",
+            "x_m": 4.8,
+            "y_m": -220.68086279937592,
+            "angle_degrees": 0,
+            "speed_mps": 12.974473109633832,
+            "lane_id": "edge_S_in_0",
+            "type_id": "hatchback"
+          },
+          {
+            "vehicle_id": "veh_27",
+            "x_m": 227.47411816450767,
+            "y_m": 1.6,
+            "angle_degrees": 270,
+            "speed_mps": 10.925881835492328,
+            "lane_id": "edge_E_in_1",
+            "type_id": "bus"
+          },
+          {
+            "vehicle_id": "veh_28",
+            "x_m": 4.8,
+            "y_m": -236.37736019720865,
+            "angle_degrees": 0,
+            "speed_mps": 7.622639802791351,
+            "lane_id": "edge_S_in_0",
+            "type_id": "van"
+          },
+          {
+            "vehicle_id": "veh_4",
+            "x_m": -4.8,
+            "y_m": -18.731814584003068,
+            "angle_degrees": 180,
+            "speed_mps": 7.739627715640038,
+            "lane_id": "edge_S_out_0",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_5",
+            "x_m": -9.012664553484678,
+            "y_m": -4.8,
+            "angle_degrees": 90,
+            "speed_mps": 5.9882565322538674,
+            "lane_id": ":junction_center_10_0",
+            "type_id": "suv"
+          },
+          {
+            "vehicle_id": "veh_6",
+            "x_m": 4.8,
+            "y_m": 53.40142720992392,
+            "angle_degrees": 0,
+            "speed_mps": 12.392939663897202,
+            "lane_id": "edge_N_out_0",
+            "type_id": "hatchback"
+          },
+          {
+            "vehicle_id": "veh_8",
+            "x_m": 1.0723992144725671,
+            "y_m": -1.9517486914146236,
+            "angle_degrees": 235.18425978704326,
+            "speed_mps": 0.0030632603438547007,
+            "lane_id": ":junction_center_5_0",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_9",
+            "x_m": -25.03833101473475,
+            "y_m": -4.8,
+            "angle_degrees": 90,
+            "speed_mps": 4.688783782101364,
+            "lane_id": "edge_W_in_0",
+            "type_id": "truck"
+          }
+        ],
+        "solver": null,
+        "flow_estimation": null,
+        "decision_reason": null
+      },
+      "adaptive": {
+        "mode": "adaptive",
+        "metrics": {
+          "active_vehicles": 25,
+          "completed_vehicles": 4,
+          "total_queue_vehicles": 5,
+          "queues_by_approach": {
+            "North": 2,
+            "South": 2,
+            "East": 0,
+            "West": 1
+          },
+          "average_wait_seconds": 1.32,
+          "accumulated_delay_vehicle_seconds": 124.5,
+          "average_speed_mps": 8.372516826936598,
+          "phase_green_seconds": 24.375000005355105,
+          "average_completed_trip_travel_time_seconds": 39.75
+        },
+        "signal": {
+          "phase": 3,
+          "phase_state": "rrrGGgrrrGGg",
+          "green_seconds_remaining": 21.375000005355105
+        },
+        "vehicles": [
+          {
+            "vehicle_id": "veh_1",
+            "x_m": 0.3123168269682939,
+            "y_m": -4.8,
+            "angle_degrees": 90,
+            "speed_mps": 5.711169868055731,
+            "lane_id": ":junction_center_10_0",
+            "type_id": "suv"
+          },
+          {
+            "vehicle_id": "veh_10",
+            "x_m": -4.8,
+            "y_m": -156.62233671023284,
+            "angle_degrees": 180,
+            "speed_mps": 12.807440034870524,
+            "lane_id": "edge_S_out_0",
+            "type_id": "van"
+          },
+          {
+            "vehicle_id": "veh_11",
+            "x_m": -4.8,
+            "y_m": -133.69942124369376,
+            "angle_degrees": 180,
+            "speed_mps": 13.0065565691227,
+            "lane_id": "edge_S_out_0",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_12",
+            "x_m": -4.8,
+            "y_m": 11.401081613483058,
+            "angle_degrees": 180,
+            "speed_mps": 0,
+            "lane_id": "edge_N_in_0",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_13",
+            "x_m": 4.8,
+            "y_m": 201.1803077563644,
+            "angle_degrees": 0,
+            "speed_mps": 13.678778719808907,
+            "lane_id": "edge_N_out_0",
+            "type_id": "hatchback"
+          },
+          {
+            "vehicle_id": "veh_14",
+            "x_m": 4.8,
+            "y_m": -11.401071186557061,
+            "angle_degrees": 0,
+            "speed_mps": 0,
+            "lane_id": "edge_S_in_0",
+            "type_id": "bus"
+          },
+          {
+            "vehicle_id": "veh_15",
+            "x_m": -4.8,
+            "y_m": 19.002306425070543,
+            "angle_degrees": 180,
+            "speed_mps": 0.000604706464800812,
+            "lane_id": "edge_N_in_0",
+            "type_id": "van"
+          },
+          {
+            "vehicle_id": "veh_16",
+            "x_m": 4.8,
+            "y_m": -25.40248708850214,
+            "angle_degrees": 0,
+            "speed_mps": 0.0027097537422883615,
+            "lane_id": "edge_S_in_0",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_17",
+            "x_m": -4.8,
+            "y_m": 63.54700061438436,
+            "angle_degrees": 180,
+            "speed_mps": 10.987909272061767,
+            "lane_id": "edge_N_in_0",
+            "type_id": "suv"
+          },
+          {
+            "vehicle_id": "veh_18",
+            "x_m": 1.6,
+            "y_m": -45.790992114289224,
+            "angle_degrees": 0,
+            "speed_mps": 13.53637875764528,
+            "lane_id": "edge_S_in_1",
+            "type_id": "suv"
+          },
+          {
+            "vehicle_id": "veh_19",
+            "x_m": 28.782441285506735,
+            "y_m": 4.8,
+            "angle_degrees": 270,
+            "speed_mps": 14.896090801457936,
+            "lane_id": "edge_E_in_0",
+            "type_id": "hatchback"
+          },
+          {
+            "vehicle_id": "veh_20",
+            "x_m": 1.6,
+            "y_m": -71.1393526220694,
+            "angle_degrees": 0,
+            "speed_mps": 13.508493784163147,
+            "lane_id": "edge_S_in_1",
+            "type_id": "suv"
+          },
+          {
+            "vehicle_id": "veh_21",
+            "x_m": 4.8,
+            "y_m": -107.95124024694724,
+            "angle_degrees": 0,
+            "speed_mps": 11.778999687921852,
+            "lane_id": "edge_S_in_0",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_22",
+            "x_m": 1.6,
+            "y_m": -110.33235068954528,
+            "angle_degrees": 0,
+            "speed_mps": 13.748661716934294,
+            "lane_id": "edge_S_in_1",
+            "type_id": "suv"
+          },
+          {
+            "vehicle_id": "veh_23",
+            "x_m": -1.6,
+            "y_m": 115.29261353425682,
+            "angle_degrees": 180,
+            "speed_mps": 14.113250952842645,
+            "lane_id": "edge_N_in_1",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_24",
+            "x_m": 4.8,
+            "y_m": -144.01638378431687,
+            "angle_degrees": 0,
+            "speed_mps": 12.60138536272496,
+            "lane_id": "edge_S_in_0",
+            "type_id": "hatchback"
+          },
+          {
+            "vehicle_id": "veh_25",
+            "x_m": 159.38976467677068,
+            "y_m": 4.8,
+            "angle_degrees": 270,
+            "speed_mps": 14.013027405802235,
+            "lane_id": "edge_E_in_0",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_26",
+            "x_m": 4.8,
+            "y_m": -220.68086279937592,
+            "angle_degrees": 0,
+            "speed_mps": 12.974473109633832,
+            "lane_id": "edge_S_in_0",
+            "type_id": "hatchback"
+          },
+          {
+            "vehicle_id": "veh_27",
+            "x_m": 228.0496541084256,
+            "y_m": 1.6,
+            "angle_degrees": 270,
+            "speed_mps": 10.350345891574397,
+            "lane_id": "edge_E_in_1",
+            "type_id": "bus"
+          },
+          {
+            "vehicle_id": "veh_28",
+            "x_m": 4.8,
+            "y_m": -236.37736019720865,
+            "angle_degrees": 0,
+            "speed_mps": 7.622639802791351,
+            "lane_id": "edge_S_in_0",
+            "type_id": "van"
+          },
+          {
+            "vehicle_id": "veh_4",
+            "x_m": -14.594849403812304,
+            "y_m": -4.8,
+            "angle_degrees": 90,
+            "speed_mps": 3.369378084334975,
+            "lane_id": "edge_W_in_0",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_5",
+            "x_m": -25.46427748699159,
+            "y_m": -4.8,
+            "angle_degrees": 90,
+            "speed_mps": 0.8388365327880447,
+            "lane_id": "edge_W_in_0",
+            "type_id": "suv"
+          },
+          {
+            "vehicle_id": "veh_6",
+            "x_m": 4.8,
+            "y_m": 10.840632906893543,
+            "angle_degrees": 345.78798706813683,
+            "speed_mps": 5.6839261437300586,
+            "lane_id": "edge_N_out_0",
+            "type_id": "hatchback"
+          },
+          {
+            "vehicle_id": "veh_8",
+            "x_m": 1.4407073634162249,
+            "y_m": -1.3755755819502649,
+            "angle_degrees": 240.36952416618118,
+            "speed_mps": 4.081863714943234,
+            "lane_id": ":junction_center_5_0",
+            "type_id": "sedan"
+          },
+          {
+            "vehicle_id": "veh_9",
+            "x_m": -34.80414620159709,
+            "y_m": -4.8,
+            "angle_degrees": 90,
+            "speed_mps": 0,
+            "lane_id": "edge_W_in_0",
+            "type_id": "truck"
+          }
+        ],
+        "solver": {
+          "solver": "SLSQP",
+          "status": "SLSQP converged: Optimization terminated successfully",
+          "converged": true,
+          "green_seconds": [
+            53.625000005355105,
+            24.375000005355105
+          ],
+          "objective_value": 1083.9411764705872,
+          "reason": "SLSQP converged: Optimization terminated successfully"
+        },
+        "flow_estimation": {
+          "method": "Gauss–Jordan normal-equation solve",
+          "matrix": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "rhs": [
+            0.43137254901960786,
+            0.19607843137254902
+          ],
+          "detector_counts": {
+            "North": 11,
+            "South": 11,
+            "East": 4,
+            "West": 6
+          },
+          "detector_rates": {
+            "North": 0.21568627450980393,
+            "South": 0.21568627450980393,
+            "East": 0.0784313725490196,
+            "West": 0.11764705882352941
+          },
+          "interval_seconds": 51,
+          "solution": [
+            0.43137254901960786,
+            0.19607843137254902
+          ],
+          "status": "unique",
+          "rank": 2,
+          "residual": 0,
+          "row_operations": [],
+          "used": true
+        },
+        "decision_reason": "NS 53.6s / EW 24.4s; queues NS 2, EW 6; flow Gauss-Jordan detector estimate (unique); minimize measured queue delay; Gauss-Jordan detector estimate (unique)"
+      }
+    },
+    "results_summary": {},
+    "error": null
+  },
+  "sampled_history": [
+    {
+      "sim_time": 1,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 2,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 3,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 4,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 5,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 6,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 7,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 8,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 9,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 10,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 11,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 12,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 13,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 14,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 15,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 16,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 17,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 18,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 19,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 20,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 21,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 22,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 23,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 24,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 25,
+      "fixed_queue": 0,
+      "adaptive_queue": 0,
+      "fixed_delay": 0,
+      "adaptive_delay": 0,
+      "fixed_wait": 0,
+      "adaptive_wait": 0
+    },
+    {
+      "sim_time": 26,
+      "fixed_queue": 1,
+      "adaptive_queue": 1,
+      "fixed_delay": 0.5,
+      "adaptive_delay": 0.5,
+      "fixed_wait": 0.06666666666666667,
+      "adaptive_wait": 0.06666666666666667
+    },
+    {
+      "sim_time": 27,
+      "fixed_queue": 1,
+      "adaptive_queue": 1,
+      "fixed_delay": 1.5,
+      "adaptive_delay": 1.5,
+      "fixed_wait": 0.13333333333333333,
+      "adaptive_wait": 0.13333333333333333
+    },
+    {
+      "sim_time": 28,
+      "fixed_queue": 1,
+      "adaptive_queue": 1,
+      "fixed_delay": 2.5,
+      "adaptive_delay": 2.5,
+      "fixed_wait": 0.1875,
+      "adaptive_wait": 0.1875
+    },
+    {
+      "sim_time": 29,
+      "fixed_queue": 1,
+      "adaptive_queue": 1,
+      "fixed_delay": 3.5,
+      "adaptive_delay": 3.5,
+      "fixed_wait": 0.25,
+      "adaptive_wait": 0.25
+    },
+    {
+      "sim_time": 30,
+      "fixed_queue": 1,
+      "adaptive_queue": 1,
+      "fixed_delay": 4.5,
+      "adaptive_delay": 4.5,
+      "fixed_wait": 0.3125,
+      "adaptive_wait": 0.3125
+    },
+    {
+      "sim_time": 31,
+      "fixed_queue": 1,
+      "adaptive_queue": 1,
+      "fixed_delay": 5.5,
+      "adaptive_delay": 5.5,
+      "fixed_wait": 0.375,
+      "adaptive_wait": 0.375
+    },
+    {
+      "sim_time": 32,
+      "fixed_queue": 1,
+      "adaptive_queue": 1,
+      "fixed_delay": 6.5,
+      "adaptive_delay": 6.5,
+      "fixed_wait": 0.4117647058823529,
+      "adaptive_wait": 0.4117647058823529
+    },
+    {
+      "sim_time": 33,
+      "fixed_queue": 2,
+      "adaptive_queue": 2,
+      "fixed_delay": 8,
+      "adaptive_delay": 8,
+      "fixed_wait": 0.5294117647058824,
+      "adaptive_wait": 0.5294117647058824
+    },
+    {
+      "sim_time": 34,
+      "fixed_queue": 3,
+      "adaptive_queue": 3,
+      "fixed_delay": 10.5,
+      "adaptive_delay": 10.5,
+      "fixed_wait": 0.7058823529411765,
+      "adaptive_wait": 0.7058823529411765
+    },
+    {
+      "sim_time": 35,
+      "fixed_queue": 4,
+      "adaptive_queue": 4,
+      "fixed_delay": 14,
+      "adaptive_delay": 14,
+      "fixed_wait": 0.9411764705882353,
+      "adaptive_wait": 0.9411764705882353
+    },
+    {
+      "sim_time": 36,
+      "fixed_queue": 4,
+      "adaptive_queue": 4,
+      "fixed_delay": 18,
+      "adaptive_delay": 18,
+      "fixed_wait": 1.1764705882352942,
+      "adaptive_wait": 1.1764705882352942
+    },
+    {
+      "sim_time": 37,
+      "fixed_queue": 5,
+      "adaptive_queue": 5,
+      "fixed_delay": 22.5,
+      "adaptive_delay": 22.5,
+      "fixed_wait": 1.4705882352941178,
+      "adaptive_wait": 1.4705882352941178
+    },
+    {
+      "sim_time": 38,
+      "fixed_queue": 5,
+      "adaptive_queue": 5,
+      "fixed_delay": 27.5,
+      "adaptive_delay": 27.5,
+      "fixed_wait": 1.6666666666666667,
+      "adaptive_wait": 1.6666666666666667
+    },
+    {
+      "sim_time": 39,
+      "fixed_queue": 5,
+      "adaptive_queue": 5,
+      "fixed_delay": 32.5,
+      "adaptive_delay": 32.5,
+      "fixed_wait": 1.75,
+      "adaptive_wait": 1.75
+    },
+    {
+      "sim_time": 40,
+      "fixed_queue": 5,
+      "adaptive_queue": 5,
+      "fixed_delay": 37.5,
+      "adaptive_delay": 37.5,
+      "fixed_wait": 2,
+      "adaptive_wait": 2
+    },
+    {
+      "sim_time": 41,
+      "fixed_queue": 6,
+      "adaptive_queue": 6,
+      "fixed_delay": 43,
+      "adaptive_delay": 43,
+      "fixed_wait": 2.1904761904761907,
+      "adaptive_wait": 2.1904761904761907
+    },
+    {
+      "sim_time": 42,
+      "fixed_queue": 6,
+      "adaptive_queue": 6,
+      "fixed_delay": 49,
+      "adaptive_delay": 49,
+      "fixed_wait": 2.3636363636363638,
+      "adaptive_wait": 2.3636363636363638
+    },
+    {
+      "sim_time": 43,
+      "fixed_queue": 6,
+      "adaptive_queue": 6,
+      "fixed_delay": 55,
+      "adaptive_delay": 55,
+      "fixed_wait": 2.6363636363636362,
+      "adaptive_wait": 2.6363636363636362
+    },
+    {
+      "sim_time": 44,
+      "fixed_queue": 6,
+      "adaptive_queue": 6,
+      "fixed_delay": 61,
+      "adaptive_delay": 61,
+      "fixed_wait": 2.782608695652174,
+      "adaptive_wait": 2.782608695652174
+    },
+    {
+      "sim_time": 45,
+      "fixed_queue": 6,
+      "adaptive_queue": 6,
+      "fixed_delay": 67,
+      "adaptive_delay": 67,
+      "fixed_wait": 3.0434782608695654,
+      "adaptive_wait": 3.0434782608695654
+    },
+    {
+      "sim_time": 46,
+      "fixed_queue": 7,
+      "adaptive_queue": 6,
+      "fixed_delay": 73.5,
+      "adaptive_delay": 73,
+      "fixed_wait": 3.2083333333333335,
+      "adaptive_wait": 3.1666666666666665
+    },
+    {
+      "sim_time": 47,
+      "fixed_queue": 7,
+      "adaptive_queue": 6,
+      "fixed_delay": 80.5,
+      "adaptive_delay": 79,
+      "fixed_wait": 3.5,
+      "adaptive_wait": 3.4166666666666665
+    },
+    {
+      "sim_time": 48,
+      "fixed_queue": 4,
+      "adaptive_queue": 6,
+      "fixed_delay": 86,
+      "adaptive_delay": 85,
+      "fixed_wait": 1.875,
+      "adaptive_wait": 3.6666666666666665
+    },
+    {
+      "sim_time": 49,
+      "fixed_queue": 3,
+      "adaptive_queue": 6,
+      "fixed_delay": 89.5,
+      "adaptive_delay": 91,
+      "fixed_wait": 1.3333333333333333,
+      "adaptive_wait": 3.9166666666666665
+    },
+    {
+      "sim_time": 50,
+      "fixed_queue": 4,
+      "adaptive_queue": 8,
+      "fixed_delay": 93,
+      "adaptive_delay": 98,
+      "fixed_wait": 0.9130434782608695,
+      "adaptive_wait": 4.434782608695652
+    },
+    {
+      "sim_time": 51,
+      "fixed_queue": 4,
+      "adaptive_queue": 8,
+      "fixed_delay": 97,
+      "adaptive_delay": 106,
+      "fixed_wait": 0.4782608695652174,
+      "adaptive_wait": 4.782608695652174
+    },
+    {
+      "sim_time": 52,
+      "fixed_queue": 4,
+      "adaptive_queue": 6,
+      "fixed_delay": 101,
+      "adaptive_delay": 113,
+      "fixed_wait": 0.6521739130434783,
+      "adaptive_wait": 2.652173913043478
+    },
+    {
+      "sim_time": 53,
+      "fixed_queue": 5,
+      "adaptive_queue": 6,
+      "fixed_delay": 105.5,
+      "adaptive_delay": 119,
+      "fixed_wait": 0.84,
+      "adaptive_wait": 1.88
+    },
+    {
+      "sim_time": 54,
+      "fixed_queue": 5,
+      "adaptive_queue": 5,
+      "fixed_delay": 110.5,
+      "adaptive_delay": 124.5,
+      "fixed_wait": 1.08,
+      "adaptive_wait": 1.32
+    }
+  ]
+}

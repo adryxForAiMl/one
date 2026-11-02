@@ -1,0 +1,67 @@
+{
+  "metadata": {
+    "scenario": "balanced",
+    "seed": 21,
+    "duration_sim_seconds": 120,
+    "north_south_veh_per_hour_per_approach": 600,
+    "east_west_veh_per_hour_per_approach": 450
+  },
+  "fixed": {
+    "mode": "Fixed_Baseline",
+    "duration": 119.0,
+    "total_completed_trips": 40,
+    "mean_queue_length": 4.9,
+    "peak_95th_queue_length": 12.0,
+    "mean_waiting_time": 2.42684234717328,
+    "peak_waiting_time": 7.5,
+    "total_accumulated_delay": 584.0,
+    "mean_speed_kmh": 33.8189952830814,
+    "numerical_integration_error": 2.0
+  },
+  "adaptive": {
+    "mode": "Adaptive_Optimized",
+    "duration": 119.0,
+    "total_completed_trips": 38,
+    "mean_queue_length": 4.775,
+    "peak_95th_queue_length": 12.0,
+    "mean_waiting_time": 2.447541736866289,
+    "peak_waiting_time": 9.090909090909092,
+    "total_accumulated_delay": 571.0,
+    "mean_speed_kmh": 33.58639207005128,
+    "numerical_integration_error": 1.0
+  },
+  "change_vs_fixed_percent": {
+    "mean_wait_reduction": -0.8529350790799856,
+    "delay_reduction": 2.2260273972602738,
+    "mean_queue_reduction": 2.551020408163265,
+    "completed_trips_change": -5.0
+  },
+  "adaptive_decisions": [
+    {
+      "queues_ns": 0.0,
+      "queues_ew": 10.0,
+      "arrival_rates_ns": 0.43137254901960786,
+      "arrival_rates_ew": 0.43137254901960786,
+      "estimate_source": "Gauss-Jordan detector estimate",
+      "estimate_status": "unique",
+      "green_ns": 39.00000000372529,
+      "green_ew": 39.00000000372529,
+      "reason": "minimize measured queue delay; Gauss-Jordan detector estimate (unique)",
+      "optimizer": "SLSQP",
+      "optimizer_status": "SLSQP converged: Optimization terminated successfully"
+    },
+    {
+      "queues_ns": 15.0,
+      "queues_ew": 0.0,
+      "arrival_rates_ns": 0.391304347826087,
+      "arrival_rates_ew": 0.43478260869565216,
+      "estimate_source": "Gauss-Jordan detector estimate",
+      "estimate_status": "unique",
+      "green_ns": 36.9473684579134,
+      "green_ew": 41.05263161580814,
+      "reason": "minimize measured queue delay; Gauss-Jordan detector estimate (unique)",
+      "optimizer": "SLSQP",
+      "optimizer_status": "SLSQP converged: Optimization terminated successfully"
+    }
+  ]
+}

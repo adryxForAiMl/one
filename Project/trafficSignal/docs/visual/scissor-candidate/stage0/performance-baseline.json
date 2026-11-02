@@ -1,0 +1,184 @@
+{
+  "date": "2026-10-26T10:28:58.599Z",
+  "source_revision": "e78083cd90b1a72f682bd754fd6680b3e796c010",
+  "working_tree": "modified; see repository status for the full shared-workspace diff",
+  "capture_engine": "Playwright 156.0.8078.48 (/Applications/Brave Browser.app/Contents/MacOS/Brave Browser)",
+  "capture_mode": "headless browser; document visibility and GPU renderer recorded below",
+  "measurement_window_seconds_per_viewport": 10,
+  "limitations": [
+    "Browser-rendered frame intervals and performance.memory JavaScript heap are measured; OS process and GPU memory are not.",
+    "The browser used the Apple Metal renderer, but this is not a MacBook Air certification run because the exact host model and device thermal state were not recorded."
+  ],
+  "simulation": {
+    "status": "paused",
+    "scenario": "rush_hour",
+    "seed": 42,
+    "simulation_time_seconds": 45,
+    "north_south_demand_veh_per_hour": 7200,
+    "east_west_demand_veh_per_hour": 7200,
+    "fixed_active_vehicles": 100,
+    "adaptive_active_vehicles": 100
+  },
+  "viewports": [
+    {
+      "viewport": "1440x900",
+      "screenshot": "dashboard-1440x900.png",
+      "visibilityState": "visible",
+      "fixed": {
+        "renderer": {
+          "calls": 242,
+          "triangles": 94580,
+          "points": 0,
+          "lines": 0,
+          "geometries": 172,
+          "textures": 5,
+          "programs": 7
+        },
+        "frameTimeMs": {
+          "samples": 600,
+          "mean": 16.660167204538983,
+          "p50": 16.700000762939453,
+          "p95": 16.700000762939453,
+          "p99": 16.799999237060547
+        },
+        "memory": {
+          "jsHeapUsedBytes": 32715424,
+          "jsHeapLimitBytes": 4395630592
+        },
+        "gpu": {
+          "vendor": "Google Inc. (Apple)",
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)"
+        },
+        "viewport": {
+          "width": 413,
+          "height": 470,
+          "pixelRatio": 1
+        },
+        "motion": {
+          "samples": 0,
+          "meanFramePositionErrorMeters": null,
+          "p95FramePositionErrorMeters": null,
+          "trace": []
+        }
+      },
+      "adaptive": {
+        "renderer": {
+          "calls": 242,
+          "triangles": 94580,
+          "points": 0,
+          "lines": 0,
+          "geometries": 172,
+          "textures": 5,
+          "programs": 7
+        },
+        "frameTimeMs": {
+          "samples": 600,
+          "mean": 16.65950053691864,
+          "p50": 16.700000762939453,
+          "p95": 16.700000762939453,
+          "p99": 16.799999237060547
+        },
+        "memory": {
+          "jsHeapUsedBytes": 32715424,
+          "jsHeapLimitBytes": 4395630592
+        },
+        "gpu": {
+          "vendor": "Google Inc. (Apple)",
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)"
+        },
+        "viewport": {
+          "width": 413,
+          "height": 470,
+          "pixelRatio": 1
+        },
+        "motion": {
+          "samples": 0,
+          "meanFramePositionErrorMeters": null,
+          "p95FramePositionErrorMeters": null,
+          "trace": []
+        }
+      }
+    },
+    {
+      "viewport": "1920x1080",
+      "screenshot": "dashboard-1920x1080.png",
+      "visibilityState": "visible",
+      "fixed": {
+        "renderer": {
+          "calls": 248,
+          "triangles": 94956,
+          "points": 0,
+          "lines": 0,
+          "geometries": 172,
+          "textures": 5,
+          "programs": 7
+        },
+        "frameTimeMs": {
+          "samples": 600,
+          "mean": 16.662667196591695,
+          "p50": 16.700000762939453,
+          "p95": 16.799999237060547,
+          "p99": 16.799999237060547
+        },
+        "memory": {
+          "jsHeapUsedBytes": 42692433,
+          "jsHeapLimitBytes": 4395630592
+        },
+        "gpu": {
+          "vendor": "Google Inc. (Apple)",
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)"
+        },
+        "viewport": {
+          "width": 625,
+          "height": 485,
+          "pixelRatio": 1
+        },
+        "motion": {
+          "samples": 0,
+          "meanFramePositionErrorMeters": null,
+          "p95FramePositionErrorMeters": null,
+          "trace": []
+        }
+      },
+      "adaptive": {
+        "renderer": {
+          "calls": 248,
+          "triangles": 94956,
+          "points": 0,
+          "lines": 0,
+          "geometries": 172,
+          "textures": 5,
+          "programs": 7
+        },
+        "frameTimeMs": {
+          "samples": 600,
+          "mean": 16.662167196273803,
+          "p50": 16.700000762939453,
+          "p95": 16.799999237060547,
+          "p99": 16.799999237060547
+        },
+        "memory": {
+          "jsHeapUsedBytes": 42692433,
+          "jsHeapLimitBytes": 4395630592
+        },
+        "gpu": {
+          "vendor": "Google Inc. (Apple)",
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)"
+        },
+        "viewport": {
+          "width": 625,
+          "height": 485,
+          "pixelRatio": 1
+        },
+        "motion": {
+          "samples": 0,
+          "meanFramePositionErrorMeters": null,
+          "p95FramePositionErrorMeters": null,
+          "trace": []
+        }
+      }
+    }
+  ],
+  "page_errors": [],
+  "failed_responses": []
+}

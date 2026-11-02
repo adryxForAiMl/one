@@ -1,0 +1,21 @@
+<connections>
+    <!-- North in: Lane 0 (Right turn + Through), Lane 1 (Left turn) -->
+    <connection from="edge_N_in" to="edge_W_out" fromLane="0" toLane="0"/>
+    <connection from="edge_N_in" to="edge_S_out" fromLane="0" toLane="0"/>
+    <connection from="edge_N_in" to="edge_E_out" fromLane="1" toLane="1"/>
+
+    <!-- South in: Lane 0 (Right turn + Through), Lane 1 (Left turn) -->
+    <connection from="edge_S_in" to="edge_E_out" fromLane="0" toLane="0"/>
+    <connection from="edge_S_in" to="edge_N_out" fromLane="0" toLane="0"/>
+    <connection from="edge_S_in" to="edge_W_out" fromLane="1" toLane="1"/>
+
+    <!-- East in: Lane 0 (Right turn + Through), Lane 1 (Left turn) -->
+    <connection from="edge_E_in" to="edge_N_out" fromLane="0" toLane="0"/>
+    <connection from="edge_E_in" to="edge_W_out" fromLane="0" toLane="0"/>
+    <connection from="edge_E_in" to="edge_S_out" fromLane="1" toLane="1"/>
+
+    <!-- West in: Lane 0 (Right turn + Through), Lane 1 (Left turn) -->
+    <connection from="edge_W_in" to="edge_S_out" fromLane="0" toLane="0"/>
+    <connection from="edge_W_in" to="edge_E_out" fromLane="0" toLane="0"/>
+    <connection from="edge_W_in" to="edge_N_out" fromLane="1" toLane="1"/>
+</connections>

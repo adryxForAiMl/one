@@ -1,0 +1,20 @@
+{
+  "mission_name": "Lawnmower Search and Rescue Grid",
+  "location": "Bengaluru Corridor, India",
+  "home_position": {
+    "latitude": 12.8452,
+    "longitude": 77.6602,
+    "altitude_msl": 900.0
+  },
+  "takeoff_altitude_m": 25.0,
+  "cruise_speed_m_s": 5.5,
+  "waypoints": [
+    { "id": 1, "latitude": 12.8460, "longitude": 77.6610, "altitude": 25.0, "speed": 5.5, "loiter_time": 1.0, "action": "WAYPOINT" },
+    { "id": 2, "latitude": 12.8475, "longitude": 77.6610, "altitude": 25.0, "speed": 5.5, "loiter_time": 1.0, "action": "WAYPOINT" },
+    { "id": 3, "latitude": 12.8475, "longitude": 77.6620, "altitude": 25.0, "speed": 5.5, "loiter_time": 1.0, "action": "WAYPOINT" },
+    { "id": 4, "latitude": 12.8460, "longitude": 77.6620, "altitude": 25.0, "speed": 5.5, "loiter_time": 1.0, "action": "WAYPOINT" },
+    { "id": 5, "latitude": 12.8460, "longitude": 77.6630, "altitude": 25.0, "speed": 5.5, "loiter_time": 1.0, "action": "WAYPOINT" },
+    { "id": 6, "latitude": 12.8475, "longitude": 77.6630, "altitude": 25.0, "speed": 5.5, "loiter_time": 1.0, "action": "WAYPOINT" },
+    { "id": 7, "latitude": 12.8452, "longitude": 77.6602, "altitude": 15.0, "speed": 5.0, "loiter_time": 2.0, "action": "RTH" }
+  ]
+}

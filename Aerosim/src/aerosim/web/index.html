@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AeroSim - Professional Drone Flight Simulator & Ground Control Station</title>
+  <meta name="description" content="Photorealistic 3D Quadcopter Flight Simulator, real-world GPS waypoint mission navigation, and MAVLink hardware ground control station.">
+  
+  <!-- Leaflet CSS for Satellite Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  
+  <!-- Custom Avionics Glassmorphic Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="app-container">
+
+    <!-- TOP TELEMETRY STATUS BAR -->
+    <header class="top-bar">
+      <div class="brand">
+        <div class="beacon" id="connection-status-dot" title="Telemetry Link Active"></div>
+        <div class="logo-badge">AERO<span>SIM</span></div>
+        <div class="mode-badge" id="mode-badge">DISARMED</div>
+      </div>
+
+      <div class="top-telemetry-tickers">
+        <div class="ticker-item">
+          <span class="ticker-label">Alt (AGL)</span>
+          <span class="ticker-val emerald" id="val-alt">0.15 m</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-label">Groundspeed</span>
+          <span class="ticker-val cyan" id="val-speed">0.0 m/s</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-label">LiPo Battery</span>
+          <span class="ticker-val amber" id="val-bat">100% (16.8V)</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-label">GPS Satellites</span>
+          <span class="ticker-val cyan" id="val-sats">19 3D-FIX</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-label">Flight Zone</span>
+          <span class="ticker-val" id="val-city">New Delhi</span>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <div id="hw-link-indicator" style="font-family: var(--text-mono); font-size: 11px; color: var(--cyan); margin-right: 8px;">
+          SIMULATION (Digital Twin)
+        </div>
+        <button class="btn-header" id="btn-location-modal">
+          📍 Real World Zone
+        </button>
+        <button class="btn-header" id="btn-hardware-modal">
+          ⚡ Connect Real Drone
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN VIEWPORT -->
+    <main class="main-viewport">
+
+      <!-- 3D Drone Simulation & HUD Canvas -->
+      <div id="canvas-container">
+        <canvas id="three-canvas"></canvas>
+        <canvas id="hud-canvas"></canvas>
+      </div>
+
+      <!-- CAMERA VIEW SELECTOR TOOLBAR -->
+      <div class="camera-toolbar">
+        <button class="cam-btn active" data-cam="chase">🛸 Chase Cam</button>
+        <button class="cam-btn" data-cam="fpv">🎯 Gimbal FPV</button>
+        <button class="cam-btn" data-cam="orbit">🔄 Orbit Cam</button>
+        <button class="cam-btn" data-cam="top">🛰️ Top Nadir</button>
+      </div>
+
+      <!-- LEFT TELEMETRY DECK -->
+      <aside class="left-deck">
+        <!-- Motor RPM & Thrust Telemetry -->
+        <div class="panel-card">
+          <div class="panel-title">
+            Brushless Motors
+            <span class="badge">4S ESC</span>
+          </div>
+          <div class="motor-grid">
+            <div class="motor-item">
+              <div class="motor-header">
+                <span>M1 (CW)</span>
+                <span class="motor-rpm-text" id="motor-rpm-1">0 RPM</span>
+              </div>
+              <div class="motor-bar-track">
+                <div class="motor-bar-fill" id="motor-bar-1"></div>
+              </div>
+            </div>
+            <div class="motor-item">
+              <div class="motor-header">
+                <span>M2 (CCW)</span>
+                <span class="motor-rpm-text" id="motor-rpm-2">0 RPM</span>
+              </div>
+              <div class="motor-bar-track">
+                <div class="motor-bar-fill" id="motor-bar-2"></div>
+              </div>
+            </div>
+            <div class="motor-item">
+              <div class="motor-header">
+                <span>M3 (CCW)</span>
+                <span class="motor-rpm-text" id="motor-rpm-3">0 RPM</span>
+              </div>
+              <div class="motor-bar-track">
+                <div class="motor-bar-fill" id="motor-bar-3"></div>
+              </div>
+            </div>
+            <div class="motor-item">
+              <div class="motor-header">
+                <span>M4 (CW)</span>
+                <span class="motor-rpm-text" id="motor-rpm-4">0 RPM</span>
+              </div>
+              <div class="motor-bar-track">
+                <div class="motor-bar-fill" id="motor-bar-4"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Power & Avionics Health -->
+        <div class="panel-card">
+          <div class="panel-title">Avionics & Power</div>
+          <div class="stat-row">
+            <span class="stat-key">Pack Voltage:</span>
+            <span class="stat-val" id="stat-voltage">16.80 V</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-key">Current Draw:</span>
+            <span class="stat-val" id="stat-current">0.8 A</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-key">Energy Consumed:</span>
+            <span class="stat-val" id="stat-consumed">0 mAh</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-key">Flight Duration:</span>
+            <span class="stat-val" id="stat-flight-time">0:00</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-key">Distance to Home:</span>
+            <span class="stat-val" id="stat-home-dist">0.0 m</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- PICTURE-IN-PICTURE SATELLITE GPS MAP WINDOW -->
+      <div id="pip-map-window">
+        <div class="map-header">
+          <div class="map-title">
+            <span>🛰️</span> REAL-WORLD SATELLITE GPS MAP
+          </div>
+          <div class="map-controls-bar">
+            <button class="map-btn" id="btn-map-center" title="Center map on drone position">Target</button>
+            <button class="map-btn" id="btn-plan-wp" title="Click on map to drop waypoint route">Plan Route</button>
+            <button class="map-btn" id="btn-map-expand">Expand</button>
+          </div>
+        </div>
+        <div id="leaflet-map"></div>
+        <div class="mission-toolbar">
+          <span class="mission-stats" id="mission-wp-count">0 Waypoints</span>
+          <div class="mission-actions">
+            <button class="btn-mission secondary" id="btn-clear-mission">Clear</button>
+            <button class="btn-mission secondary" id="btn-upload-mission">Upload</button>
+            <button class="btn-mission primary" id="btn-start-mission">Fly Mission</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT FLIGHT CONTROL DECK -->
+      <aside class="right-deck">
+        <!-- Quick Flight Actions -->
+        <div class="panel-card">
+          <div class="panel-title">
+            Flight Deck
+            <span id="gamepad-indicator" style="font-size: 9px; color: var(--text-dim);">RC: Disconnected</span>
+          </div>
+          <div class="flight-actions-grid">
+            <button class="action-btn arm" id="btn-arm-toggle">
+              ARM MOTORS
+            </button>
+            <button class="action-btn takeoff" id="btn-takeoff">
+              🛫 TAKEOFF
+            </button>
+            <button class="action-btn land" id="btn-land">
+              🛬 LAND
+            </button>
+            <button class="action-btn rth" id="btn-rth">
+              🏠 RTH
+            </button>
+            <button class="action-btn" id="btn-pos-hold" style="grid-column: span 3;">
+              🛑 POSITION HOLD / LOITER
+            </button>
+          </div>
+        </div>
+
+        <!-- Virtual Mode 2 Flight Joysticks (Touch & Mouse) -->
+        <div class="panel-card">
+          <div class="panel-title">Virtual Sticks (Mode 2)</div>
+          <div class="joysticks-container">
+            <!-- Left Stick: Throttle & Yaw -->
+            <div class="stick-wrapper">
+              <span class="stick-label">Throttle / Yaw</span>
+              <div class="stick-base" id="stick-left">
+                <div class="stick-crosshair-h"></div>
+                <div class="stick-crosshair-v"></div>
+                <div class="stick-thumb" id="thumb-left"></div>
+              </div>
+            </div>
+            <!-- Right Stick: Pitch & Roll -->
+            <div class="stick-wrapper">
+              <span class="stick-label">Pitch / Roll</span>
+              <div class="stick-base" id="stick-right">
+                <div class="stick-crosshair-h"></div>
+                <div class="stick-crosshair-v"></div>
+                <div class="stick-thumb" id="thumb-right"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- BOTTOM KEYBOARD HINTS & AUDIO TOGGLE -->
+    <footer class="bottom-keybar">
+      <div class="key-hints">
+        <div class="key-hint"><kbd>W</kbd>/<kbd>S</kbd> Pitch</div>
+        <div class="key-hint"><kbd>A</kbd>/<kbd>D</kbd> Roll</div>
+        <div class="key-hint"><kbd>R</kbd>/<kbd>F</kbd> Throttle</div>
+        <div class="key-hint"><kbd>Q</kbd>/<kbd>E</kbd> Yaw</div>
+        <div class="key-hint"><kbd>T</kbd> Takeoff</div>
+        <div class="key-hint"><kbd>L</kbd> Land</div>
+        <div class="key-hint"><kbd>H</kbd> RTH</div>
+        <div class="key-hint"><kbd>Space</kbd> Pos Hold</div>
+      </div>
+      <div>
+        <button class="sound-toggle-btn muted" id="btn-sound-toggle">🔇 AUDIO: OFF</button>
+      </div>
+    </footer>
+
+    <!-- REAL-WORLD LOCATION PRESET MODAL -->
+    <div class="modal-overlay" id="location-modal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>📍 Real-World Launch Origin</h3>
+          <button class="close-btn" id="btn-close-location-modal">&times;</button>
+        </div>
+        <div class="form-group">
+          <label>Select Iconic Global Flight Zone</label>
+          <select class="form-control" id="location-preset-select">
+            <option value="new_delhi">🇮🇳 India Gate & Kartavya Path, New Delhi (28.6129° N, 77.2295° E)</option>
+            <option value="mumbai">🇮🇳 Marine Drive & Gateway, Mumbai (18.9220° N, 72.8347° E)</option>
+            <option value="bengaluru">🇮🇳 Electronic City Corridor, Bengaluru (12.8452° N, 77.6602° E)</option>
+            <option value="san_francisco">🇺🇸 Golden Gate Strait, San Francisco (37.8024° N, -122.4646° E)</option>
+            <option value="dubai">🇦🇪 Dubai Marina & Skyway, UAE (25.0772° N, 55.1330° E)</option>
+            <option value="swiss_alps">🇨🇭 Interlaken Alpine Valley, Switzerland (46.6863° N, 7.8632° E)</option>
+            <option value="tokyo">🇯🇵 Tokyo Bay Airspace, Japan (35.6264° N, 139.7744° E)</option>
+          </select>
+        </div>
+        <button class="btn-primary-action" id="btn-apply-location">Deploy to Selected Zone</button>
+
+        <hr style="border-color: rgba(255, 255, 255, 0.08);">
+
+        <div class="modal-header">
+          <h4 style="font-size: 13px; color: var(--text-dim);">Or Enter Any Custom GPS Coordinates</h4>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+          <div class="form-group">
+            <label>Latitude (°)</label>
+            <input type="number" step="0.000001" class="form-control" id="custom-lat" value="28.6129">
+          </div>
+          <div class="form-group">
+            <label>Longitude (°)</label>
+            <input type="number" step="0.000001" class="form-control" id="custom-lon" value="77.2295">
+          </div>
+          <div class="form-group">
+            <label>Altitude (m)</label>
+            <input type="number" class="form-control" id="custom-alt" value="215">
+          </div>
+        </div>
+        <button class="btn-primary-action" id="btn-apply-custom-gps">Apply Custom Coordinates</button>
+      </div>
+    </div>
+
+    <!-- REAL DRONE HARDWARE (MAVLINK) MODAL -->
+    <div class="modal-overlay" id="hardware-modal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>⚡ Connect Real Drone Hardware (MAVLink)</h3>
+          <button class="close-btn" id="btn-close-hw-modal">&times;</button>
+        </div>
+        <p style="font-size: 12px; color: var(--text-dim); line-height: 1.5;">
+          Fly a real physical drone (Pixhawk, ArduPilot, PX4, or ESP32 drone) via USB Telemetry Radio, Serial port, or UDP WiFi connection.
+        </p>
+        <div class="form-group">
+          <label>Select Connection Port</label>
+          <select class="form-control" id="hw-port-select">
+            <option value="udpin:0.0.0.0:14550">UDP Port 14550 (WiFi / SITL / Telemetry)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Baud Rate (For Serial Ports)</label>
+          <select class="form-control" id="hw-baud-select">
+            <option value="115200">115200 (Standard Pixhawk / USB)</option>
+            <option value="57600">57600 (SiK Telemetry Radio)</option>
+            <option value="921600">921600 (High-Speed Companion Computer)</option>
+          </select>
+        </div>
+        <button class="btn-primary-action" id="btn-connect-hardware">Connect to Real Drone</button>
+        <button class="btn-primary-action" id="btn-disconnect-hardware" style="background: rgba(255, 51, 102, 0.2); border: 1px solid var(--crimson); color: var(--crimson);">Disconnect Real Drone</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Three.js (r128) & OrbitControls from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  
+  <!-- Leaflet Satellite Map from CDN -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- AeroSim Application Modules -->
+  <script src="drone3d.js"></script>
+  <script src="hud.js"></script>
+  <script src="map.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>

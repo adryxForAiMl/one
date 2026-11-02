@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-10-26T10:47:28.968Z",
+  "measurement_scope": "Browser-side WebGL and Performance API readings at export time; values are not a hardware certification.",
+  "simulation": {
+    "status": "paused",
+    "simulation_time_seconds": 54,
+    "scenario": "balanced",
+    "seed": 42,
+    "playback_speed_multiplier": 8
+  },
+  "display": {
+    "viewport_width_css_px": 1440,
+    "viewport_height_css_px": 900,
+    "device_pixel_ratio": 1,
+    "quality_tier": "medium",
+    "controller_mode": "compare"
+  },
+  "renderer": {
+    "architecture": "one shared WebGLRenderer with two scissor viewports",
+    "counter_scope": "renderer.info counters include both comparison scenes; the same pair total appears in each scene diagnostic",
+    "draw_calls": 242,
+    "triangles": 39380,
+    "points": 0,
+    "lines": 0,
+    "geometries": 172,
+    "textures": 5,
+    "programs": 7,
+    "gpu_vendor": "Google Inc. (Apple)",
+    "gpu_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)"
+  },
+  "scenes": {
+    "Fixed-time": {
+      "renderer": {
+        "calls": 242,
+        "triangles": 39380,
+        "points": 0,
+        "lines": 0,
+        "geometries": 172,
+        "textures": 5,
+        "programs": 7
+      },
+      "frameTimeMs": {
+        "samples": 614,
+        "mean": 16.708143850879484,
+        "p50": 16.700000762939453,
+        "p95": 16.799999237060547,
+        "p99": 16.799999237060547
+      },
+      "memory": {
+        "jsHeapUsedBytes": 25984093,
+        "jsHeapLimitBytes": 4395630592
+      },
+      "gpu": {
+        "vendor": "Google Inc. (Apple)",
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)"
+      },
+      "viewport": {
+        "width": 413,
+        "height": 470,
+        "pixelRatio": 1
+      },
+      "motion": {
+        "samples": 0,
+        "meanFramePositionErrorMeters": null,
+        "p95FramePositionErrorMeters": null,
+        "trace": []
+      }
+    },
+    "Adaptive": {
+      "renderer": {
+        "calls": 242,
+        "triangles": 39380,
+        "points": 0,
+        "lines": 0,
+        "geometries": 172,
+        "textures": 5,
+        "programs": 7
+      },
+      "frameTimeMs": {
+        "samples": 614,
+        "mean": 16.705537987066013,
+        "p50": 16.700000762939453,
+        "p95": 16.799999237060547,
+        "p99": 16.799999237060547
+      },
+      "memory": {
+        "jsHeapUsedBytes": 25984093,
+        "jsHeapLimitBytes": 4395630592
+      },
+      "gpu": {
+        "vendor": "Google Inc. (Apple)",
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)"
+      },
+      "viewport": {
+        "width": 413,
+        "height": 470,
+        "pixelRatio": 1
+      },
+      "motion": {
+        "samples": 0,
+        "meanFramePositionErrorMeters": null,
+        "p95FramePositionErrorMeters": null,
+        "trace": []
+      }
+    }
+  },
+  "limitations": [
+    "GPU memory and operating-system process memory are not exposed by this report.",
+    "GPU identity can be unavailable or privacy-masked by the browser.",
+    "Frame-time percentiles cover the in-memory sample window reported by each scene."
+  ]
+}

@@ -1,0 +1,258 @@
+site:
+  id:
+    value: boring_road_patna
+    source: assumed
+    note: Stable simulator identifier.
+  display_name:
+    value: Boring Road Chauraha, Patna
+    source: assumed
+    note: Requested site name; OSM does not name this junction.
+  alternate_name:
+    value: Boring Road Crossing
+    source: assumed
+    note: Requested/local name; not independently verified in OSM.
+  official_road_name:
+    value: Jai Prakash Narayan Path
+    source: assumed
+    note: Supplied in the task; the cached OSM ways are named Boring Road.
+  city:
+    value: Patna
+    source: osm
+    osm_element: node/509907130
+  state:
+    value: Bihar
+    source: osm
+    osm_element: node/509907130
+  center:
+    latitude:
+      value: 25.6126047
+      source: osm
+      osm_element: node/13683758749
+    longitude:
+      value: 85.1188289
+      source: osm
+      osm_element: node/13683758749
+    origin:
+      value: fountain node near the mapped end of Boring Road way 603915294
+      source: osm
+      osm_element: node/13683758749
+      note: Candidate center; confirm this is the intended Chauraha before treating it as definitive.
+  radius_m:
+    value: 275
+    source: assumed
+    note: Chosen within the requested 250-300 m range.
+
+map:
+  source:
+    value: OpenStreetMap
+    source: osm
+  license:
+    value: ODbL 1.0
+    source: osm
+  attribution:
+    value: "© OpenStreetMap contributors"
+    source: osm
+  downloaded:
+    value: "2026-10-28"
+    source: osm
+  download_method:
+    value: OSM API map endpoint; Overpass endpoints timed out or were unreachable
+    source: osm
+  download_url:
+    value: "https://api.openstreetmap.org/api/0.6/map?bbox=85.1161,25.6101,85.1216,25.6151"
+    source: osm
+  raw_file:
+    value: data/sites/boring_road_patna_2026-10-28.osm
+    source: osm
+  extract_bounds:
+    south: { value: 25.6101, source: assumed }
+    west: { value: 85.1161, source: assumed }
+    north: { value: 25.6151, source: assumed }
+    east: { value: 85.1216, source: assumed }
+    note: Approximate 550 m bounding box used to contain a 275 m radius.
+
+observed_osm:
+  road:
+    name: { value: Boring Road, source: osm, osm_element: way/603915294 }
+    highway: { value: tertiary, source: osm, osm_element: way/603915294 }
+    lanes: { value: 2, source: osm, osm_element: way/603915294 }
+    oneway: { value: "yes", source: osm, osm_element: way/603915294 }
+  center_feature:
+    type: { value: amenity=fountain, source: osm, osm_element: node/13683758749 }
+    mapped_island_boundary:
+      value: unknown
+      source: osm
+      note: No island polygon is identified by the fountain point itself.
+  junction:
+    explicit_type:
+      value: not tagged as roundabout or signalized in the cached extract
+      source: osm
+      note: Missing OSM tags do not establish the real-world control type.
+    signal_presence:
+      value: no mapped signal node within the selected 275 m radius; actual presence unknown
+      source: osm
+      note: Four signal nodes occur in the larger extract, but the nearest is 503.3 m from this center; missing OSM tags are not proof that signals are absent.
+    signal_timing:
+      value: unknown
+      source: osm
+  movements:
+    turn_restrictions:
+      value: unknown
+      source: osm
+      note: No turn bans are inferred from absence in this bounded extract.
+    turn_lane_use:
+      value: unknown
+      source: osm
+      note: The Boring Road ways have a two-lane tag but no lane-specific turn-use tags; netconvert leaves lane index 1 without a generated connection at two approaches.
+  buildings:
+    heights:
+      value: unknown
+      source: osm
+      note: OSM footprints without height tags must not be presented as surveyed heights.
+
+model:
+  lane_counts_for_unmapped_approaches:
+    value: unknown
+    source: osm
+  demand:
+    status: { value: uncalibrated, source: assumed }
+    source: { value: "assumed defaults; no observed counts supplied", source: assumed }
+    disclaimer: { value: "Simulation on real road geometry with assumed demand", source: assumed }
+  sublane_model:
+    enabled: { value: true, source: assumed }
+    lateral_resolution_m: { value: 0.8, source: assumed, note: "Documented sublane resolution for Indian heterogeneous traffic lane sharing" }
+  vehicle_parameters:
+    source: assumed
+    note: Any simulated vehicle dimensions and driver parameters are modeling assumptions.
+  traffic_side:
+    value: left-hand traffic
+    source: assumed
+    note: SUMO network conversion explicitly enables left-hand traffic (--lefthand).
+
+vtypes:
+  car:
+    length: { value: 4.2, source: assumed }
+    width: { value: 1.8, source: assumed }
+    height: { value: 1.5, source: assumed }
+    accel: { value: 2.6, source: assumed }
+    decel: { value: 4.5, source: assumed }
+    max_speed: { value: 14.0, source: assumed }
+    min_gap: { value: 2.0, source: assumed }
+    min_gap_lat: { value: 0.5, source: assumed }
+    lat_alignment: { value: "compact", source: assumed }
+  auto_rickshaw:
+    length: { value: 2.8, source: assumed }
+    width: { value: 1.3, source: assumed }
+    height: { value: 1.8, source: assumed }
+    accel: { value: 2.0, source: assumed }
+    decel: { value: 3.5, source: assumed }
+    max_speed: { value: 11.0, source: assumed }
+    min_gap: { value: 1.5, source: assumed }
+    min_gap_lat: { value: 0.35, source: assumed }
+    lat_alignment: { value: "compact", source: assumed }
+  e_rickshaw:
+    length: { value: 2.6, source: assumed }
+    width: { value: 1.0, source: assumed }
+    height: { value: 1.7, source: assumed }
+    accel: { value: 1.2, source: assumed }
+    decel: { value: 3.0, source: assumed }
+    max_speed: { value: 7.0, source: assumed }
+    min_gap: { value: 1.2, source: assumed }
+    min_gap_lat: { value: 0.3, source: assumed }
+    lat_alignment: { value: "compact", source: assumed }
+  two_wheeler:
+    length: { value: 1.9, source: assumed }
+    width: { value: 0.75, source: assumed }
+    height: { value: 1.2, source: assumed }
+    accel: { value: 3.0, source: assumed }
+    decel: { value: 5.0, source: assumed }
+    max_speed: { value: 15.0, source: assumed }
+    min_gap: { value: 1.0, source: assumed }
+    min_gap_lat: { value: 0.25, source: assumed }
+    lat_alignment: { value: "arbitrary", source: assumed }
+  bus:
+    length: { value: 11.0, source: assumed }
+    width: { value: 2.6, source: assumed }
+    height: { value: 3.2, source: assumed }
+    accel: { value: 1.2, source: assumed }
+    decel: { value: 3.5, source: assumed }
+    max_speed: { value: 10.0, source: assumed }
+    min_gap: { value: 3.0, source: assumed }
+    min_gap_lat: { value: 0.8, source: assumed }
+    lat_alignment: { value: "right", source: assumed }
+  truck:
+    length: { value: 9.0, source: assumed }
+    width: { value: 2.5, source: assumed }
+    height: { value: 3.2, source: assumed }
+    accel: { value: 1.4, source: assumed }
+    decel: { value: 3.8, source: assumed }
+    max_speed: { value: 10.0, source: assumed }
+    min_gap: { value: 3.0, source: assumed }
+    min_gap_lat: { value: 0.8, source: assumed }
+    lat_alignment: { value: "right", source: assumed }
+
+demand_presets:
+  off_peak:
+    label: "Off-Peak Assumed"
+    source: assumed
+    boring_road_north_vph: 450
+    boring_road_south_vph: 450
+    boring_canal_east_vph: 300
+    boring_canal_west_vph: 300
+  peak:
+    label: "Peak Assumed"
+    source: assumed
+    boring_road_north_vph: 950
+    boring_road_south_vph: 900
+    boring_canal_east_vph: 650
+    boring_canal_west_vph: 600
+  heavy:
+    label: "Heavy Congestion Assumed"
+    source: assumed
+    boring_road_north_vph: 1400
+    boring_road_south_vph: 1350
+    boring_canal_east_vph: 950
+    boring_canal_west_vph: 900
+
+control_scenarios:
+  S0:
+    name: "S0 As-is Map-Derived"
+    type: "priority / unmetered"
+    source: osm
+    description: "Derived directly from OSM tags (no traffic signals mapped; junctions operate under priority rules)."
+  S1:
+    name: "S1 Proposed Fixed-Time Signal Plan"
+    type: "fixed_signals"
+    source: assumed
+    description: "Hypothetical conventional signalized redesign for the multi-approach junction complex."
+    cycle_seconds: 90.0
+    phases:
+      - name: "Phase 1: Boring Road North & South Green"
+        green_seconds: 40.0
+        yellow_seconds: 4.0
+        all_red_seconds: 2.0
+      - name: "Phase 2: Boring Canal East & West Green"
+        green_seconds: 38.0
+        yellow_seconds: 4.0
+        all_red_seconds: 2.0
+  S2:
+    name: "S2 Proposed Adaptive Signal Plan"
+    type: "adaptive_optimization"
+    source: assumed
+    description: "Hypothetical adaptive signal plan with dynamic green allocation and conflict matrix verification."
+    min_green_seconds: 10.0
+    max_green_seconds: 60.0
+    yellow_seconds: 4.0
+    all_red_seconds: 2.0
+
+verification:
+  site_identity:
+    value: provisional; awaiting confirmation against docs/sites/boring_road_patna.svg
+    source: assumed
+  geometry:
+    value: OSM centerline geometry cached; island footprint and exact junction limits unverified
+    source: osm
+  network_connectivity:
+    value: passed with assumed lane drop merge patch boring_road_patna.con.xml
+    source: assumed
+

@@ -963,7 +963,7 @@ export default function ApiScanner({
       )}
 
       {scanResult && (
-        <div className="rounded-3xl border border-cyan-500/30 bg-[#0b1221]/95 p-6 shadow-2xl">
+        <div className="rounded-3xl border border-cyan-500/30 bg-[#100b08]/95 p-6 shadow-2xl">
           <div className="flex items-center justify-between gap-3 border-b border-slate-800 pb-4">
             <div className="flex items-center gap-2">
               <ShieldAlert className="h-5 w-5 text-cyan-400" />

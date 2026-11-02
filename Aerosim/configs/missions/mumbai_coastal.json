@@ -1,0 +1,49 @@
+{
+  "mission_name": "Marine Drive Shoreline Inspection",
+  "location": "Mumbai, India",
+  "home_position": {
+    "latitude": 18.9220,
+    "longitude": 72.8347,
+    "altitude_msl": 14.0
+  },
+  "takeoff_altitude_m": 20.0,
+  "cruise_speed_m_s": 6.0,
+  "waypoints": [
+    {
+      "id": 1,
+      "latitude": 18.9235,
+      "longitude": 72.8352,
+      "altitude": 20.0,
+      "speed": 6.0,
+      "loiter_time": 2.0,
+      "action": "WAYPOINT"
+    },
+    {
+      "id": 2,
+      "latitude": 18.9250,
+      "longitude": 72.8360,
+      "altitude": 25.0,
+      "speed": 6.0,
+      "loiter_time": 3.0,
+      "action": "WAYPOINT"
+    },
+    {
+      "id": 3,
+      "latitude": 18.9265,
+      "longitude": 72.8368,
+      "altitude": 25.0,
+      "speed": 6.0,
+      "loiter_time": 2.0,
+      "action": "WAYPOINT"
+    },
+    {
+      "id": 4,
+      "latitude": 18.9220,
+      "longitude": 72.8347,
+      "altitude": 15.0,
+      "speed": 5.0,
+      "loiter_time": 2.0,
+      "action": "RTH"
+    }
+  ]
+}

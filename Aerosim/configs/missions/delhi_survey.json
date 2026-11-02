@@ -1,0 +1,58 @@
+{
+  "mission_name": "New Delhi Central Corridor Survey",
+  "location": "New Delhi, India",
+  "home_position": {
+    "latitude": 28.6129,
+    "longitude": 77.2295,
+    "altitude_msl": 215.0
+  },
+  "takeoff_altitude_m": 15.0,
+  "cruise_speed_m_s": 5.0,
+  "waypoints": [
+    {
+      "id": 1,
+      "latitude": 28.6135,
+      "longitude": 77.2302,
+      "altitude": 15.0,
+      "speed": 5.0,
+      "loiter_time": 3.0,
+      "action": "WAYPOINT"
+    },
+    {
+      "id": 2,
+      "latitude": 28.6142,
+      "longitude": 77.2315,
+      "altitude": 20.0,
+      "speed": 5.0,
+      "loiter_time": 2.0,
+      "action": "WAYPOINT"
+    },
+    {
+      "id": 3,
+      "latitude": 28.6130,
+      "longitude": 77.2325,
+      "altitude": 20.0,
+      "speed": 6.0,
+      "loiter_time": 4.0,
+      "action": "WAYPOINT"
+    },
+    {
+      "id": 4,
+      "latitude": 28.6118,
+      "longitude": 77.2310,
+      "altitude": 18.0,
+      "speed": 5.0,
+      "loiter_time": 2.0,
+      "action": "WAYPOINT"
+    },
+    {
+      "id": 5,
+      "latitude": 28.6129,
+      "longitude": 77.2295,
+      "altitude": 10.0,
+      "speed": 4.0,
+      "loiter_time": 2.0,
+      "action": "RTH"
+    }
+  ]
+}

@@ -1,0 +1,686 @@
+{
+  "allowed_movements_from_netconvert": [
+    {
+      "direction": "r",
+      "from_edge": "-1065482352",
+      "from_lane": 0,
+      "junction_id": "13718180197",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "121070865#8",
+      "to_lane": 0
+    },
+    {
+      "direction": "T",
+      "from_edge": "-1065482352",
+      "from_lane": 0,
+      "junction_id": "13718180197",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "1065482352",
+      "to_lane": 0
+    },
+    {
+      "direction": "s",
+      "from_edge": "-1280783696",
+      "from_lane": 0,
+      "junction_id": "1535219467",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "-140121931#4",
+      "to_lane": 0
+    },
+    {
+      "direction": "r",
+      "from_edge": "-1280783696",
+      "from_lane": 0,
+      "junction_id": "1535219467",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "121070865#5",
+      "to_lane": 0
+    },
+    {
+      "direction": "T",
+      "from_edge": "-1280783696",
+      "from_lane": 0,
+      "junction_id": "1535219467",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "1280783696",
+      "to_lane": 0
+    },
+    {
+      "direction": "r",
+      "from_edge": "1065482352",
+      "from_lane": 0,
+      "junction_id": "13718180198",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "140114355#2",
+      "to_lane": 0
+    },
+    {
+      "direction": "T",
+      "from_edge": "1065482352",
+      "from_lane": 0,
+      "junction_id": "13718180198",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "-1065482352",
+      "to_lane": 0
+    },
+    {
+      "direction": "l",
+      "from_edge": "121070865#4",
+      "from_lane": 0,
+      "junction_id": "1535219467",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "-140121931#4",
+      "to_lane": 0
+    },
+    {
+      "direction": "s",
+      "from_edge": "121070865#4",
+      "from_lane": 0,
+      "junction_id": "1535219467",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "121070865#5",
+      "to_lane": 0
+    },
+    {
+      "direction": "r",
+      "from_edge": "121070865#4",
+      "from_lane": 0,
+      "junction_id": "1535219467",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "1280783696",
+      "to_lane": 0
+    },
+    {
+      "direction": "l",
+      "from_edge": "121070865#5",
+      "from_lane": 0,
+      "junction_id": "6989116503",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "1213506459#0",
+      "to_lane": 0
+    },
+    {
+      "direction": "s",
+      "from_edge": "121070865#5",
+      "from_lane": 0,
+      "junction_id": "6989116503",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "121070865#6",
+      "to_lane": 0
+    },
+    {
+      "direction": "s",
+      "from_edge": "121070865#6",
+      "from_lane": 0,
+      "junction_id": "1535148784",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "121070865#7",
+      "to_lane": 0
+    },
+    {
+      "direction": "s",
+      "from_edge": "121070865#7",
+      "from_lane": 0,
+      "junction_id": "13718180197",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "121070865#8",
+      "to_lane": 0
+    },
+    {
+      "direction": "r",
+      "from_edge": "121070865#7",
+      "from_lane": 0,
+      "junction_id": "13718180197",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "1065482352",
+      "to_lane": 0
+    },
+    {
+      "direction": "r",
+      "from_edge": "1280783696",
+      "from_lane": 0,
+      "junction_id": "13718180199",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "140114355#6",
+      "to_lane": 0
+    },
+    {
+      "direction": "T",
+      "from_edge": "1280783696",
+      "from_lane": 0,
+      "junction_id": "13718180199",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "-1280783696",
+      "to_lane": 0
+    },
+    {
+      "direction": "s",
+      "from_edge": "140114355#1",
+      "from_lane": 0,
+      "junction_id": "13718180198",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "140114355#2",
+      "to_lane": 0
+    },
+    {
+      "direction": "r",
+      "from_edge": "140114355#1",
+      "from_lane": 0,
+      "junction_id": "13718180198",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "-1065482352",
+      "to_lane": 0
+    },
+    {
+      "direction": "l",
+      "from_edge": "140114355#2",
+      "from_lane": 0,
+      "junction_id": "9202200713",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "996598585#0",
+      "to_lane": 0
+    },
+    {
+      "direction": "s",
+      "from_edge": "140114355#2",
+      "from_lane": 0,
+      "junction_id": "9202200713",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "140114355#3",
+      "to_lane": 0
+    },
+    {
+      "direction": "s",
+      "from_edge": "140114355#3",
+      "from_lane": 0,
+      "junction_id": "1535148754",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "140114355#4",
+      "to_lane": 0
+    },
+    {
+      "direction": "s",
+      "from_edge": "140114355#4",
+      "from_lane": 0,
+      "junction_id": "13720104732",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "140114355#5",
+      "to_lane": 0
+    },
+    {
+      "direction": "s",
+      "from_edge": "140114355#5",
+      "from_lane": 0,
+      "junction_id": "13718180199",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "140114355#6",
+      "to_lane": 0
+    },
+    {
+      "direction": "r",
+      "from_edge": "140114355#5",
+      "from_lane": 0,
+      "junction_id": "13718180199",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "-1280783696",
+      "to_lane": 0
+    },
+    {
+      "direction": "l",
+      "from_edge": "140121931#4",
+      "from_lane": 0,
+      "junction_id": "1535219467",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "121070865#5",
+      "to_lane": 0
+    },
+    {
+      "direction": "s",
+      "from_edge": "140121931#4",
+      "from_lane": 0,
+      "junction_id": "1535219467",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "1280783696",
+      "to_lane": 0
+    },
+    {
+      "direction": "T",
+      "from_edge": "140121931#4",
+      "from_lane": 0,
+      "junction_id": "1535219467",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "-140121931#4",
+      "to_lane": 0
+    },
+    {
+      "direction": "l",
+      "from_edge": "1498127570",
+      "from_lane": 0,
+      "junction_id": "13720104732",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "140114355#5",
+      "to_lane": 0
+    },
+    {
+      "direction": "L",
+      "from_edge": "603915294#10",
+      "from_lane": 0,
+      "junction_id": "13720104731",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "1498127570",
+      "to_lane": 0
+    },
+    {
+      "direction": "s",
+      "from_edge": "603915294#10",
+      "from_lane": 0,
+      "junction_id": "13720104731",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "603915294#11",
+      "to_lane": 0
+    },
+    {
+      "direction": "s",
+      "from_edge": "603915294#10",
+      "from_lane": 1,
+      "junction_id": "13720104731",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "603915294#11",
+      "to_lane": 1
+    },
+    {
+      "direction": "l",
+      "from_edge": "603915294#11",
+      "from_lane": 0,
+      "junction_id": "1535148754",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "140114355#4",
+      "to_lane": 0
+    },
+    {
+      "direction": "l",
+      "from_edge": "603915294#11",
+      "from_lane": 1,
+      "junction_id": "1535148754",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "140114355#4",
+      "to_lane": 0
+    },
+    {
+      "direction": "l",
+      "from_edge": "746885310#4",
+      "from_lane": 0,
+      "junction_id": "1535148784",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "121070865#7",
+      "to_lane": 0
+    },
+    {
+      "direction": "l",
+      "from_edge": "746885310#4",
+      "from_lane": 1,
+      "junction_id": "1535148784",
+      "signal_id": null,
+      "signal_link_index": null,
+      "to_edge": "121070865#7",
+      "to_lane": 0
+    }
+  ],
+  "approach_lanes": [
+    {
+      "edge_id": "-1065482352",
+      "highway": "secondary_link",
+      "junction_id": "13718180197",
+      "lane_count_source": "assumed",
+      "oneway": null,
+      "osm_lanes": null,
+      "osm_way_id": "1065482352",
+      "road_name": null,
+      "sumo_lanes": 1
+    },
+    {
+      "edge_id": "-1280783696",
+      "highway": "secondary_link",
+      "junction_id": "1535219467",
+      "lane_count_source": "assumed",
+      "oneway": null,
+      "osm_lanes": null,
+      "osm_way_id": "1280783696",
+      "road_name": null,
+      "sumo_lanes": 1
+    },
+    {
+      "edge_id": "1065482352",
+      "highway": "secondary_link",
+      "junction_id": "13718180198",
+      "lane_count_source": "assumed",
+      "oneway": null,
+      "osm_lanes": null,
+      "osm_way_id": "1065482352",
+      "road_name": null,
+      "sumo_lanes": 1
+    },
+    {
+      "edge_id": "121070865#4",
+      "highway": "secondary",
+      "junction_id": "1535219467",
+      "lane_count_source": "assumed",
+      "oneway": "yes",
+      "osm_lanes": null,
+      "osm_way_id": "121070865",
+      "road_name": "East Boring Canal Road",
+      "sumo_lanes": 1
+    },
+    {
+      "edge_id": "121070865#5",
+      "highway": "secondary",
+      "junction_id": "6989116503",
+      "lane_count_source": "assumed",
+      "oneway": "yes",
+      "osm_lanes": null,
+      "osm_way_id": "121070865",
+      "road_name": "East Boring Canal Road",
+      "sumo_lanes": 1
+    },
+    {
+      "edge_id": "121070865#6",
+      "highway": "secondary",
+      "junction_id": "1535148784",
+      "lane_count_source": "assumed",
+      "oneway": "yes",
+      "osm_lanes": null,
+      "osm_way_id": "121070865",
+      "road_name": "East Boring Canal Road",
+      "sumo_lanes": 1
+    },
+    {
+      "edge_id": "121070865#7",
+      "highway": "secondary",
+      "junction_id": "13718180197",
+      "lane_count_source": "assumed",
+      "oneway": "yes",
+      "osm_lanes": null,
+      "osm_way_id": "121070865",
+      "road_name": "East Boring Canal Road",
+      "sumo_lanes": 1
+    },
+    {
+      "edge_id": "1280783696",
+      "highway": "secondary_link",
+      "junction_id": "13718180199",
+      "lane_count_source": "assumed",
+      "oneway": null,
+      "osm_lanes": null,
+      "osm_way_id": "1280783696",
+      "road_name": null,
+      "sumo_lanes": 1
+    },
+    {
+      "edge_id": "140114355#1",
+      "highway": "secondary",
+      "junction_id": "13718180198",
+      "lane_count_source": "assumed",
+      "oneway": "yes",
+      "osm_lanes": null,
+      "osm_way_id": "140114355",
+      "road_name": "West Boring Canal Road",
+      "sumo_lanes": 1
+    },
+    {
+      "edge_id": "140114355#2",
+      "highway": "secondary",
+      "junction_id": "9202200713",
+      "lane_count_source": "assumed",
+      "oneway": "yes",
+      "osm_lanes": null,
+      "osm_way_id": "140114355",
+      "road_name": "West Boring Canal Road",
+      "sumo_lanes": 1
+    },
+    {
+      "edge_id": "140114355#3",
+      "highway": "secondary",
+      "junction_id": "1535148754",
+      "lane_count_source": "assumed",
+      "oneway": "yes",
+      "osm_lanes": null,
+      "osm_way_id": "140114355",
+      "road_name": "West Boring Canal Road",
+      "sumo_lanes": 1
+    },
+    {
+      "edge_id": "140114355#4",
+      "highway": "secondary",
+      "junction_id": "13720104732",
+      "lane_count_source": "assumed",
+      "oneway": "yes",
+      "osm_lanes": null,
+      "osm_way_id": "140114355",
+      "road_name": "West Boring Canal Road",
+      "sumo_lanes": 1
+    },
+    {
+      "edge_id": "140114355#5",
+      "highway": "secondary",
+      "junction_id": "13718180199",
+      "lane_count_source": "assumed",
+      "oneway": "yes",
+      "osm_lanes": null,
+      "osm_way_id": "140114355",
+      "road_name": "West Boring Canal Road",
+      "sumo_lanes": 1
+    },
+    {
+      "edge_id": "140121931#4",
+      "highway": "residential",
+      "junction_id": "1535219467",
+      "lane_count_source": "assumed",
+      "oneway": null,
+      "osm_lanes": null,
+      "osm_way_id": "140121931",
+      "road_name": null,
+      "sumo_lanes": 1
+    },
+    {
+      "edge_id": "1498127570",
+      "highway": "secondary_link",
+      "junction_id": "13720104732",
+      "lane_count_source": "assumed",
+      "oneway": "yes",
+      "osm_lanes": null,
+      "osm_way_id": "1498127570",
+      "road_name": null,
+      "sumo_lanes": 1
+    },
+    {
+      "edge_id": "603915294#10",
+      "highway": "tertiary",
+      "junction_id": "13720104731",
+      "lane_count_source": "osm",
+      "oneway": "yes",
+      "osm_lanes": 2,
+      "osm_way_id": "603915294",
+      "road_name": "Boring Road",
+      "sumo_lanes": 2
+    },
+    {
+      "edge_id": "603915294#11",
+      "highway": "tertiary",
+      "junction_id": "1535148754",
+      "lane_count_source": "osm",
+      "oneway": "yes",
+      "osm_lanes": 2,
+      "osm_way_id": "603915294",
+      "road_name": "Boring Road",
+      "sumo_lanes": 2
+    },
+    {
+      "edge_id": "746885310#4",
+      "highway": "tertiary",
+      "junction_id": "1535148784",
+      "lane_count_source": "osm",
+      "oneway": "yes",
+      "osm_lanes": 2,
+      "osm_way_id": "746885310",
+      "road_name": "Boring Road",
+      "sumo_lanes": 2
+    }
+  ],
+  "attribution": "\u00a9 OpenStreetMap contributors",
+  "center": {
+    "latitude": 25.6126047,
+    "longitude": 85.1188289
+  },
+  "connectivity": {
+    "incoming_lanes_checked": 152,
+    "incoming_lanes_without_movement": [],
+    "junctions_checked": 68,
+    "method": "Each imported incoming lane at an internal junction in the site radius must have at least one generated SUMO connection.",
+    "passes": true
+  },
+  "conversion_options": [
+    "--lefthand",
+    "--roundabouts.guess",
+    "--junctions.join",
+    "--junctions.join-dist 10",
+    "--proj.utm",
+    "--keep-edges.in-geo-boundary <48-vertex 275 m circle>",
+    "--connection-files boring_road_patna.con.xml (assumed merge patch for Boring Road lane drops)"
+  ],
+  "geometry_alignment": {
+    "comparison": "SUMO lane shape vertices to closest OSM highway centerline segment in UTM meters; this is a geometric discrepancy measure, not ground-truth accuracy.",
+    "lane_shape_vertices_checked": 688,
+    "lane_width_tag_counts": {
+      "assumed": 200,
+      "osm": 0
+    },
+    "maximum_lane_vertex_to_nearest_osm_road_segment_m": 1.895,
+    "p95_lane_vertex_to_nearest_osm_road_segment_m": 1.616,
+    "width_provenance_note": "SUMO width defaults are not treated as surveyed widths; widths without explicit OSM tags remain assumed."
+  },
+  "netconvert_version": "Eclipse SUMO netconvert 1.28.0",
+  "netconvert_warnings": [
+    "Warning: Not joining junctions 12079485436,12079485440,12079653513,12079653514 (only 1 entry node).",
+    "Warning: Not joining junctions 1535148754,9202200713 (only 1 edge within and no cross-traffic).",
+    "Warning: Not joining junctions 14137447802,9199233299 (only 1 entry node).",
+    "Warning: Not joining junctions 1535148784,6989116503 (only 1 edge within and no cross-traffic).",
+    "Warning: Not joining junctions 1535219559,9199233314 (parallel incoming -1552919495,996228844).",
+    "Warning: Speed of straight connection '746885301#1_0->746885301#2_0' reduced by 14.37 due to turning radius of 32.70 (length=3.72, angle=21.68).",
+    "Warning: 7 total messages of type: Not joining junctions % (%)."
+  ],
+  "network_file": "data/sites/boring_road_patna.net.xml",
+  "osm_control_evidence": {
+    "center_feature": "amenity=fountain at OSM node 13683758749",
+    "classification": "unclassified in OSM; missing tags do not establish real-world control",
+    "island_boundary": "not mapped by the fountain point; unknown",
+    "roundabout_way_ids": [],
+    "signal_nodes_within_radius": []
+  },
+  "osm_download_date": "2026-10-28",
+  "projection": "EPSG:32645",
+  "radius_m": 275.0,
+  "site_id": "boring_road_patna",
+  "source_file": "data/sites/boring_road_patna_2026-10-28.osm",
+  "sumo_nearest_junction": {
+    "component_junctions_within_50m": [
+      {
+        "distance_m": 8.52,
+        "id": "9202200713",
+        "incoming_lanes": 1,
+        "type": "priority"
+      },
+      {
+        "distance_m": 9.04,
+        "id": "1535148754",
+        "incoming_lanes": 3,
+        "type": "priority"
+      },
+      {
+        "distance_m": 15.62,
+        "id": "6989116503",
+        "incoming_lanes": 1,
+        "type": "priority"
+      },
+      {
+        "distance_m": 20.03,
+        "id": "1535148784",
+        "incoming_lanes": 3,
+        "type": "priority"
+      },
+      {
+        "distance_m": 24.85,
+        "id": "13720104732",
+        "incoming_lanes": 2,
+        "type": "priority"
+      },
+      {
+        "distance_m": 35.62,
+        "id": "13718180199",
+        "incoming_lanes": 2,
+        "type": "priority"
+      },
+      {
+        "distance_m": 37.34,
+        "id": "13718180198",
+        "incoming_lanes": 2,
+        "type": "priority"
+      },
+      {
+        "distance_m": 37.47,
+        "id": "1535219467",
+        "incoming_lanes": 3,
+        "type": "priority"
+      },
+      {
+        "distance_m": 39.47,
+        "id": "13718180197",
+        "incoming_lanes": 2,
+        "type": "priority"
+      },
+      {
+        "distance_m": 45.79,
+        "id": "13720104731",
+        "incoming_lanes": 2,
+        "type": "priority"
+      }
+    ],
+    "distance_from_candidate_center_m": 8.52,
+    "id": "9202200713",
+    "type": "priority"
+  }
+}

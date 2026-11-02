@@ -1,0 +1,17 @@
+<edges>
+    <!-- North Approach -->
+    <edge id="edge_N_in" from="node_N" to="junction_center" priority="75" numLanes="2" speed="13.89"/>
+    <edge id="edge_N_out" from="junction_center" to="node_N" priority="75" numLanes="2" speed="13.89"/>
+
+    <!-- South Approach -->
+    <edge id="edge_S_in" from="node_S" to="junction_center" priority="75" numLanes="2" speed="13.89"/>
+    <edge id="edge_S_out" from="junction_center" to="node_S" priority="75" numLanes="2" speed="13.89"/>
+
+    <!-- East Approach -->
+    <edge id="edge_E_in" from="node_E" to="junction_center" priority="70" numLanes="2" speed="13.89"/>
+    <edge id="edge_E_out" from="junction_center" to="node_E" priority="70" numLanes="2" speed="13.89"/>
+
+    <!-- West Approach -->
+    <edge id="edge_W_in" from="node_W" to="junction_center" priority="70" numLanes="2" speed="13.89"/>
+    <edge id="edge_W_out" from="junction_center" to="node_W" priority="70" numLanes="2" speed="13.89"/>
+</edges>

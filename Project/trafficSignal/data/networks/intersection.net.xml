@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2026-11-01T15:51:17.158480+05:30 by Eclipse SUMO netconvert 1.28.0
+<netconvertConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <node-files value="/Users/adityakumar/Documents/VSCODE/Project/trafficSignal/data/networks/intersection.nod.xml"/>
+        <edge-files value="/Users/adityakumar/Documents/VSCODE/Project/trafficSignal/data/networks/intersection.edg.xml"/>
+        <connection-files value="/Users/adityakumar/Documents/VSCODE/Project/trafficSignal/data/networks/intersection.con.xml"/>
+        <tllogic-files value="/Users/adityakumar/Documents/VSCODE/Project/trafficSignal/data/networks/intersection.tll.xml"/>
+    </input>
+
+    <output>
+        <output-file value="/Users/adityakumar/Documents/VSCODE/Project/trafficSignal/data/networks/intersection.net.xml"/>
+    </output>
+
+    <processing>
+        <offset.disable-normalization value="true"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+    </junctions>
+
+</netconvertConfiguration>
+-->
+
+<net version="1.20" junctionCornerDetail="5" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="-250.00,-250.00,250.00,250.00" origBoundary="-250.00,-250.00,250.00,250.00" projParameter="!"/>
+
+    <edge id=":junction_center_0" function="internal">
+        <lane id=":junction_center_0_0" index="0" speed="6.51" length="9.03" shape="-4.80,10.40 -5.15,7.95 -6.20,6.20 -7.95,5.15 -10.40,4.80"/>
+    </edge>
+    <edge id=":junction_center_1" function="internal">
+        <lane id=":junction_center_1_0" index="0" speed="13.89" length="20.80" shape="-4.80,10.40 -4.80,-10.40"/>
+    </edge>
+    <edge id=":junction_center_2" function="internal">
+        <lane id=":junction_center_2_0" index="0" speed="9.26" length="10.42" shape="-1.60,10.40 -0.85,5.15 1.40,1.40 2.04,1.02"/>
+    </edge>
+    <edge id=":junction_center_12" function="internal">
+        <lane id=":junction_center_12_0" index="0" speed="9.26" length="8.93" shape="2.04,1.02 5.15,-0.85 10.40,-1.60"/>
+    </edge>
+    <edge id=":junction_center_3" function="internal">
+        <lane id=":junction_center_3_0" index="0" speed="6.51" length="9.03" shape="10.40,4.80 7.95,5.15 6.20,6.20 5.15,7.95 4.80,10.40"/>
+    </edge>
+    <edge id=":junction_center_4" function="internal">
+        <lane id=":junction_center_4_0" index="0" speed="13.89" length="20.80" shape="10.40,4.80 -10.40,4.80"/>
+    </edge>
+    <edge id=":junction_center_5" function="internal">
+        <lane id=":junction_center_5_0" index="0" speed="9.26" length="10.42" shape="10.40,1.60 5.15,0.85 1.40,-1.40 1.02,-2.04"/>
+    </edge>
+    <edge id=":junction_center_13" function="internal">
+        <lane id=":junction_center_13_0" index="0" speed="9.26" length="8.93" shape="1.02,-2.04 -0.85,-5.15 -1.60,-10.40"/>
+    </edge>
+    <edge id=":junction_center_6" function="internal">
+        <lane id=":junction_center_6_0" index="0" speed="6.51" length="9.03" shape="4.80,-10.40 5.15,-7.95 6.20,-6.20 7.95,-5.15 10.40,-4.80"/>
+    </edge>
+    <edge id=":junction_center_7" function="internal">
+        <lane id=":junction_center_7_0" index="0" speed="13.89" length="20.80" shape="4.80,-10.40 4.80,10.40"/>
+    </edge>
+    <edge id=":junction_center_8" function="internal">
+        <lane id=":junction_center_8_0" index="0" speed="9.26" length="10.42" shape="1.60,-10.40 0.85,-5.15 -1.40,-1.40 -2.04,-1.02"/>
+    </edge>
+    <edge id=":junction_center_14" function="internal">
+        <lane id=":junction_center_14_0" index="0" speed="9.26" length="8.93" shape="-2.04,-1.02 -5.15,0.85 -10.40,1.60"/>
+    </edge>
+    <edge id=":junction_center_9" function="internal">
+        <lane id=":junction_center_9_0" index="0" speed="6.51" length="9.03" shape="-10.40,-4.80 -7.95,-5.15 -6.20,-6.20 -5.15,-7.95 -4.80,-10.40"/>
+    </edge>
+    <edge id=":junction_center_10" function="internal">
+        <lane id=":junction_center_10_0" index="0" speed="13.89" length="20.80" shape="-10.40,-4.80 10.40,-4.80"/>
+    </edge>
+    <edge id=":junction_center_11" function="internal">
+        <lane id=":junction_center_11_0" index="0" speed="9.26" length="10.42" shape="-10.40,-1.60 -5.15,-0.85 -1.40,1.40 -1.02,2.04"/>
+    </edge>
+    <edge id=":junction_center_15" function="internal">
+        <lane id=":junction_center_15_0" index="0" speed="9.26" length="8.93" shape="-1.02,2.04 0.85,5.15 1.60,10.40"/>
+    </edge>
+
+    <edge id="edge_E_in" from="node_E" to="junction_center" priority="70">
+        <lane id="edge_E_in_0" index="0" speed="13.89" length="239.60" shape="250.00,4.80 10.40,4.80"/>
+        <lane id="edge_E_in_1" index="1" speed="13.89" length="239.60" shape="250.00,1.60 10.40,1.60"/>
+    </edge>
+    <edge id="edge_E_out" from="junction_center" to="node_E" priority="70">
+        <lane id="edge_E_out_0" index="0" speed="13.89" length="239.60" shape="10.40,-4.80 250.00,-4.80"/>
+        <lane id="edge_E_out_1" index="1" speed="13.89" length="239.60" shape="10.40,-1.60 250.00,-1.60"/>
+    </edge>
+    <edge id="edge_N_in" from="node_N" to="junction_center" priority="75">
+        <lane id="edge_N_in_0" index="0" speed="13.89" length="239.60" shape="-4.80,250.00 -4.80,10.40"/>
+        <lane id="edge_N_in_1" index="1" speed="13.89" length="239.60" shape="-1.60,250.00 -1.60,10.40"/>
+    </edge>
+    <edge id="edge_N_out" from="junction_center" to="node_N" priority="75">
+        <lane id="edge_N_out_0" index="0" speed="13.89" length="239.60" shape="4.80,10.40 4.80,250.00"/>
+        <lane id="edge_N_out_1" index="1" speed="13.89" length="239.60" shape="1.60,10.40 1.60,250.00"/>
+    </edge>
+    <edge id="edge_S_in" from="node_S" to="junction_center" priority="75">
+        <lane id="edge_S_in_0" index="0" speed="13.89" length="239.60" shape="4.80,-250.00 4.80,-10.40"/>
+        <lane id="edge_S_in_1" index="1" speed="13.89" length="239.60" shape="1.60,-250.00 1.60,-10.40"/>
+    </edge>
+    <edge id="edge_S_out" from="junction_center" to="node_S" priority="75">
+        <lane id="edge_S_out_0" index="0" speed="13.89" length="239.60" shape="-4.80,-10.40 -4.80,-250.00"/>
+        <lane id="edge_S_out_1" index="1" speed="13.89" length="239.60" shape="-1.60,-10.40 -1.60,-250.00"/>
+    </edge>
+    <edge id="edge_W_in" from="node_W" to="junction_center" priority="70">
+        <lane id="edge_W_in_0" index="0" speed="13.89" length="239.60" shape="-250.00,-4.80 -10.40,-4.80"/>
+        <lane id="edge_W_in_1" index="1" speed="13.89" length="239.60" shape="-250.00,-1.60 -10.40,-1.60"/>
+    </edge>
+    <edge id="edge_W_out" from="junction_center" to="node_W" priority="70">
+        <lane id="edge_W_out_0" index="0" speed="13.89" length="239.60" shape="-10.40,4.80 -250.00,4.80"/>
+        <lane id="edge_W_out_1" index="1" speed="13.89" length="239.60" shape="-10.40,1.60 -250.00,1.60"/>
+    </edge>
+
+    <tlLogic id="junction_center" type="static" programID="0" offset="0">
+        <phase duration="30" state="GGgrrrGGgrrr"/>
+        <phase duration="4"  state="yyyrrryyyrrr"/>
+        <phase duration="2"  state="rrrrrrrrrrrr"/>
+        <phase duration="25" state="rrrGGgrrrGGg"/>
+        <phase duration="4"  state="rrryyyrrryyy"/>
+        <phase duration="2"  state="rrrrrrrrrrrr"/>
+    </tlLogic>
+
+    <junction id="junction_center" type="traffic_light" x="0.00" y="0.00" incLanes="edge_N_in_0 edge_N_in_1 edge_E_in_0 edge_E_in_1 edge_S_in_0 edge_S_in_1 edge_W_in_0 edge_W_in_1" intLanes=":junction_center_0_0 :junction_center_1_0 :junction_center_12_0 :junction_center_3_0 :junction_center_4_0 :junction_center_13_0 :junction_center_6_0 :junction_center_7_0 :junction_center_14_0 :junction_center_9_0 :junction_center_10_0 :junction_center_15_0" shape="-6.40,10.40 6.40,10.40 6.84,8.18 7.40,7.40 8.18,6.84 9.18,6.51 10.40,6.40 10.40,-6.40 8.18,-6.84 7.40,-7.40 6.84,-8.18 6.51,-9.18 6.40,-10.40 -6.40,-10.40 -6.84,-8.18 -7.40,-7.40 -8.18,-6.84 -9.18,-6.51 -10.40,-6.40 -10.40,6.40 -8.18,6.84 -7.40,7.40 -6.84,8.18 -6.51,9.18">
+        <request index="0"  response="000000000000" foes="000000010000" cont="0"/>
+        <request index="1"  response="100000000000" foes="111100010000" cont="0"/>
+        <request index="2"  response="100010100000" foes="100010110000" cont="1"/>
+        <request index="3"  response="000010000000" foes="000010000000" cont="0"/>
+        <request index="4"  response="000010000111" foes="100010000111" cont="0"/>
+        <request index="5"  response="010110000100" foes="010110000100" cont="1"/>
+        <request index="6"  response="000000000000" foes="010000000000" cont="0"/>
+        <request index="7"  response="000000100000" foes="010000111100" cont="0"/>
+        <request index="8"  response="100000100010" foes="110000100010" cont="1"/>
+        <request index="9"  response="000000000010" foes="000000000010" cont="0"/>
+        <request index="10" response="000111000010" foes="000111100010" cont="0"/>
+        <request index="11" response="000100010110" foes="000100010110" cont="1"/>
+    </junction>
+    <junction id="node_E" type="dead_end" x="250.00" y="0.00" incLanes="edge_E_out_0 edge_E_out_1" intLanes="" shape="250.00,0.00 250.00,-6.40 250.00,0.00"/>
+    <junction id="node_N" type="dead_end" x="0.00" y="250.00" incLanes="edge_N_out_0 edge_N_out_1" intLanes="" shape="0.00,250.00 6.40,250.00 0.00,250.00"/>
+    <junction id="node_S" type="dead_end" x="0.00" y="-250.00" incLanes="edge_S_out_0 edge_S_out_1" intLanes="" shape="0.00,-250.00 -6.40,-250.00 0.00,-250.00"/>
+    <junction id="node_W" type="dead_end" x="-250.00" y="0.00" incLanes="edge_W_out_0 edge_W_out_1" intLanes="" shape="-250.00,0.00 -250.00,6.40 -250.00,0.00"/>
+
+    <junction id=":junction_center_12_0" type="internal" x="2.04" y="1.02" incLanes=":junction_center_2_0 edge_S_in_0" intLanes=":junction_center_4_0 :junction_center_5_0 :junction_center_6_0 :junction_center_7_0 :junction_center_10_0 :junction_center_11_0"/>
+    <junction id=":junction_center_13_0" type="internal" x="1.02" y="-2.04" incLanes=":junction_center_5_0 edge_W_in_0" intLanes=":junction_center_1_0 :junction_center_2_0 :junction_center_7_0 :junction_center_8_0 :junction_center_9_0 :junction_center_10_0"/>
+    <junction id=":junction_center_14_0" type="internal" x="-2.04" y="-1.02" incLanes=":junction_center_8_0 edge_N_in_0" intLanes=":junction_center_0_0 :junction_center_1_0 :junction_center_4_0 :junction_center_5_0 :junction_center_10_0 :junction_center_11_0"/>
+    <junction id=":junction_center_15_0" type="internal" x="-1.02" y="2.04" incLanes=":junction_center_11_0 edge_E_in_0" intLanes=":junction_center_1_0 :junction_center_2_0 :junction_center_3_0 :junction_center_4_0 :junction_center_7_0 :junction_center_8_0"/>
+
+    <connection from="edge_E_in" to="edge_N_out" fromLane="0" toLane="0" via=":junction_center_3_0" tl="junction_center" linkIndex="3" dir="r" state="o"/>
+    <connection from="edge_E_in" to="edge_W_out" fromLane="0" toLane="0" via=":junction_center_4_0" tl="junction_center" linkIndex="4" dir="s" state="o"/>
+    <connection from="edge_E_in" to="edge_S_out" fromLane="1" toLane="1" via=":junction_center_5_0" tl="junction_center" linkIndex="5" dir="l" state="o"/>
+    <connection from="edge_N_in" to="edge_W_out" fromLane="0" toLane="0" via=":junction_center_0_0" tl="junction_center" linkIndex="0" dir="r" state="O"/>
+    <connection from="edge_N_in" to="edge_S_out" fromLane="0" toLane="0" via=":junction_center_1_0" tl="junction_center" linkIndex="1" dir="s" state="O"/>
+    <connection from="edge_N_in" to="edge_E_out" fromLane="1" toLane="1" via=":junction_center_2_0" tl="junction_center" linkIndex="2" dir="l" state="o"/>
+    <connection from="edge_S_in" to="edge_E_out" fromLane="0" toLane="0" via=":junction_center_6_0" tl="junction_center" linkIndex="6" dir="r" state="O"/>
+    <connection from="edge_S_in" to="edge_N_out" fromLane="0" toLane="0" via=":junction_center_7_0" tl="junction_center" linkIndex="7" dir="s" state="O"/>
+    <connection from="edge_S_in" to="edge_W_out" fromLane="1" toLane="1" via=":junction_center_8_0" tl="junction_center" linkIndex="8" dir="l" state="o"/>
+    <connection from="edge_W_in" to="edge_S_out" fromLane="0" toLane="0" via=":junction_center_9_0" tl="junction_center" linkIndex="9" dir="r" state="o"/>
+    <connection from="edge_W_in" to="edge_E_out" fromLane="0" toLane="0" via=":junction_center_10_0" tl="junction_center" linkIndex="10" dir="s" state="o"/>
+    <connection from="edge_W_in" to="edge_N_out" fromLane="1" toLane="1" via=":junction_center_11_0" tl="junction_center" linkIndex="11" dir="l" state="o"/>
+
+    <connection from=":junction_center_0" to="edge_W_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":junction_center_1" to="edge_S_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":junction_center_2" to="edge_E_out" fromLane="0" toLane="1" via=":junction_center_12_0" dir="l" state="m"/>
+    <connection from=":junction_center_12" to="edge_E_out" fromLane="0" toLane="1" dir="l" state="M"/>
+    <connection from=":junction_center_3" to="edge_N_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":junction_center_4" to="edge_W_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":junction_center_5" to="edge_S_out" fromLane="0" toLane="1" via=":junction_center_13_0" dir="l" state="m"/>
+    <connection from=":junction_center_13" to="edge_S_out" fromLane="0" toLane="1" dir="l" state="M"/>
+    <connection from=":junction_center_6" to="edge_E_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":junction_center_7" to="edge_N_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":junction_center_8" to="edge_W_out" fromLane="0" toLane="1" via=":junction_center_14_0" dir="l" state="m"/>
+    <connection from=":junction_center_14" to="edge_W_out" fromLane="0" toLane="1" dir="l" state="M"/>
+    <connection from=":junction_center_9" to="edge_S_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":junction_center_10" to="edge_E_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":junction_center_11" to="edge_N_out" fromLane="0" toLane="1" via=":junction_center_15_0" dir="l" state="m"/>
+    <connection from=":junction_center_15" to="edge_N_out" fromLane="0" toLane="1" dir="l" state="M"/>
+
+</net>

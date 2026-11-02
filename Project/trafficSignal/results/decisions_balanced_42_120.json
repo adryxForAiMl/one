@@ -1,0 +1,28 @@
+[
+  {
+    "queues_ns": 3.0,
+    "queues_ew": 7.0,
+    "arrival_rates_ns": 0.43137254901960786,
+    "arrival_rates_ew": 0.2549019607843137,
+    "estimate_source": "Gauss-Jordan detector estimate",
+    "estimate_status": "unique",
+    "green_ns": 49.02857146582433,
+    "green_ew": 28.971428608681475,
+    "reason": "minimize measured queue delay; Gauss-Jordan detector estimate (unique)",
+    "optimizer": "SLSQP",
+    "optimizer_status": "SLSQP converged: Optimization terminated successfully"
+  },
+  {
+    "queues_ns": 16.0,
+    "queues_ew": 0.0,
+    "arrival_rates_ns": 0.5142857142857142,
+    "arrival_rates_ew": 0.3142857142857143,
+    "estimate_source": "Gauss-Jordan detector estimate",
+    "estimate_status": "unique",
+    "green_ns": 48.41379313864584,
+    "green_ew": 29.586206931749295,
+    "reason": "minimize measured queue delay; Gauss-Jordan detector estimate (unique)",
+    "optimizer": "SLSQP",
+    "optimizer_status": "SLSQP converged: Optimization terminated successfully"
+  }
+]

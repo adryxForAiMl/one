@@ -1,0 +1,33 @@
+<additional>
+    <!-- North Inflow Detectors -->
+    <inductionLoop id="det_N_advance_0" lane="edge_N_in_0" pos="50.0" freq="1.0" file="det_out.xml"/>
+    <inductionLoop id="det_N_advance_1" lane="edge_N_in_1" pos="50.0" freq="1.0" file="det_out.xml"/>
+    <inductionLoop id="det_N_stop_0"    lane="edge_N_in_0" pos="-10.0" freq="1.0" file="det_out.xml"/>
+    <inductionLoop id="det_N_stop_1"    lane="edge_N_in_1" pos="-10.0" freq="1.0" file="det_out.xml"/>
+    <laneAreaDetector id="e2_N_0" lane="edge_N_in_0" pos="30.0" length="180.0" freq="1.0" file="det_e2.xml"/>
+    <laneAreaDetector id="e2_N_1" lane="edge_N_in_1" pos="30.0" length="180.0" freq="1.0" file="det_e2.xml"/>
+
+    <!-- South Inflow Detectors -->
+    <inductionLoop id="det_S_advance_0" lane="edge_S_in_0" pos="50.0" freq="1.0" file="det_out.xml"/>
+    <inductionLoop id="det_S_advance_1" lane="edge_S_in_1" pos="50.0" freq="1.0" file="det_out.xml"/>
+    <inductionLoop id="det_S_stop_0"    lane="edge_S_in_0" pos="-10.0" freq="1.0" file="det_out.xml"/>
+    <inductionLoop id="det_S_stop_1"    lane="edge_S_in_1" pos="-10.0" freq="1.0" file="det_out.xml"/>
+    <laneAreaDetector id="e2_S_0" lane="edge_S_in_0" pos="30.0" length="180.0" freq="1.0" file="det_e2.xml"/>
+    <laneAreaDetector id="e2_S_1" lane="edge_S_in_1" pos="30.0" length="180.0" freq="1.0" file="det_e2.xml"/>
+
+    <!-- East Inflow Detectors -->
+    <inductionLoop id="det_E_advance_0" lane="edge_E_in_0" pos="50.0" freq="1.0" file="det_out.xml"/>
+    <inductionLoop id="det_E_advance_1" lane="edge_E_in_1" pos="50.0" freq="1.0" file="det_out.xml"/>
+    <inductionLoop id="det_E_stop_0"    lane="edge_E_in_0" pos="-10.0" freq="1.0" file="det_out.xml"/>
+    <inductionLoop id="det_E_stop_1"    lane="edge_E_in_1" pos="-10.0" freq="1.0" file="det_out.xml"/>
+    <laneAreaDetector id="e2_E_0" lane="edge_E_in_0" pos="30.0" length="180.0" freq="1.0" file="det_e2.xml"/>
+    <laneAreaDetector id="e2_E_1" lane="edge_E_in_1" pos="30.0" length="180.0" freq="1.0" file="det_e2.xml"/>
+
+    <!-- West Inflow Detectors -->
+    <inductionLoop id="det_W_advance_0" lane="edge_W_in_0" pos="50.0" freq="1.0" file="det_out.xml"/>
+    <inductionLoop id="det_W_advance_1" lane="edge_W_in_1" pos="50.0" freq="1.0" file="det_out.xml"/>
+    <inductionLoop id="det_W_stop_0"    lane="edge_W_in_0" pos="-10.0" freq="1.0" file="det_out.xml"/>
+    <inductionLoop id="det_W_stop_1"    lane="edge_W_in_1" pos="-10.0" freq="1.0" file="det_out.xml"/>
+    <laneAreaDetector id="e2_W_0" lane="edge_W_in_0" pos="30.0" length="180.0" freq="1.0" file="det_e2.xml"/>
+    <laneAreaDetector id="e2_W_1" lane="edge_W_in_1" pos="30.0" length="180.0" freq="1.0" file="det_e2.xml"/>
+</additional>

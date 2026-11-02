@@ -1,0 +1,16 @@
+<tlLogics>
+    <tlLogic id="junction_center" type="static" programID="0" offset="0">
+        <!-- Phase 0: North-South Green (30s) -->
+        <phase duration="30" state="GGgrrrGGgrrr"/>
+        <!-- Phase 1: North-South Yellow (4s) -->
+        <phase duration="4"  state="yyyrrryyyrrr"/>
+        <!-- Phase 2: All-Red Clearance (2s) -->
+        <phase duration="2"  state="rrrrrrrrrrrr"/>
+        <!-- Phase 3: East-West Green (25s) -->
+        <phase duration="25" state="rrrGGgrrrGGg"/>
+        <!-- Phase 4: East-West Yellow (4s) -->
+        <phase duration="4"  state="rrryyyrrryyy"/>
+        <!-- Phase 5: All-Red Clearance (2s) -->
+        <phase duration="2"  state="rrrrrrrrrrrr"/>
+    </tlLogic>
+</tlLogics>

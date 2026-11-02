@@ -1,0 +1,21 @@
+location,rainfall_mm,soil_moisture_percent,slope_degree,elevation_m,previous_landslide,Risk_Level,Probability_%,Prediction,Factor_of_Safety,Alert_Stage,Recommendation
+Sikkim,180,82,42,1450,1,CRITICAL,89.7,1,0.91,STAGE 3: EVACUATION ORDER,IMMEDIATE EVACUATION of downslope settlements. Severe debris flow / catastrophic failure imminent.
+Sikkim,75,48,18,1200,0,LOW,6.4,0,2.31,STAGE 0: NORMAL,Routine observation. Slopes appear stable under current meteorological conditions.
+Arunachal Pradesh,220,90,48,1800,1,CRITICAL,93.1,1,0.81,STAGE 3: EVACUATION ORDER,IMMEDIATE EVACUATION of downslope settlements. Severe debris flow / catastrophic failure imminent.
+Arunachal Pradesh,95,52,22,1600,0,LOW,9.5,0,1.86,STAGE 0: NORMAL,Routine observation. Slopes appear stable under current meteorological conditions.
+Meghalaya,130,68,35,900,1,CRITICAL,94.8,1,1.12,STAGE 3: EVACUATION ORDER,IMMEDIATE EVACUATION of downslope settlements. Severe debris flow / catastrophic failure imminent.
+Meghalaya,60,40,15,750,0,LOW,11.1,0,2.86,STAGE 0: NORMAL,Routine observation. Slopes appear stable under current meteorological conditions.
+Nagaland,155,75,38,1100,1,CRITICAL,96.1,1,1.01,STAGE 3: EVACUATION ORDER,IMMEDIATE EVACUATION of downslope settlements. Severe debris flow / catastrophic failure imminent.
+Nagaland,55,35,12,850,0,LOW,7.1,0,3.65,STAGE 0: NORMAL,Routine observation. Slopes appear stable under current meteorological conditions.
+Mizoram,190,85,45,1250,1,CRITICAL,94.3,1,0.86,STAGE 3: EVACUATION ORDER,IMMEDIATE EVACUATION of downslope settlements. Severe debris flow / catastrophic failure imminent.
+Mizoram,80,45,20,1000,0,LOW,7.9,0,2.1,STAGE 0: NORMAL,Routine observation. Slopes appear stable under current meteorological conditions.
+Tripura,65,42,10,300,0,LOW,10.3,0,4.25,STAGE 0: NORMAL,Routine observation. Slopes appear stable under current meteorological conditions.
+Assam,70,45,12,150,0,LOW,17.0,0,3.5,STAGE 0: NORMAL,Routine observation. Slopes appear stable under current meteorological conditions.
+Sikkim,210,88,46,1700,1,CRITICAL,98.0,1,0.83,STAGE 3: EVACUATION ORDER,IMMEDIATE EVACUATION of downslope settlements. Severe debris flow / catastrophic failure imminent.
+Arunachal Pradesh,160,76,40,1400,1,CRITICAL,93.5,1,0.97,STAGE 3: EVACUATION ORDER,IMMEDIATE EVACUATION of downslope settlements. Severe debris flow / catastrophic failure imminent.
+Meghalaya,105,60,28,850,0,LOW,24.4,0,1.42,STAGE 0: NORMAL,Routine observation. Slopes appear stable under current meteorological conditions.
+Nagaland,200,86,44,1300,1,CRITICAL,97.6,1,0.87,STAGE 3: EVACUATION ORDER,IMMEDIATE EVACUATION of downslope settlements. Severe debris flow / catastrophic failure imminent.
+Mizoram,120,65,32,1150,1,CRITICAL,85.6,1,1.23,STAGE 3: EVACUATION ORDER,IMMEDIATE EVACUATION of downslope settlements. Severe debris flow / catastrophic failure imminent.
+Tripura,50,30,8,250,0,LOW,5.9,0,5.59,STAGE 0: NORMAL,Routine observation. Slopes appear stable under current meteorological conditions.
+Assam,45,28,7,120,0,LOW,10.8,0,6.44,STAGE 0: NORMAL,Routine observation. Slopes appear stable under current meteorological conditions.
+Sikkim,140,70,34,1300,1,CRITICAL,89.3,1,1.14,STAGE 3: EVACUATION ORDER,IMMEDIATE EVACUATION of downslope settlements. Severe debris flow / catastrophic failure imminent.
