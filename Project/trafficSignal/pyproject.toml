@@ -1,12 +1,15 @@
 [build-system]
 requires = ["setuptools>=68"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "traffic-signal-optimizer"
 version = "1.0.0"
 description = "Adaptive Traffic Signal Optimization Simulator"
 requires-python = ">=3.10"
+
+[tool.setuptools]
+packages = []
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
