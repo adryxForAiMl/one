@@ -185,6 +185,29 @@ npm --prefix Project/trafficSignal/web run dev
 
 Open `http://127.0.0.1:5173`. The browser dashboard visualizes live SUMO vehicles and signals in a procedural Three.js intersection, supports fixed/adaptive comparison, offers paced simulation speed from 0.5× to 8×, and exports sampled telemetry as CSV or JSON. Set separate north–south and east–west demand rates (0–7,200 vehicles/hour) before a run. Completed comparisons show measured adaptive-versus-fixed changes in mean wait, accumulated delay, and completed trips. The latest eight completed run summaries are saved in browser storage for review and JSON export. Use **Try a 60-second demo** for a one-click comparison with balanced demand and seed 42. Scenario descriptions, run progress, and duration/seed guidance are shown beside the controls. The 1-second simulation timestep is paced against wall time for browser runs; CLI and desktop benchmark execution remains unpaced. For a production frontend build, run `npm --prefix Project/trafficSignal/web run build`.
 
+### Production deployment: Vercel frontend and persistent simulation API
+
+Vercel is suitable for the static browser frontend, but the SUMO API runs a long-lived simulation in a background thread and keeps its live state in process memory. Do not rely on serverless function instances for the simulator: HTTP controls and WebSocket connections can be handled by different instances, and function lifetimes can end while a simulation is running. Run the API on a persistent service configured for one process/instance, and keep it at one instance unless shared simulation state and coordination are added.
+
+Deploy the repository to a persistent Python host with the repository root as its checkout directory. Install `Project/trafficSignal/requirements.txt`, then start the API with:
+
+```bash
+python -m uvicorn Traffic.api:app --host 0.0.0.0 --port "$PORT"
+```
+
+The host must provide a runnable SUMO executable and its native libraries. The API health endpoint checks both the SUMO executable (`sumo --version`) and the imported TraCI client; `GET /health` reports simulator availability separately from API liveness. `SUMO_HOME` is optional when `sumolib` can locate SUMO, but can be set to the SUMO installation directory when automatic discovery fails.
+
+Configure these variables and redeploy:
+
+| Variable | Where | Value |
+| --- | --- | --- |
+| `VITE_TRAFFIC_API` | Vercel frontend build environment | Public base URL of the persistent API, e.g. `https://traffic-api.example.com` (no trailing slash). This is a build-time, non-secret value. |
+| `TRAFFIC_CORS_ORIGINS` | Persistent API environment | Comma-separated exact browser origins, e.g. `https://traffic.example.com,https://traffic-git-main.example.vercel.app`. Do not include URL paths or trailing slashes. |
+| `PORT` | Persistent API host | Usually provided by the host; used in the Uvicorn command above. |
+| `SUMO_HOME` | Persistent API host, only if needed | SUMO installation directory when `sumolib` cannot locate the executable. |
+
+With `VITE_TRAFFIC_API` set, the frontend sends HTTP requests to that API and derives `wss://` for WebSocket connections when the API URL uses HTTPS. Without it, the frontend uses same-origin Vercel rewrites; that mode is intended for local development or stateless API routes, not durable SUMO simulation state. Check `GET /health` and `/docs` on the API host, then verify `wss://<api-host>/ws/live` (for example with `npx wscat -c wss://<api-host>/ws/live`). In the browser, the dashboard should show the API as reachable, and **Start simulation** should stream actual SUMO telemetry. A health response with `simulation_engine.available: false` means the backend is reachable but cannot run SUMO; the UI reports that condition and disables simulation controls.
+
 For the Playwright UI review, use `npm --prefix Project/trafficSignal/web run visual-review` with both servers running. To capture the Stage 0 high-demand screenshots, renderer counters, frame-time percentiles, and JavaScript heap at 1440×900 and 1920×1080, use `npm --prefix Project/trafficSignal/web run stage0-baseline`. Set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` if Playwright's bundled browser is unavailable. Fresh baseline artifacts are in [`docs/visual/baseline/`](docs/visual/baseline/); [`docs/screenshots/`](docs/screenshots/) retains earlier captures.
 
 The latest UI uses one shared WebGL renderer with scissor rectangles for the fixed/adaptive comparison. Two High-tier 2560×1440, 15-second captures measured 16.66 ms mean, 16.7 ms p95, and 16.8 ms p99 at 196/196 and 201/197 vehicles. A prior two-canvas run at 201/197 measured the same mean, 24.3 ms p95, and 28.7 ms p99. The repeated candidate samples suggest fewer frame-time outliers, though a randomized controlled benchmark is still needed. A 10-second viewport capture also measured p95 of 16.7 ms at 1440×900 and 16.8 ms at 1920×1080, meeting the sampled 55 FPS frame-time target at both sizes. The 40 FPS 1% low threshold is met in the high-demand samples. The position residual plot is in `docs/visual/scissor-candidate/`; process/GPU memory and exact Mac model remain unverified. See [`docs/STATUS.md`](docs/STATUS.md) and [`docs/visual/baseline/performance-baseline.json`](docs/visual/baseline/performance-baseline.json).

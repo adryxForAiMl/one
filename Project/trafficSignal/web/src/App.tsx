@@ -8,10 +8,46 @@ import { RealVsAssumedPanel } from "./RealVsAssumedPanel";
 const TrafficScene = lazy(() => import("./TrafficSceneView").then((module) => ({ default: module.TrafficScene })));
 const SharedTrafficSceneGrid = lazy(() => import("./TrafficSceneView").then((module) => ({ default: module.SharedTrafficSceneGrid })));
 
-const API_ROOT = import.meta.env.VITE_TRAFFIC_API ?? "";
+const API_ROOT = (import.meta.env.VITE_TRAFFIC_API ?? "").trim().replace(/\/+$/, "");
 const WS_ROOT = API_ROOT
   ? API_ROOT.replace(/^http/, "ws")
   : `${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.host}`;
+
+type ApiHealth = {
+  status?: string;
+  simulation_engine?: { available: boolean; error?: string; binary?: string };
+  simulation_runtime?: { suitable_for_long_running: boolean; error?: string | null };
+};
+
+async function fetchApiHealth(): Promise<ApiHealth> {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 5000);
+  try {
+    const response = await fetch(`${API_ROOT}/health`, {
+      cache: "no-store",
+      signal: controller.signal,
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json() as ApiHealth;
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
+function describeClose(event: CloseEvent) {
+  const reason = event.reason ? `: ${event.reason}` : "";
+  return `WebSocket /ws/live closed (code ${event.code}${reason}).`;
+}
+
+function getSimulationUnavailableReason(health: ApiHealth) {
+  if (health.simulation_runtime?.suitable_for_long_running === false) {
+    return health.simulation_runtime.error ?? "The backend does not support long-running simulations.";
+  }
+  if (health.simulation_engine?.available === false) {
+    return health.simulation_engine.error ?? "SUMO is unavailable in the backend environment.";
+  }
+  return null;
+}
 
 type Mode = "compare" | "adaptive" | "fixed";
 type Quality = RenderQuality;
@@ -187,6 +223,9 @@ export default function App() {
   const [live, setLive] = useState<LiveState | null>(null);
   const [socketConnected, setSocketConnected] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+  const [connectionError, setConnectionError] = useState<string | null>(null);
+  const [engineAvailable, setEngineAvailable] = useState<boolean | null>(null);
+  const [reconnectAttempt, setReconnectAttempt] = useState(0);
   const [scenario, setScenario] = useState("balanced");
   const [mode, setMode] = useState<Mode>("compare");
   const [durationText, setDurationText] = useState("120");
@@ -267,10 +306,41 @@ export default function App() {
     let stopped = false;
     let retry: number | undefined;
     let socket: WebSocket | undefined;
-    const connect = () => {
+    let attempts = 0;
+    function scheduleReconnect() {
+      const delay = Math.min(1000 * 2 ** attempts, 15000);
+      attempts += 1;
+      retry = window.setTimeout(connect, delay);
+    }
+    function connect() {
       if (stopped) return;
-      socket = new WebSocket(`${WS_ROOT}/ws/live`);
-      socket.onopen = () => { setSocketConnected(true); setApiError(null); };
+      setSocketConnected(false);
+      setConnectionError(null);
+      try {
+        socket = new WebSocket(`${WS_ROOT}/ws/live`);
+      } catch (error) {
+        setConnectionError(error instanceof Error ? error.message : "The WebSocket URL is invalid.");
+        scheduleReconnect();
+        return;
+      }
+      socket.onopen = () => {
+        attempts = 0;
+        setSocketConnected(true);
+        setApiError(null);
+        setConnectionError(null);
+        void fetchApiHealth()
+          .then((health) => {
+            if (stopped) return;
+            const unavailableReason = getSimulationUnavailableReason(health);
+            setEngineAvailable(unavailableReason ? false : health.simulation_engine?.available ?? null);
+            setConnectionError(unavailableReason);
+          })
+          .catch((error: unknown) => {
+            if (stopped) return;
+            setEngineAvailable(null);
+            setConnectionError(`WebSocket connected, but the API health check failed: ${error instanceof Error ? error.message : "unknown error"}`);
+          });
+      };
       socket.onmessage = (event) => {
         try {
           const state = JSON.parse(event.data) as LiveState;
@@ -299,19 +369,38 @@ export default function App() {
           setApiError("Received an unreadable state message from the API.");
         }
       };
-      socket.onerror = () => setSocketConnected(false);
-      socket.onclose = () => {
+      socket.onerror = () => {
         setSocketConnected(false);
-        if (!stopped) retry = window.setTimeout(connect, 1500);
+        setConnectionError("WebSocket transport failed; checking API health.");
       };
-    };
+      socket.onclose = (event) => {
+        setSocketConnected(false);
+        if (stopped) return;
+        void fetchApiHealth()
+          .then((health) => {
+            if (stopped) return;
+            const engine = health.simulation_engine;
+            const unavailableReason = getSimulationUnavailableReason(health);
+            setEngineAvailable(unavailableReason ? false : engine?.available ?? null);
+            setConnectionError(unavailableReason ?? `The API health check succeeded, but ${describeClose(event)} Verify the deployment's /ws rewrite and WebSocket support.`);
+          })
+          .catch((error: unknown) => {
+            if (stopped) return;
+            setEngineAvailable(null);
+            setConnectionError(
+              `Could not reach ${API_ROOT || window.location.origin}/health: ${error instanceof Error ? error.message : "unknown error"}. Check the API deployment, /health route, and CORS configuration.`,
+            );
+          });
+        scheduleReconnect();
+      };
+    }
     connect();
     return () => {
       stopped = true;
       if (retry) window.clearTimeout(retry);
       socket?.close();
     };
-  }, []);
+  }, [reconnectAttempt]);
 
   const controllers = live?.controllers ?? {};
   const fixed = controllers.fixed ?? null;
@@ -338,8 +427,15 @@ export default function App() {
         headers: { "Content-Type": "application/json" },
         body: body === undefined ? undefined : JSON.stringify(body),
       });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.detail ?? `API error ${response.status}`);
+      const result = response.headers.get("content-type")?.includes("application/json")
+        ? await response.json()
+        : null;
+      if (!response.ok) {
+        throw new Error(
+          result?.detail ?? `API request ${path} failed with HTTP ${response.status}. Check the backend route and deployment logs.`,
+        );
+      }
+      if (result === null) throw new Error(`API request ${path} did not return JSON.`);
       setLive(result as LiveState);
       return true;
     } catch (error) {
@@ -531,8 +627,8 @@ export default function App() {
             <progress aria-label="Simulation progress" max="100" value={progress} />
           </div>
           <div className="action-stack">
-            <button className="primary-button" disabled={!connected || running || !durationValid || !seedValid || !demandValid} onClick={start}><Play size={16} fill="currentColor" />Start simulation</button>
-            <button className="demo-button" disabled={!connected || running} onClick={startQuickDemo}><Sparkles size={14} />Try a 60-second demo</button>
+            <button className="primary-button" disabled={!connected || engineAvailable === false || running || !durationValid || !seedValid || !demandValid} onClick={start}><Play size={16} fill="currentColor" />Start simulation</button>
+            <button className="demo-button" disabled={!connected || engineAvailable === false || running} onClick={startQuickDemo}><Sparkles size={14} />Try a 60-second demo</button>
             <div className="action-row">
               <button className="secondary-button" disabled={!running || live?.status === "paused"} onClick={() => request("/api/simulation/pause")}><Pause size={15} />Pause</button>
               <button className="secondary-button" disabled={live?.status !== "paused"} onClick={() => request("/api/simulation/resume")}><Play size={15} />Resume</button>
@@ -543,12 +639,13 @@ export default function App() {
             </div>
           </div>
           <div className="settings-note"><Check size={14} /><span>Compare mode gives both controllers identical traffic.</span></div>
-          <div className="panel-bottom"><span><i className={`small-status ${socketConnected ? "online" : "offline"}`} />API {socketConnected ? "reachable" : "reconnecting"}</span><span>v1.0</span></div>
+          <div className="panel-bottom"><span><i className={`small-status ${socketConnected ? "online" : "offline"}`} />API {socketConnected ? engineAvailable === false ? "SUMO unavailable" : "reachable" : "reconnecting"}</span><span>v1.0</span></div>
         </aside>
 
         <section className="main-column">
           {apiError && <div className="error-banner" role="alert"><AlertTriangle size={17} aria-hidden="true" /><span>{apiError}</span><button onClick={() => setApiError(null)} aria-label="Dismiss error">×</button></div>}
-          {!socketConnected && <div className="disconnected-banner" role="status"><WifiOff size={17} aria-hidden="true" /><span>Disconnected from the simulation API. Live values are unavailable.</span><button onClick={() => { setApiError(null); window.location.reload(); }}>Reconnect</button></div>}
+          {!socketConnected && <div className="disconnected-banner" role="status"><WifiOff size={17} aria-hidden="true" /><span>{connectionError ?? "Disconnected from the simulation API. Live values are unavailable."}</span><button onClick={() => { setApiError(null); setConnectionError(null); setReconnectAttempt((attempt) => attempt + 1); }}>Reconnect</button></div>}
+          {socketConnected && connectionError && <div className="error-banner" role="alert"><AlertTriangle size={17} aria-hidden="true" /><span>{connectionError}</span></div>}
           {mode === "compare" ? <Suspense fallback={<div className="scene-grid"><div className="scene-loading">Preparing 3D scenes…</div></div>}>
             <SharedTrafficSceneGrid quality={quality} adaptiveResolution={adaptiveResolution}>
               <TrafficScene label="Fixed-time" snapshot={fixed} quality={quality} adaptiveResolution={adaptiveResolution} simulationTime={live?.simulation_time_seconds ?? null} speed={live?.speed_multiplier ?? speed} status={live?.status ?? "idle"} cameraPreset={cameraPreset} siteGeometry={siteGeometry} />

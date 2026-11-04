@@ -2,14 +2,22 @@ import time
 
 from fastapi.testclient import TestClient
 
-from Traffic.api import app, manager
+from Traffic import api as traffic_api
 from Traffic.backend import simulation
+
+app = traffic_api.app
+manager = traffic_api.manager
 
 
 def test_api_idle_and_config_validation():
     manager.reset()
     with TestClient(app) as client:
-        assert client.get("/health").json() == {"status": "ok"}
+        health = client.get("/health")
+        assert health.status_code == 200
+        assert health.json()["status"] == "ok"
+        assert isinstance(health.json()["simulation_engine"]["available"], bool)
+        assert client.get("/docs").status_code == 200
+        assert client.get("/openapi.json").status_code == 200
         vite_preflight = client.options("/api/simulation/start", headers={
             "Origin": "http://127.0.0.1:5175",
             "Access-Control-Request-Method": "POST",
@@ -36,6 +44,36 @@ def test_api_idle_and_config_validation():
         assert invalid.status_code == 422
         invalid_speed = client.post("/api/simulation/start", json={"speed_multiplier": 12})
         assert invalid_speed.status_code == 422
+
+
+def test_health_reports_missing_sumo_binary(monkeypatch):
+    traffic_api.sumo_runtime_status.cache_clear()
+    monkeypatch.setattr(traffic_api, "find_sumo_binary", lambda: "/missing/sumo")
+    with TestClient(app) as client:
+        health = client.get("/health").json()
+    traffic_api.sumo_runtime_status.cache_clear()
+    assert health["status"] == "ok"
+    assert health["simulation_engine"]["available"] is False
+    assert health["simulation_engine"]["traci_available"] is True
+    assert "SUMO executable was not found" in health["simulation_engine"]["error"]
+
+
+def test_configured_cors_origins_are_added(monkeypatch):
+    monkeypatch.setenv("TRAFFIC_CORS_ORIGINS", "https://traffic.example, https://preview.example ")
+    origins = traffic_api.allowed_cors_origins()
+    assert "https://traffic.example" in origins
+    assert "https://preview.example" in origins
+    assert "http://localhost:5173" in origins
+
+
+def test_health_disables_simulations_in_vercel_functions(monkeypatch):
+    traffic_api.sumo_runtime_status.cache_clear()
+    monkeypatch.setenv("VERCEL", "1")
+    with TestClient(app) as client:
+        health = client.get("/health").json()
+    assert health["status"] == "ok"
+    assert health["simulation_runtime"]["suitable_for_long_running"] is False
+    assert "persistent process" in health["simulation_runtime"]["error"]
 
 
 def test_api_simulation_state_and_websocket_use_live_sumo_data():

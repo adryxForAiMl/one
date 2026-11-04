@@ -4,10 +4,14 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import os
+import shutil
 import sys
+import subprocess
 import threading
 import time
 from enum import Enum
+from functools import lru_cache
 from pathlib import Path
 from typing import Optional
 
@@ -22,7 +26,7 @@ if str(REPOSITORY_ROOT) not in sys.path:
 
 from Traffic.backend.paired_simulation import PairedSimulationRunner
 from Traffic.backend.simulation import SimulationRunner
-from Traffic.config.settings import DemandProfile, SignalTimingConfig
+from Traffic.config.settings import DemandProfile, SignalTimingConfig, find_sumo_binary
 
 
 class RunMode(str, Enum):
@@ -427,12 +431,24 @@ class SimulationManager:
 
 manager = SimulationManager()
 app = FastAPI(title="Adaptive Traffic Signal Simulator API", version="1.0.0")
+local_origins = [
+    "http://127.0.0.1:5173", "http://localhost:5173",
+    "http://127.0.0.1:5174", "http://localhost:5174",
+]
+
+
+def allowed_cors_origins() -> list[str]:
+    configured_origins = [
+        origin.strip()
+        for origin in os.environ.get("TRAFFIC_CORS_ORIGINS", "").split(",")
+        if origin.strip()
+    ]
+    return list(dict.fromkeys([*local_origins, *configured_origins]))
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://127.0.0.1:5173", "http://localhost:5173",
-        "http://127.0.0.1:5174", "http://localhost:5174",
-    ],
+    allow_origins=allowed_cors_origins(),
     allow_origin_regex=r"^https?://(?:localhost|127\.0\.0\.1):51[7-9][0-9]$",
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type"],
@@ -449,7 +465,55 @@ async def disable_api_caching(request, call_next):
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    serverless_runtime = os.environ.get("VERCEL") == "1"
+    return {
+        "status": "ok",
+        "simulation_engine": sumo_runtime_status(),
+        "simulation_runtime": {
+            "suitable_for_long_running": not serverless_runtime,
+            "error": (
+                "SUMO simulations need a persistent process; this API is running as a Vercel Function."
+                if serverless_runtime
+                else None
+            ),
+        },
+    }
+
+
+@lru_cache(maxsize=1)
+def sumo_runtime_status() -> dict[str, object]:
+    try:
+        binary = find_sumo_binary()
+        binary_path = shutil.which(binary)
+        if binary_path is None:
+            candidate = Path(binary)
+            if candidate.is_file() and os.access(candidate, os.X_OK):
+                binary_path = str(candidate)
+        if binary_path is None:
+            return {
+                "available": False,
+                "traci_available": True,
+                "error": "SUMO executable was not found. Install eclipse-sumo or configure SUMO_HOME.",
+            }
+        subprocess.run(
+            [binary_path, "--version"],
+            capture_output=True,
+            check=True,
+            text=True,
+            timeout=5,
+        )
+    except (OSError, subprocess.SubprocessError) as exc:
+        detail = getattr(exc, "stderr", None) or str(exc)
+        return {
+            "available": False,
+            "traci_available": True,
+            "error": f"SUMO executable failed its startup check: {detail.strip()}",
+        }
+    return {
+        "available": True,
+        "traci_available": True,
+        "binary": Path(binary_path).name,
+    }
 
 
 @app.get("/api/state", response_model=LiveState)
