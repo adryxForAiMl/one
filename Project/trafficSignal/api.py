@@ -4,14 +4,21 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import sys
 import threading
 import time
 from enum import Enum
+from pathlib import Path
 from typing import Optional
 
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, model_validator
+
+# Support importing this module directly when the project directory is the deployment root.
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+if str(REPOSITORY_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from Traffic.backend.paired_simulation import PairedSimulationRunner
 from Traffic.backend.simulation import SimulationRunner

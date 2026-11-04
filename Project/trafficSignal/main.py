@@ -12,11 +12,13 @@ import sys
 import argparse
 from pathlib import Path
 
-# Ensure Traffic package root is in python path
+# Ensure the project and repository roots are importable from deployed entrypoints.
 ROOT_DIR = Path(__file__).resolve().parent
-if str(ROOT_DIR.parent) not in sys.path:
-    sys.path.insert(0, str(ROOT_DIR.parent))
+for import_root in (ROOT_DIR, ROOT_DIR.parent.parent):
+    if str(import_root) not in sys.path:
+        sys.path.insert(0, str(import_root))
 
+from api import app
 from Traffic.config.settings import DemandProfile, find_sumo_binary, RESULTS_DIR
 from Traffic.backend.paired_simulation import PairedSimulationRunner
 from Traffic.backend.metrics import export_comparison_csv, export_comparison_json
