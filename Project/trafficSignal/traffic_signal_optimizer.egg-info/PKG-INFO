@@ -1,0 +1,5 @@
+Metadata-Version: 2.4
+Name: traffic-signal-optimizer
+Version: 1.0.0
+Summary: Adaptive Traffic Signal Optimization Simulator
+Requires-Python: >=3.10
