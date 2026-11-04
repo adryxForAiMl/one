@@ -8,8 +8,10 @@ import { RealVsAssumedPanel } from "./RealVsAssumedPanel";
 const TrafficScene = lazy(() => import("./TrafficSceneView").then((module) => ({ default: module.TrafficScene })));
 const SharedTrafficSceneGrid = lazy(() => import("./TrafficSceneView").then((module) => ({ default: module.SharedTrafficSceneGrid })));
 
-const API_ROOT = import.meta.env.VITE_TRAFFIC_API ?? "http://127.0.0.1:8000";
-const WS_ROOT = API_ROOT.replace(/^http/, "ws");
+const API_ROOT = import.meta.env.VITE_TRAFFIC_API ?? "";
+const WS_ROOT = API_ROOT
+  ? API_ROOT.replace(/^http/, "ws")
+  : `${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.host}`;
 
 type Mode = "compare" | "adaptive" | "fixed";
 type Quality = RenderQuality;
